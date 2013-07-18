@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"></script>
+</head>
+<body>
+<div id="viz" style="background-color:#d0d0d0"></div>
+<script type="text/javascript">
+
+var canvasWidth = 200;
+var canvasHeight = 400;
+var dotColorNormal = "#FF0080";
+var dotColorHover = "#0080FF";
+var dotRadius = 10;
+
+function doSomethingWithData(jsondata){
+    console.log(jsondata);
+    }
+
+d3.json("evalresults.json",doSomethingWithData);
+
+
+var makeBlue = function(){
+    console.log("hover yoj");
+    d3.select(this).style("fill", dotColorHover);
+    };
+
+
+var sampleSVG = d3.select("#viz")
+    .append("svg")
+    .attr("width", canvasWidth)
+    .attr("height", canvasHeight)
+    .style("background-color", "#c0c0c0");
+
+for (var i=0; i<5; i++){
+sampleSVG.append("circle")
+    .style("stroke", "#000000")
+    .style("fill", dotColorNormal)
+    .attr("r", dotRadius)
+    .attr("cx", Math.round(Math.random()*canvasWidth))
+    .attr("cy", Math.round(Math.random()*canvasHeight))
+    .on("mouseover", makeBlue)
+    .on("mouseout", function(){d3.select(this).style("fill", dotColorNormal);})
+}
+
+
+
+</script>
+</body>
+</html>

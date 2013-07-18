@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"></script>
+</head>
+<body>
+<div id="viz" style="background-color:#FFF"></div>
+<script type="text/javascript">
+
+var canvasWidth = 800;
+var canvasHeight = 400;
+var dotColorNormal = "#FF8000";
+var dotColorHover = "#0080FF";
+var dotRadius = 5;
+var xLimMin = 0;
+var xLimMax = 6000;
+var yLimMin = -20;
+var yLimMax = 20;
+
+
+// Define linear scales representing the pixel dimensions
+var xScale = d3.scale.linear()
+    .domain([xLimMin, xLimMax])   // input in units of the jsondata
+    .range([0, canvasWidth]);    // output in pixels
+
+// Define linear scales representing the pixel dimensions
+var yScale = d3.scale.linear()
+    .domain([yLimMin, yLimMax])   // input in units of the jsondata
+    .range([0, canvasHeight]);    // output in pixels
+
+var xAxis = d3.svg.axis()
+     .scale(xScale)
+     .orient("bottom")
+     .ticks(5);
+
+var yAxis = d3.svg.axis()
+     .scale(yScale)
+     .orient("left")
+     .ticks(5);
+
+var svgElement = d3.select("#viz").append("svg");
+
+svgElement
+    .attr("width", canvasWidth)
+    .attr("height", canvasHeight)
+    .style("background-color", "#c0c0c0");
+
+svgElement
+    .append("g")
+        .call(xAxis)
+        .attr("transform","translate(0,0)");
+
+d3.json("evalresults.json",function(jsondata) {
+
+    var nResults = jsondata.parameterVector.length;
+
+    console.log(x:jsondata.sampleIdentifier[iResult]);
+
+    for (var iResult=0; iResult<nResults; iResult+=100){
+        svgElement.append("circle")
+            .data([{x:jsondata.sampleIdentifier[iResult],y:jsondata.parameterVector[iResult][0]}])
+            .style("stroke", dotColorNormal)
+            .style("fill", dotColorNormal)
+            .attr("r", dotRadius)
+            .attr("cx", 10) //function(d) { return xScale(d.data.x);}
+            .attr("cy", 100)
+    }
+});
+
+
+
+
+</script>
+</body>
+</html>

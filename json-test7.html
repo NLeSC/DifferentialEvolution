@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>D3 Test</title>
+        <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    </head>
+    <body>
+        <div id="contents"></div>
+
+        <script type="text/javascript">
+            // Your beautiful D3 code will go here
+
+            d3.json('evalresults.json', function (data) {
+
+
+                var canvasWidth = 1600;
+                var canvasHeight = 800;
+
+                var canvas = d3.select("#contents").append("svg");
+                canvas
+                    .attr("width",canvasWidth)
+                    .attr("height",canvasHeight);
+
+                d3.select("#contents").style("background-color","#c8c8c8");
+
+                var canvasBackground = canvas
+                                        .append("rect")
+                                        .attr("width",canvasWidth)
+                                        .attr("height",canvasHeight)
+                                        .attr("fill","#FFFFFF");
+
+                var xScale = d3.scale.linear();
+                xScale.domain(d3.extent(data, function(d) { return d.s; }));
+                xScale.range([0,canvasWidth]);
+
+
+                var yScale = d3.scale.linear();
+                yScale.domain(d3.extent(data, function(d) { return d.p[0]; }));
+                yScale.range([0,canvasHeight]);
+
+
+                var colorScale = d3.scale.linear();
+                colorScale.domain(d3.extent(data, function(d) { return d.p[0]; }));
+                colorScale.range(["rgb(0,0,255)","rgb(255,0,0)"]);
+
+
+                var circles = canvas.selectAll("circle")
+                                    .data(data)
+                                    .enter()
+                                        .append("circle")
+                                        .attr("fill",function (d) {return colorScale(d.p[0]);})
+                                        .attr("cx",function (d) {return xScale(d.s);})
+                                        .attr("cy",function (d) {return yScale(d.p[0]);})
+                                        .attr("r",3);
+
+
+
+
+
+                } ); // closing tags of d3.json load
+
+
+        </script>
+    </body>
+</html>

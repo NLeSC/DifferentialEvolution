@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Matrix of response surfaces</title>
+        <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    </head>
+    <body>
+        <div id="contents"></div>
+
+        <script type="text/javascript">
+
+
+
+            var canvasWidth = 1400;
+            var canvasHeight = 800;
+
+
+            d3.text("response-surface-indices.csv", function(text) {
+                var data = d3.csv.parseRows(text).map(function(row) {
+                    return row.map(function(value) {
+                        return +value;
+                    });
+                });
+
+
+
+
+            var nPars = data[0].length;
+            var nCols = nPars;
+            var nRows= nPars;
+            var canvas = d3.select("#contents").append("svg");
+            var paddingLeft = 100;
+            var paddingRight = 100;
+            var paddingTop = 50;
+            var paddingBottom = 50;
+            var nVisualizeLast = 1e4;
+
+
+            canvas
+                .attr("width",canvasWidth)
+                .attr("height",canvasHeight);
+
+            for (iRow=0;iRow<nPars;iRow++){
+                for (iCol=iRow;iCol<nPars;iCol++){
+
+                    var w = ((canvasWidth-paddingLeft-paddingRight)/nCols)-10;
+                    var h = ((canvasHeight-paddingTop-paddingBottom)/nRows)-10;
+                    var x = paddingLeft + (iCol/nCols)*(canvasWidth-paddingLeft-paddingRight);
+                    var y = paddingTop + (iRow/nRows)*(canvasHeight-paddingTop-paddingBottom);
+
+                    var nResults = data.length;
+
+                    if ((nResults-nVisualizeLast) < 0){
+                        var iResultStart = 0;
+                    } else {
+                        var iResultStart = nResults-nVisualizeLast;
+                    };
+
+                    var canvasBackground = canvas
+                                            .append("rect")
+                                            .attr("width",w)
+                                            .attr("height",h)
+                                            .attr("x",x)
+                                            .attr("y",y)
+                                            .attr("fill","#bbbbbb");
+
+
+
+                    canvas
+                        .append("line")
+                        .attr("x1",x)
+                        .attr("y1",y)
+                        .attr("x2",x+w)
+                        .attr("y2",y)
+                        .attr("stroke-width",1)
+                        .attr("stroke","#000000");
+
+
+                    canvas
+                        .append("line")
+                        .attr("x1",x+w)
+                        .attr("y1",y)
+                        .attr("x2",x+w)
+                        .attr("y2",y+h)
+                        .attr("stroke-width",1)
+                        .attr("stroke","#000000");
+
+
+                } // iCol
+            } //iRow
+
+
+
+        });
+
+
+
+
+
+        </script>
+    </body>
+</html>

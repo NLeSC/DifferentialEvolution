@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Test</title>
+        <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    </head>
+    <body>
+        <div id="contents"></div>
+
+        <script type="text/javascript">
+
+
+            var canvasWidth = 1400;
+            var canvasHeight = 800;
+
+
+            d3.json('evalresults.json', function (data) {
+
+                var nPars = data[0].p.length;
+                var nCols = nPars;
+                var nRows= nPars;
+                var canvas = d3.select("#contents").append("svg");
+                var paddingLeft = 100;
+                var paddingRight = 100;
+                var paddingTop = 50;
+                var paddingBottom = 50;
+                var nVisualizeLast = 1e4;
+
+
+                canvas
+                    .attr("width",canvasWidth)
+                    .attr("height",canvasHeight);
+
+                for (iRow=0;iRow<nPars;iRow++){
+                    for (iCol=iRow;iCol<nPars;iCol++){
+
+                        var w = ((canvasWidth-paddingLeft-paddingRight)/nCols)-10;
+                        var h = ((canvasHeight-paddingTop-paddingBottom)/nRows)-10;
+                        var x = paddingLeft + (iCol/nCols)*(canvasWidth-paddingLeft-paddingRight);
+                        var y = paddingTop + (iRow/nRows)*(canvasHeight-paddingTop-paddingBottom);
+                        var xLim = d3.extent(data, function(d) { return d.p[iCol]; });
+                        var yLim = d3.extent(data, function(d) { return d.p[iRow]; });
+                        var nResults = data.length;
+
+                        if ((nResults-nVisualizeLast) < 0){
+                            var iResultStart = 0;
+                        } else {
+                            var iResultStart = nResults-nVisualizeLast;
+                        };
+
+                        var xScale = d3.scale.linear();
+                        xScale.domain(d3.extent(data, function(d) { return d.p[iCol]; }));
+                        xScale.range([x,x+w]);
+
+
+                        if (iCol==iRow){
+                            var xAxis = d3.svg.axis()
+                                .scale(xScale)
+                                .orient("bottom")
+                                .ticks(5)
+                                .tickSize(1)
+                                .tickPadding(10);
+                        } else {
+                            var xAxis = d3.svg.axis()
+                                .scale(xScale)
+                                .orient("bottom")
+                                .ticks(0)
+                                .tickSize(1)
+                                .tickPadding(10);
+                        };
+
+
+                        var yScale = d3.scale.linear();
+                        yScale.domain(d3.extent(data, function(d) { return d.p[iRow]; }));
+                        yScale.range([y+h,y]);
+
+                        if (iCol == iRow) {
+                            var yAxis = d3.svg.axis()
+                                .scale(yScale)
+                                .orient("left")
+                                .ticks(5)
+                                .tickSize(1)
+                                .tickPadding(10);
+                        } else {
+                            var yAxis = d3.svg.axis()
+                                .scale(yScale)
+                                .orient("left")
+                                .ticks(0)
+                                .tickSize(1)
+                                .tickPadding(10);
+                        };
+
+                        var canvasBackground = canvas
+                                                .append("rect")
+                                                .attr("width",w)
+                                                .attr("height",h)
+                                                .attr("x",x)
+                                                .attr("y",y)
+                                                .attr("fill","#bbbbbb");
+
+
+                        canvas
+                            .append("g")
+                            .attr("transform","translate(0,"+(y+h)+")")
+                                .call(xAxis)
+
+                        canvas
+                            .append("g")
+                            .attr("transform","translate("+(x)+",0)")
+                                .call(yAxis);
+
+                        canvas
+                            .append("line")
+                            .attr("x1",x)
+                            .attr("y1",y)
+                            .attr("x2",x+w)
+                            .attr("y2",y)
+                            .attr("stroke-width",1)
+                            .attr("stroke","#000000");
+
+
+                        canvas
+                            .append("line")
+                            .attr("x1",x+w)
+                            .attr("y1",y)
+                            .attr("x2",x+w)
+                            .attr("y2",y+h)
+                            .attr("stroke-width",1)
+                            .attr("stroke","#000000");
+
+
+                        //console.log(data[0].p[0]);
+                        //console.log(xScale(data[0].p[0]));
+
+
+                        for (iResult=iResultStart;iResult<nResults;iResult++){
+                            canvas
+                                .append("circle")
+                                    .attr("fill","#FF0080")
+                                    .attr("cx",function () {return xScale(data[iResult].p[iCol]);})
+                                    .attr("cy",function () {return yScale(data[iResult].p[iRow]);})
+                                    .attr("r",1);
+                        } //iCircle
+                    } // iCol
+                } //iRow
+
+
+            } ); // closing tags of d3.json load
+
+
+        </script>
+    </body>
+</html>

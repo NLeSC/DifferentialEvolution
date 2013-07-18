@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"></script>
+</head>
+<body>
+<div id="viz"></div>
+
+<script type="text/javascript">
+
+var canvasWidth = 1600;
+var canvasHeight = 800;
+var dotColorNormal = "#FF0080";
+var dotColorHover = "#0080FF";
+var dotRadius = 2;
+var xLimMin = 0;
+var xLimMax = 300*50+50;
+var yLimMin = -26;
+var yLimMax = 24;
+var nXTicks = 10;
+var nYTicks = 5;
+var spacingLeft = 100;
+var spacingRight = 50;
+var spacingTop = 50;
+var spacingBottom = 100;
+
+//var jsondata;
+//d3.json("evalresults.json",function(data,error){
+//    jsondata = data;
+//});
+
+d3.json("evalresults.json",function(jsondata) {
+
+    var applyHoverStyle = function(){
+        d3.select(this).style("fill", dotColorHover);
+        d3.select(this).style("stroke", dotColorHover);
+        d3.select(this).attr("r", dotRadius+2);
+        };
+
+    var applyNormalStyle = function(){
+        d3.select(this).style("fill", dotColorNormal);
+        d3.select(this).style("stroke", dotColorNormal);
+        d3.select(this).attr("r", dotRadius);
+        };
+
+    var xyToLogger = function(d){
+        console.log("[",d.x,",",d.y,"]");
+        };
+
+    var nResults = jsondata.parameterVector.length;
+
+    for (var iResult=0; iResult<nResults; iResult+=1){
+        svgElement.append("circle")
+            .data([{"x":jsondata.sampleIdentifier[iResult],"y":jsondata.parameterVector[iResult][0]}])
+            .style("stroke", dotColorNormal)
+            .style("fill", dotColorNormal)
+            .attr("r", dotRadius)
+            .attr("cx", function(d) {return spacingLeft+xScale(d.x);})
+            .attr("cy", function(d) {return spacingTop+yScale(d.y);})
+            .on("mouseover", applyHoverStyle)
+            .on("mouseout", applyNormalStyle)
+            .on("click", xyToLogger);
+    }
+});
+
+
+// Define linear scales representing the pixel dimensions
+var xScale = d3.scale.linear()
+    .domain([xLimMin, xLimMax])           // input in units of the jsondata
+    .range([0, canvasWidth-spacingLeft-spacingRight]);   // output in pixels
+
+var yScale = d3.scale.linear()
+     .domain([yLimMax,yLimMin])   // input in units of the jsondata
+     .range([0, canvasHeight-spacingTop-spacingBottom]);   // output in pixels
+
+var xAxis = d3.svg.axis()
+     .scale(xScale)
+     .tickSize(1)
+     .tickPadding(10)
+     .orient("bottom")
+     .ticks(nXTicks);
+
+var yAxis = d3.svg.axis()
+     .scale(yScale)
+     .tickSize(1)
+     .tickPadding(10)
+     .orient("left")
+     .ticks(nYTicks);
+
+var svgElement = d3.select("#viz").append("svg");
+
+// draw white rectangle axis background
+svgElement
+    .attr("width", canvasWidth)
+    .attr("height", canvasHeight)
+    .style("background-color", "#e8e8e8")
+    .append("g")
+        .attr("transform","translate("+spacingLeft+","+spacingTop+")")
+        .append("rect")
+            .attr("x",0)
+            .attr("y",0)
+            .attr("width",canvasWidth-spacingRight-spacingLeft)
+            .attr("height",canvasHeight-spacingTop-spacingBottom)
+            .style("fill","#FFFFFF");
+
+// draw y axis
+svgElement
+    .append("g")
+        .attr("transform","translate("+spacingLeft+","+spacingTop+")")
+        .call(yAxis)
+        .append("g")
+            .attr("transform","translate(0,"+(canvasHeight-spacingTop-spacingBottom)+")")
+            .call(xAxis);
+
+// draw line at y = yLimMax
+svgElement
+    .append("g")
+        .attr("transform","translate("+spacingLeft+","+spacingTop+")")
+        .append("rect")
+        .attr("x", xScale(xLimMin))
+        .attr("y", yScale(yLimMax))
+        .attr("width", canvasWidth-spacingLeft-spacingRight)
+        .attr("height", 1)
+        .style("fill","black");
+
+// draw line at x = xLimMax
+svgElement
+    .append("g")
+        .attr("transform","translate("+spacingLeft+","+spacingTop+")")
+        .append("rect")
+        .attr("x", xScale(xLimMax))
+        .attr("y", yScale(yLimMax))
+        .attr("width", 1)
+        .attr("height", canvasHeight-spacingTop-spacingBottom)
+        .style("fill","black");
+
+
+var xticks = xScale.ticks(nXTicks);
+var nXTicks = xticks.length;
+// draw bottom ticks
+for (var iXTick=0;iXTick<nXTicks;iXTick++){
+    svgElement
+        .append("g")
+            .attr("transform","translate("+spacingLeft+","+spacingTop+")")
+            .append("line")
+                .attr("x1", xScale(xticks[iXTick]))
+                .attr("x2", xScale(xticks[iXTick]))
+                .attr("y1", canvasHeight-spacingTop-spacingBottom+0)
+                .attr("y2", canvasHeight-spacingTop-spacingBottom+5)
+                .style("stroke", "#000000")
+                .style("stroke-width",1);
+                };
+// draw top ticks
+for (var iXTick=0;iXTick<nXTicks;iXTick++){
+    svgElement
+        .append("g")
+            .attr("transform","translate("+spacingLeft+","+spacingTop+")")
+            .append("line")
+                .attr("x1", xScale(xticks[iXTick]))
+                .attr("x2", xScale(xticks[iXTick]))
+                .attr("y1", 0)
+                .attr("y2", -5)
+                .style("stroke", "#000000")
+                .style("stroke-width",1);
+                };
+// draw vertical gridlines
+for (var iXTick=0;iXTick<nXTicks;iXTick++){
+    svgElement
+        .append("g")
+            .attr("transform","translate("+spacingLeft+","+spacingTop+")")
+            .append("line")
+                .attr("x1", xScale(xticks[iXTick]))
+                .attr("x2", xScale(xticks[iXTick]))
+                .attr("y1", 0)
+                .attr("y2", canvasHeight-spacingTop-spacingBottom)
+                .style("stroke", "#cccccc")
+                .style("stroke-width",1);
+                };
+
+
+var yticks = yScale.ticks(nYTicks);
+var nYTicks = yticks.length;
+// draw left ticks
+for (var iYTick=0;iYTick<nYTicks;iYTick++){
+    svgElement
+        .append("g")
+            .attr("transform","translate("+spacingLeft+","+spacingTop+")")
+            .append("line")
+                .attr("x1", 0)
+                .attr("x2", -5)
+                .attr("y1", yScale(yticks[iYTick]))
+                .attr("y2", yScale(yticks[iYTick]))
+                .style("stroke", "#000000")
+                .style("stroke-width",1);
+                };
+
+// draw right ticks
+for (var iYTick=0;iYTick<nYTicks;iYTick++){
+    svgElement
+        .append("g")
+            .attr("transform","translate("+spacingLeft+","+spacingTop+")")
+            .append("line")
+                .attr("x1", canvasWidth-spacingLeft-spacingRight+0)
+                .attr("x2", canvasWidth-spacingLeft-spacingRight+5)
+                .attr("y1", yScale(yticks[iYTick]))
+                .attr("y2", yScale(yticks[iYTick]))
+                .style("stroke", "#000000")
+                .style("stroke-width",1);
+                };
+// draw horizontal gridlines
+for (var iYTick=0;iYTick<nYTicks;iYTick++){
+    svgElement
+        .append("g")
+            .attr("transform","translate("+spacingLeft+","+spacingTop+")")
+            .append("line")
+                .attr("x1", 0)
+                .attr("x2", canvasWidth-spacingLeft-spacingRight)
+                .attr("y1", yScale(yticks[iYTick]))
+                .attr("y2", yScale(yticks[iYTick]))
+                .style("stroke", "#cccccc")
+                .style("stroke-width",1);
+                };
+
+//draw x label
+    svgElement
+        .append("g")
+            .attr("transform","translate("+(canvasWidth/2)+","+(canvasHeight-(spacingBottom/2))+")")
+            .append("text")
+                .attr("x", 0)
+                .attr("y", 0)
+                .text("number of model evaluations")
+                .attr("text-anchor","middle");
+
+
+//draw y label
+    svgElement
+        .append("g")
+            .attr("transform","translate("+(spacingLeft/2)+","+(canvasHeight/2)+")")
+            .append("g")
+                .attr("transform","rotate(-90)")
+                .append("text")
+                    .attr("x", 0)
+                    .attr("y", 0)
+                    .text("parameter value")
+                    .attr("text-anchor","middle");
+
+
+
+</script>
+</body>
+</html>

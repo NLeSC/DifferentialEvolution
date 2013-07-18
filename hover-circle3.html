@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"></script>
+</head>
+<body>
+<div id="viz" style="background-color:#FFF"></div>
+<script type="text/javascript">
+
+//var canvasWidth = 1500;
+//var canvasHeight = 400;
+var dotColorNormal = "#008000";
+var dotColorHover = "#0080FF";
+var dotRadius = 2;
+
+// Define linear scales representing the pixel dimensions
+var x = d3.scale.linear()
+    .domain([0, 6000])   // input in units of the jsondata
+    .range([0, 900]);    // output in pixels
+
+var y = d3.scale.linear()
+     .domain([-20,20])   // input in units of the jsondata
+     .range([0, 250]);   // output in pixels
+
+// define an SVG element to hold our chart
+var chart = d3.select("body").select("#viz").append("svg")
+    .attr("class", "chart")
+    .attr("width", 1000) // more space to accomodate our axis labels
+    .attr("height", 320) // moar space!
+  .append("g")
+    .attr("transform", "translate(40,30)"); // move base coordinates over/down a bit so lines start at 0,0
+
+// draw the X grid lines
+chart.selectAll("line.x")
+    .data(x.ticks(10))
+  .enter().append("line")
+    .attr("class", "x")
+    .attr("x1", x)
+    .attr("x2", x)
+    .attr("y1", 0)
+    .attr("y2", 250)
+    .style("stroke", "#ccc");
+
+// draw the Y axis grid lines
+chart.selectAll("line.y")
+    .data(y.ticks(10))
+  .enter().append("line")
+    .attr("class", "y")
+    .attr("x1", 0)
+    .attr("x2", 900)
+    .attr("y1", y)
+    .attr("y2", y)
+    .style("stroke", "#ccc");
+
+// add the X axis labels
+chart.selectAll(".rule")
+    .data(x.ticks(10))
+  .enter().append("text")
+    .attr("x", x)
+    .attr("y", 0)
+    .attr("dy", -3)
+    .attr("text-anchor", "middle")
+    .text(String);
+
+// add the Y axis labels
+chart.selectAll(".rule")
+    .data(y.ticks(10))
+  .enter().append("text")
+    .attr("x", 0)
+    .attr("y", y)
+    .attr("dy", 3) // shift down slightly
+    .attr("dx", -3)  // and to the left
+    .attr("text-anchor", "end") // align right
+    .text(function(d) { return d == 0 ? '' : d;});
+
+//// add the darker X axis line
+//chart.append("line")
+    //.attr("x1", 0)
+    //.attr("x2", 450)
+    //.style("stroke", "#000");
+
+//// add the darker Y axis line
+//chart.append("line")
+    //.attr("y1", 0)
+    //.attr("y2", 300)
+    //.style("stroke", "#000");
+
+//svgElement
+    //.attr("width", canvasWidth)
+    //.attr("height", canvasHeight)
+    //.style("background-color", "#c0c0c0");
+
+//var svgElement = d3.select("#viz").append("svg");
+
+
+function doSomethingWithData(jsondata){
+
+    var nResults = jsondata.parameterVector.length;
+
+    for (var iResult=0; iResult<nResults; iResult++){
+        //console.log(jsondata.sampleIdentifier[iResult]);
+        //console.log(jsondata.parameterVector[iResult][0]);
+        chart.append("circle")
+            .style("stroke", dotColorNormal)
+            .style("fill", dotColorNormal)
+            .attr("r", dotRadius)
+            .attr("cx", jsondata.sampleIdentifier[iResult])
+            .attr("cy", jsondata.parameterVector[iResult][0])
+    }
+}
+
+d3.json("evalresults.json",doSomethingWithData);
+
+
+
+
+
+</script>
+</body>
+</html>

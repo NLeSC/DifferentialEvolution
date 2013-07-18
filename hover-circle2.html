@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"></script>
+</head>
+<body>
+<div id="viz" style="background-color:#d0d0d0"></div>
+<script type="text/javascript">
+
+var canvasWidth = 1500;
+var canvasHeight = 400;
+var dotColorNormal = "#008000";
+var dotColorHover = "#0080FF";
+var dotRadius = 2;
+
+function doSomethingWithData(jsondata){
+    var nResults = jsondata.parameterVector.length;
+    for (var iResult=0; iResult<nResults; iResult++){
+        //console.log(jsondata.sampleIdentifier[iResult]);
+        //console.log(jsondata.parameterVector[iResult][0]);
+        svgElement.append("circle")
+            .style("stroke", dotColorNormal)
+            .style("fill", dotColorNormal)
+            .attr("r", dotRadius)
+            .attr("cx", jsondata.sampleIdentifier[iResult]*0.25)
+            .attr("cy", 200+jsondata.parameterVector[iResult][0]*5)
+    }
+}
+
+d3.json("evalresults.json",doSomethingWithData);
+
+var svgElement = d3.select("#viz").append("svg");
+
+svgElement
+    .attr("width", canvasWidth)
+    .attr("height", canvasHeight)
+    .style("background-color", "#c0c0c0");
+
+
+
+</script>
+</body>
+</html>
