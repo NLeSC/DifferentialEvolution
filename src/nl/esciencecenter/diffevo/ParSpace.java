@@ -1,5 +1,7 @@
 package nl.esciencecenter.diffevo;
 
+import java.util.ArrayList;
+
 public class ParSpace {
 	
 	private double[] lowerBounds;
@@ -7,7 +9,7 @@ public class ParSpace {
 	private double[] range;	
 	private String[] parNames;
 	private int nPars;
-
+	private ArrayList<double[]> responseSurfaceBins = new ArrayList<double[]>();
 
 	public ParSpace(double[] lowerBounds, double[] upperBounds, String[] parNames){
 		
@@ -23,6 +25,7 @@ public class ParSpace {
 		}
 
 		this.range = range;
+		
 	}
 
 
@@ -51,8 +54,34 @@ public class ParSpace {
 	public String getParName(int index) {
 		return parNames[index];
 	}
+	
+	
+	public void divideIntoIntervals(int nBinBounds){
+		
+		for (int iPar=0;iPar<nPars;iPar++){
+			double[] binBounds = new double[nBinBounds];
+			for (int iBinBound= 0; iBinBound<nBinBounds;iBinBound++){
+				binBounds[iBinBound] = lowerBounds[iPar] + ((double)iBinBound/(nBinBounds-1))*range[iPar];
+			}
+			responseSurfaceBins.add(iPar, binBounds);
+		}
+	}
+
+	public void divideIntoIntervals(int[] nBinBounds){
+		
+		for (int iPar=0;iPar<nPars;iPar++){
+			double[] binBounds = new double[nBinBounds[iPar]];
+			for (int iBinBound= 0; iBinBound<nBinBounds[iPar];iBinBound++){
+				binBounds[iBinBound] = lowerBounds[iPar] + ((double)iBinBound/(nBinBounds[iPar]-1))*range[iPar];
+			}
+			responseSurfaceBins.add(iPar, binBounds);
+		}
+	}
 
 
+	public double[] getResponseSurfaceBins(int index) {
+		return responseSurfaceBins.get(index);
+	}
 
 	
 	

@@ -1,20 +1,19 @@
 package nl.esciencecenter.diffevo;
 
 import java.util.ArrayList;
-//import java.util.Random;
 import java.util.Random;
 
 public class Parents {
 
 	private ArrayList<Sample> sampleList; 
 	private int nPop;
-	private ArrayList<Dimension> parSpace;
+	private ParSpace parSpace;
 	private int nDims;
 	
 	// constructor
-	public Parents(int nPop, ArrayList<Dimension> parSpace){
+	public Parents(int nPop, ParSpace parSpace){
 		
-		this.nDims = parSpace.size();
+		this.nDims = parSpace.getNumberOfPars();
 		this.sampleList = new ArrayList<Sample>();
 		this.nPop = nPop;
 		this.parSpace = parSpace;
@@ -34,8 +33,8 @@ public class Parents {
 			double[] values = new double[nDims];			
 			for (int iDim=1;iDim<=nDims;iDim++){
 				double g = generator.nextDouble();
-				values[iDim-1] = parSpace.get(iDim-1).getLowerBound() + 
-						g * parSpace.get(iDim-1).getRange();
+				values[iDim-1] = parSpace.getLowerBound(iDim-1) + 
+						g * parSpace.getRange(iDim-1);
 			}
 			this.setParameterVector(iPop-1, values);
 		}

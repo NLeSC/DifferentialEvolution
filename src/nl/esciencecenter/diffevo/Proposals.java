@@ -7,12 +7,12 @@ public class Proposals {
 	private ArrayList<Sample> sampleList; 
 	private int nDims;
 	private int nPop;
-	private ArrayList<Dimension> parSpace;
+	private ParSpace parSpace;
 	
 	// constructor
-	public Proposals(int nPop, ArrayList<Dimension> parSpace){
+	public Proposals(int nPop, ParSpace parSpace){
 		
-		this.nDims = parSpace.size();
+		this.nDims = parSpace.getNumberOfPars();
 		this.parSpace = parSpace;
 		this.nPop = nPop;
 		this.sampleList = new ArrayList<Sample>();
@@ -39,8 +39,8 @@ public class Proposals {
 			double[] parameterVector = new double[nDims];
 			for (int iDim = 0;iDim<nDims;iDim++){
 				parameterVector = getParameterVector(iPop);
-				double lb = parSpace.get(iDim).getLowerBound();
-				double ub = parSpace.get(iDim).getUpperBound();
+				double lb = parSpace.getLowerBound(iDim);
+				double ub = parSpace.getUpperBound(iDim);
 				double s = parameterVector[iDim];
 				//System.out.printf("sample in dimension %d is %6g\n",iDim,s);
 				//System.out.printf("lower boundary in dimension %d is %6g\n",iDim,lb);
