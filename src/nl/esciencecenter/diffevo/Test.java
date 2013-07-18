@@ -112,7 +112,10 @@ public class Test {
 		//for (int iPar=0;iPar<parSpace.size();iPar++){
 		//	diffEvo.scatterEvalPar(iPar);
 		//}
-		diffEvo.matrixOfScatterParPar();
+		if (parSpace.getNumberOfPars()>1){
+			diffEvo.matrixOfScatterParPar();
+		}
+
 		
 		//diffEvo.matrixOfHeatmapParPar();
 		

@@ -1,7 +1,5 @@
 package nl.esciencecenter.diffevo;
 
-import java.util.ArrayList;
-
 public class ParameterVector {
 
 	private double[] values;
@@ -14,8 +12,8 @@ public class ParameterVector {
 		this.values = values;
 	}
 	
-	public ParameterVector(ArrayList<Dimension> parSpace){		
-		int nDims = parSpace.size();
+	public ParameterVector(ParSpace parSpace){		
+		int nDims = parSpace.getNumberOfPars();
 		values = new double[nDims];
 	}		
 
