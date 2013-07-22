@@ -4,12 +4,16 @@ package nl.esciencecenter.diffevo;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -21,15 +25,27 @@ import javax.swing.JFrame;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.annotations.XYImageAnnotation;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.labels.StandardXYToolTipGenerator;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.GrayPaintScale;
+import org.jfree.chart.renderer.PaintScale;
+import org.jfree.chart.renderer.xy.StackedXYAreaRenderer2;
+import org.jfree.chart.renderer.xy.XYAreaRenderer;
+import org.jfree.chart.renderer.xy.XYAreaRenderer2;
+import org.jfree.chart.renderer.xy.XYBlockRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.data.Range;
+import org.jfree.data.xy.DefaultXYZDataset;
+import org.jfree.data.xy.XYDataItem;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.ui.RectangleAnchor;
 import org.jfree.ui.RectangleInsets;
+import org.tc33.jheatchart.HeatChart;
 
 
 
@@ -406,33 +422,57 @@ public class DiffEvo {
 		} catch ( IOException e ) {
 			e.printStackTrace();
 		}
-		
-		
 	}
 	
 	
-	private int[][] calcResponseSurface(){
+	private int[][] calcResponseSurface(int iParRow,int iParCol){
 		
-		int nResults=evalResults.size();
+		int nResults = evalResults.size();
 		int iResult;
 		int iPar;
-	    int[][] responseSurfaceIndices = new int[nResults][nPars];
+		int iRowResponseSurface;
+		int iColResponseSurface; 
+		int nRowsResponseSurface = parSpace.getBinBounds(iParRow).length-1;
+		int nColsResponseSurface = parSpace.getBinBounds(iParCol).length-1;
+		int[][] responseSurfaceIndices = new int[nResults][2];
+		int[][] responseSurface = new int[nRowsResponseSurface][nColsResponseSurface];
 	    double[] parameterVector;
 
 	    for (iResult=0;iResult<nResults;iResult++){
 			parameterVector = evalResults.getParameterVector(iResult);
-			for (iPar=0;iPar<nPars;iPar++){
-				double[] binBounds = parSpace.getResponseSurfaceBins(iPar);
+			
+			int k=0;
+			while (k<2){
+				if (k==0){
+					iPar = iParRow;
+				}
+				else {
+					iPar = iParCol;
+				}
+
+				double[] binBounds = parSpace.getBinBounds(iPar);
+				
 				int nBinBounds = binBounds.length;
 				for (int iBinBound=0; iBinBound<nBinBounds;iBinBound++){
 					if (binBounds[iBinBound]>parameterVector[iPar]){
-						responseSurfaceIndices[iResult][iPar] = iBinBound;
+						responseSurfaceIndices[iResult][k] = iBinBound-1;
 						break;
 					}
 				}
+
+				
+				k = k + 1;
+				
 			}
 		}
-	    return responseSurfaceIndices;
+
+	    for (iResult=0;iResult<nResults;iResult++){
+	    	iRowResponseSurface = responseSurfaceIndices[iResult][0];
+	    	iColResponseSurface = responseSurfaceIndices[iResult][1];
+	    	responseSurface[iRowResponseSurface][iColResponseSurface] += 1;
+	    }
+	    
+	    return responseSurface;
 	} // calcResponseSurface
 
 	
@@ -606,7 +646,7 @@ public class DiffEvo {
         for (int iRow=0;iRow<nPars-1;iRow++){
         	for (int iCol=1;iCol<nPars;iCol++){
 
-				XYSeries series = new XYSeries("series_"+iRow+"_"+iCol);
+				XYSeries series = new XYSeries("("+parSpace.getParName(iCol)+","+parSpace.getParName(iRow)+")");
 				for (int iResult=0;iResult<nResults;iResult++){
 					double[] parameterVector = evalResults.getParameterVector(iResult);
 					series.add(parameterVector[iCol],parameterVector[iRow]);
@@ -659,76 +699,115 @@ public class DiffEvo {
 
 	
 	
-//	public void matrixOfHeatmapParPar(){
-//		
-//		int[][] responseSurfaceIndices = calcResponseSurface();
-//		
-//		
-//		Font labelFont = new Font("Ubuntu",Font.ROMAN_BASELINE,16);
-//		RectangleInsets padding = new RectangleInsets(0,0,0,0); // TLBR in px
-//		java.awt.Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-//		java.awt.Dimension defaultWindowSize = new java.awt.Dimension();
-//		defaultWindowSize.width = (int) (screenSize.width*0.8);
-//		defaultWindowSize.height = (int) (screenSize.height*0.8); 
-//		java.awt.Dimension preferredSize = new java.awt.Dimension(defaultWindowSize);
-//		
-//		//Color markerFillColor = new Color(255,128, 0);
-//		
-//		int nResults = evalResults.size();
-//		
-//		NumberAxis[] allAxes = new NumberAxis[nPars];
-//		for (int iPar=0;iPar<nPars;iPar++){
-//			allAxes[iPar] = new NumberAxis(parSpace.getParName(iPar));
-//			allAxes[iPar].setAxisLinePaint(Color.BLACK);
-//			allAxes[iPar].setLabelPaint(Color.BLACK);
-//			allAxes[iPar].setTickLabelPaint(Color.BLACK);
-//		}
-//
-//		//XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
-//
-//		JFrame frame = new JFrame("frame title");
-//        frame.setLayout(new GridLayout(nPars-1,nPars-1));
-//        
-//        for (int iRow=0;iRow<nPars-1;iRow++){
-//        	for (int iCol=1;iCol<nPars;iCol++){
-//
-//				//XYSeries series = new XYSeries("series_"+iRow+"_"+iCol);
-//				//for (int iResult=0;iResult<nResults;iResult++){
-//				//	double[] parameterVector = evalResults.getParameterVector(iResult);
-//				//	series.add(parameterVector[iCol],parameterVector[iRow]);
-//				//}
-//
-//				//XYSeriesCollection xycoll = new XYSeriesCollection();
-//				//xycoll.addSeries(series);
-//				//XYDataset xydataset = (XYDataset) xycoll;
-//				//XYPlot subplot = new XYPlot(xydataset, allAxes[iCol], allAxes[iRow], renderer);
-//
-//				//JFreeChart chart = new JFreeChart("",JFreeChart.DEFAULT_TITLE_FONT, subplot, false);
-//				
-//				
-//		        //chart.setBackgroundPaint(Color.LIGHT_GRAY);
-//		        //chart.getTitle().setFont(labelFont);
-//		        //chart.setPadding(padding);
-//
-//		        ChartPanel chartPanel = null;
-//		        if (iCol>iRow){
-//			        chartPanel = new ChartPanel(chart);
-//		        }
-//		        else {
-//			        chartPanel = new ChartPanel(null);
-//			        chartPanel.setBackground(Color.LIGHT_GRAY);
-//		        }
-//				frame.add(chartPanel,iRow*(nPars-1)+iCol-1);				
-//			}
-//		}
-//
-//        frame.setSize(preferredSize.width, preferredSize.height);
-//        frame.setLocationRelativeTo(null);
-//        frame.setVisible(true);        
-//		
-//		
-//	}
-	
+	public void matrixOfHeatmapParPar(){
+		
+		Font labelFont = new Font("Ubuntu",Font.ROMAN_BASELINE,16);
+		RectangleInsets padding = new RectangleInsets(0,0,0,0); // TLBR in px
+		java.awt.Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		java.awt.Dimension defaultWindowSize = new java.awt.Dimension();
+		defaultWindowSize.width = (int) (screenSize.width*0.8);
+		defaultWindowSize.height = (int) (screenSize.height*0.8); 
+		java.awt.Dimension preferredSize = new java.awt.Dimension(defaultWindowSize);
+		
+		
+		NumberAxis[] allAxes = new NumberAxis[nPars];
+		for (int iPar=0;iPar<nPars;iPar++){
+			allAxes[iPar] = new NumberAxis(parSpace.getParName(iPar));
+			allAxes[iPar].setAxisLinePaint(Color.BLACK);
+			allAxes[iPar].setLabelPaint(Color.BLACK);
+			allAxes[iPar].setTickLabelPaint(Color.BLACK);
+		}
+
+		JFrame frame = new JFrame("frame title");
+        frame.setLayout(new GridLayout(nPars-1,nPars-1));
+        
+        for (int iRow=0;iRow<nPars-1;iRow++){ //0,1,2
+        	for (int iCol=1;iCol<nPars;iCol++){ // 1,2,3
+        		
+		        ChartPanel chartPanel = null;
+		        if (iCol>iRow){        		
+
+		        	// Calculate the response surface of parameter parSpace[iRow] and parSpace[iCol] using 
+		        	// parSpace.getResponseSurfaceBinBounds[iRow] and parSpace.getResponseSurfaceBinBounds[iCol]
+
+		        	int[][] responseSurface = calcResponseSurface(iRow, iCol);
+		        	
+		        	int responseSurfaceMin = 0;
+		        	int responseSurfaceMax = 0;	        	
+		        		        	
+		        	double[] xBinBounds = parSpace.getBinBounds(iCol);
+		        	double[] yBinBounds = parSpace.getBinBounds(iRow);
+		        	int nBinsX = xBinBounds.length-1;
+		        	int nBinsY = yBinBounds.length-1;
+		        	
+		        	DefaultXYZDataset dataset = new DefaultXYZDataset();
+		        	double[][] data = new double[3][nBinsY*nBinsX];
+
+		        	int iData=0;
+		        	for (int iBinX=0;iBinX<nBinsX;iBinX++){
+		        		for (int iBinY=0;iBinY<nBinsY;iBinY++){
+
+		        			if (responseSurface[iBinY][iBinX]>responseSurfaceMax){
+			        			responseSurfaceMax = responseSurface[iBinY][iBinX];		        				
+		        			}
+		        			if (responseSurface[iBinY][iBinX]<responseSurfaceMin){
+			        			responseSurfaceMin = responseSurface[iBinY][iBinX];		        				
+		        			}
+
+		        			double xBlock = (xBinBounds[iBinX]+xBinBounds[iBinX+1])/2;
+		        			double yBlock = (yBinBounds[iBinY]+yBinBounds[iBinY+1])/2;
+		        			
+		        			data[0][iData] = xBlock;
+		        			data[1][iData] = yBlock;
+		        			data[2][iData] = responseSurface[iBinY][iBinX];
+		        			
+		        			iData++;
+
+		        		}
+	        			dataset.addSeries(0,data);
+		        	}
+		        	
+	        	    // http://stackoverflow.com/questions/8441269/jfreechart-to-represent-3d-data-in-a-2d-graph-using-colourmaps
+        			XYBlockRenderer renderer = new XYBlockRenderer();
+        			PaintScale scale = new GrayPaintScale(responseSurfaceMin, responseSurfaceMax);
+      			    renderer.setPaintScale(scale);
+        			renderer.setBlockHeight(parSpace.getResolution(iRow));
+        			renderer.setBlockWidth(parSpace.getResolution(iCol));
+
+		        	XYPlot subplot = new XYPlot(dataset, allAxes[iCol], allAxes[iRow], renderer);
+
+		        	subplot.setOutlinePaint(Color.BLACK);
+		        	subplot.setOutlineVisible(true);
+		        	subplot.setOutlineStroke(allAxes[0].getAxisLineStroke());
+		        	subplot.setRangePannable(true);
+		        	subplot.setDomainPannable(true);
+		        	subplot.setDomainGridlinePaint(Color.BLACK);
+		        	subplot.setRangeGridlinePaint(Color.BLACK);
+
+		        	JFreeChart chart = new JFreeChart("",JFreeChart.DEFAULT_TITLE_FONT, subplot, false);
+
+		        	chart.setBackgroundPaint(Color.LIGHT_GRAY);
+		        	chart.getTitle().setFont(labelFont);
+		        	chart.setPadding(padding);
+
+
+		        	chartPanel = new ChartPanel(chart);
+		        }
+		        else {
+			        chartPanel = new ChartPanel(null);
+			        chartPanel.setBackground(Color.LIGHT_GRAY);
+		        }
+				frame.add(chartPanel,iRow*(nPars-1)+iCol-1);
+        	}
+        }
+
+        frame.setSize(preferredSize.width, preferredSize.height);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);        
+		
+		
+	}
+
 	
 	/* 
 	 * * * * * * * * * * * * * * * * * * * * * * * *  

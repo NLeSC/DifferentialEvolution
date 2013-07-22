@@ -8,5 +8,6 @@
 			<attribute name="javadoc_location" value="file:/home/daisycutter/java/jfreechart-1.0.15/javadoc/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="/home/daisycutter/java/jheatchart-0.6/jheatchart-0.6.jar"/>
 	<classpathentry kind="output" path="tmp-eclipse"/>
 </classpath>

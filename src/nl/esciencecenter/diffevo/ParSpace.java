@@ -9,7 +9,8 @@ public class ParSpace {
 	private double[] range;	
 	private String[] parNames;
 	private int nPars;
-	private ArrayList<double[]> responseSurfaceBins = new ArrayList<double[]>();
+	private ArrayList<double[]> binBoundsAll = new ArrayList<double[]>();
+	private double[] resolutions;
 
 	public ParSpace(double[] lowerBounds, double[] upperBounds, String[] parNames){
 		
@@ -18,14 +19,16 @@ public class ParSpace {
 		this.parNames = parNames;
 		this.setNumberOfPars(lowerBounds.length);
 		
+		double[] resolutions = new double[getNumberOfPars()];
 		double[] range = new double[getNumberOfPars()]; 
 	
 		for (int iPar=0;iPar<getNumberOfPars();iPar++){
 			range[iPar] = upperBounds[iPar] - lowerBounds[iPar];
+			resolutions[iPar] = 0;
 		}
 
 		this.range = range;
-		
+		this.resolutions = resolutions;
 	}
 
 
@@ -56,33 +59,40 @@ public class ParSpace {
 	}
 	
 	
-	public void divideIntoIntervals(int nBinBounds){
-		
+	public void divideIntoIntervals(int nIntervals){
+		int[] tmp = new int[nPars];		
 		for (int iPar=0;iPar<nPars;iPar++){
-			double[] binBounds = new double[nBinBounds];
-			for (int iBinBound= 0; iBinBound<nBinBounds;iBinBound++){
-				binBounds[iBinBound] = lowerBounds[iPar] + ((double)iBinBound/(nBinBounds-1))*range[iPar];
-			}
-			responseSurfaceBins.add(iPar, binBounds);
+			tmp[iPar] = nIntervals;
 		}
+		divideIntoIntervals(tmp);
 	}
 
-	public void divideIntoIntervals(int[] nBinBounds){
-		
+	public void divideIntoIntervals(int[] nIntervals){
+		int[] nBinBounds = new int[nIntervals.length];
 		for (int iPar=0;iPar<nPars;iPar++){
+			nBinBounds[iPar] = nIntervals[iPar]+1;
 			double[] binBounds = new double[nBinBounds[iPar]];
-			for (int iBinBound= 0; iBinBound<nBinBounds[iPar];iBinBound++){
-				binBounds[iBinBound] = lowerBounds[iPar] + ((double)iBinBound/(nBinBounds[iPar]-1))*range[iPar];
+			for (int iBinBound = 0; iBinBound<nBinBounds[iPar];iBinBound++){
+				binBounds[iBinBound] = lowerBounds[iPar] + ((double)iBinBound/nIntervals[iPar])*range[iPar];
 			}
-			responseSurfaceBins.add(iPar, binBounds);
+			binBoundsAll.add(iPar, binBounds);
+			resolutions[iPar] = binBounds[1]-binBounds[0];
 		}
 	}
 
 
-	public double[] getResponseSurfaceBins(int index) {
-		return responseSurfaceBins.get(index);
+	public double[] getBinBounds(int iPar) {
+		return binBoundsAll.get(iPar);
 	}
 
 	
+	public double getResolution(int iPar) {
+		return resolutions[iPar];
+	}
+
+
+
+
+
 	
 }

@@ -1,5 +1,6 @@
 package nl.esciencecenter.diffevo;
 
+
 import models.*;
 
 public class Test {
@@ -62,6 +63,7 @@ public class Test {
 			double[] upperBounds = {100,100};
 			String[] parNames = {"p1","p2"};
 			parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
+			parSpace.divideIntoIntervals(10);
 			break; 
 		} // case 4
 		case 5:{
@@ -79,14 +81,14 @@ public class Test {
 		case 6:{
 			//CubicModel
 			System.out.println("CubicModel will be optimized");
-			nGens = 300;
+			nGens = 3000;
 			nPop = 50;
 			model = new CubicModel();
 			double[] lowerBounds = {-20,-40,-80,-120};
 			double[] upperBounds = { 20, 40, 80, 120};
 			String[] parNames = {"a","b","c","d"};
 			parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
-			parSpace.divideIntoIntervals(10);
+			parSpace.divideIntoIntervals(new int[]{50,50,50,50});
 			break; 
 		} // case 6
 		}//switch
@@ -100,25 +102,17 @@ public class Test {
 			diffEvo.updateParentsWithProposals();
 		}
 
-		//diffEvo.calcResponseSurface(10);		
-		
 		//diffEvo.printEvalResults();
 		//diffEvo.writeEvalResultsToJSON();
 		//diffEvo.writeEvalResultsToTextFile();
 
 		System.out.println("Done.");
 
-		//diffEvo.scatterEvalObj();
-		//for (int iPar=0;iPar<parSpace.size();iPar++){
-		//	diffEvo.scatterEvalPar(iPar);
-		//}
 		if (parSpace.getNumberOfPars()>1){
 			diffEvo.matrixOfScatterParPar();
+			diffEvo.matrixOfHeatmapParPar();
 		}
 
-		
-		//diffEvo.matrixOfHeatmapParPar();
-		
 	}
 
 }
