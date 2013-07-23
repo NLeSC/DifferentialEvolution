@@ -29,6 +29,8 @@ public class ParSpace {
 
 		this.range = range;
 		this.resolutions = resolutions;
+		
+		divideIntoIntervals(5);
 	}
 
 
