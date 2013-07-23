@@ -92,6 +92,10 @@ public class ParSpace {
 		return resolutions[iPar];
 	}
 
+	
+	public int getnBins(int iPar){
+		return getBinBounds(iPar).length-1;
+	}
 
 
 
