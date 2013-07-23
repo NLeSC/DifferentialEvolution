@@ -2,18 +2,16 @@ package nl.esciencecenter.diffevo;
 
 
 
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Stroke;
 import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -25,27 +23,23 @@ import javax.swing.JFrame;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.annotations.XYImageAnnotation;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.labels.StandardXYToolTipGenerator;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.GrayPaintScale;
 import org.jfree.chart.renderer.PaintScale;
-import org.jfree.chart.renderer.xy.StackedXYAreaRenderer2;
-import org.jfree.chart.renderer.xy.XYAreaRenderer;
-import org.jfree.chart.renderer.xy.XYAreaRenderer2;
+import org.jfree.chart.renderer.xy.StandardXYBarPainter;
+import org.jfree.chart.renderer.xy.XYBarRenderer;
 import org.jfree.chart.renderer.xy.XYBlockRenderer;
+import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.jfree.data.Range;
 import org.jfree.data.xy.DefaultXYZDataset;
-import org.jfree.data.xy.XYDataItem;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-import org.jfree.ui.RectangleAnchor;
 import org.jfree.ui.RectangleInsets;
-import org.tc33.jheatchart.HeatChart;
+
 
 
 
@@ -508,8 +502,8 @@ public class DiffEvo {
 	private void scatter(XYDataset data,String figureName, Color markerFillColor, String xAxisLabel, 
 			String yAxisLabel, Boolean showLegend, Boolean showTooltips){
 		
-		Font tickFont = new Font("Ubuntu",Font.ROMAN_BASELINE,12);
-		Font labelFont = new Font("Ubuntu",Font.ROMAN_BASELINE,16);
+		Font tickFont = new Font("Ubuntu",Font.ROMAN_BASELINE,14);
+		Font labelFont = new Font("Ubuntu",Font.ROMAN_BASELINE,20);
 		RectangleInsets padding = new RectangleInsets(50,50,50,50); // TLBR in px
 		
 		Rectangle marker = new Rectangle(-3,-3,6,6);
@@ -614,8 +608,8 @@ public class DiffEvo {
 	
 	public void matrixOfScatterParPar(){
 		
-		//Font tickFont = new Font("Ubuntu",Font.ROMAN_BASELINE,12);
-		Font labelFont = new Font("Ubuntu",Font.ROMAN_BASELINE,16);
+		Font tickFont = new Font("Ubuntu",Font.ROMAN_BASELINE,14);
+		Font labelFont = new Font("Ubuntu",Font.ROMAN_BASELINE,20);
 		RectangleInsets padding = new RectangleInsets(10,10,10,10); // TLBR in px
 		java.awt.Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		java.awt.Dimension defaultWindowSize = new java.awt.Dimension();
@@ -641,6 +635,7 @@ public class DiffEvo {
 		renderer.setBaseToolTipGenerator(ttG);
 
 		JFrame frame = new JFrame("frame title");
+		
         frame.setLayout(new GridLayout(nPars-1,nPars-1));
         
         for (int iRow=0;iRow<nPars-1;iRow++){
@@ -663,6 +658,27 @@ public class DiffEvo {
 		        subplot.setDomainPannable(true);
 		        subplot.setDomainGridlinePaint(Color.BLACK);
 		        subplot.setRangeGridlinePaint(Color.BLACK);
+		        
+		        ///
+
+		        subplot.setBackgroundPaint(Color.WHITE);
+		        
+		        subplot.getDomainAxis().setLabelPaint(Color.BLACK);
+		        subplot.getDomainAxis().setTickLabelPaint(Color.BLACK);
+		        subplot.getDomainAxis().setAxisLinePaint(Color.BLACK);
+		        subplot.getDomainAxis().setTickMarkPaint(Color.BLACK);
+		        subplot.getDomainAxis().setLabelFont(labelFont);
+		        subplot.getDomainAxis().setTickLabelFont(tickFont);
+		        
+		        subplot.getRangeAxis().setLabelPaint(Color.BLACK);
+		        subplot.getRangeAxis().setTickLabelPaint(Color.BLACK);
+		        subplot.getRangeAxis().setAxisLinePaint(Color.BLACK);
+		        subplot.getRangeAxis().setTickMarkPaint(Color.BLACK);
+		        subplot.getRangeAxis().setLabelFont(labelFont);
+		        subplot.getRangeAxis().setTickLabelFont(tickFont);
+
+
+		        ///
 
 				JFreeChart chart = new JFreeChart("",JFreeChart.DEFAULT_TITLE_FONT, subplot, false);
 				
@@ -676,17 +692,25 @@ public class DiffEvo {
 		        chart.getTitle().setFont(labelFont);
 		        chart.setPadding(padding);
 		        
-
-
-		        ChartPanel chartPanel = null;
 		        if (iCol>iRow){
-			        chartPanel = new ChartPanel(chart);
+			        final ChartPanel chartPanel = new ChartPanel(chart);
+			        chartPanel.setBackground(Color.LIGHT_GRAY);
+					frame.add(chartPanel,iRow*(nPars-1)+iCol-1);
+			        frame.addComponentListener(new ComponentAdapter() {
+			            @Override
+			            public void componentResized(ComponentEvent e) {
+			                chartPanel.setMaximumDrawHeight(e.getComponent().getHeight()/(nPars-1));
+			                chartPanel.setMaximumDrawWidth(e.getComponent().getWidth()/(nPars-1));
+			                chartPanel.setMinimumDrawWidth(e.getComponent().getWidth()/(nPars-1));
+			                chartPanel.setMinimumDrawHeight(e.getComponent().getHeight()/(nPars-1));
+			            }
+			        });        
 		        }
 		        else {
-			        chartPanel = new ChartPanel(null);
+			        final ChartPanel chartPanel = new ChartPanel(null);
 			        chartPanel.setBackground(Color.LIGHT_GRAY);
+					frame.add(chartPanel,iRow*(nPars-1)+iCol-1);
 		        }
-				frame.add(chartPanel,iRow*(nPars-1)+iCol-1);				
 			}
 		}
 
@@ -701,7 +725,8 @@ public class DiffEvo {
 	
 	public void matrixOfHeatmapParPar(){
 		
-		Font labelFont = new Font("Ubuntu",Font.ROMAN_BASELINE,16);
+		Font tickFont = new Font("Ubuntu",Font.ROMAN_BASELINE,14);
+		Font labelFont = new Font("Ubuntu",Font.ROMAN_BASELINE,20);
 		RectangleInsets padding = new RectangleInsets(0,0,0,0); // TLBR in px
 		java.awt.Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		java.awt.Dimension defaultWindowSize = new java.awt.Dimension();
@@ -724,7 +749,6 @@ public class DiffEvo {
         for (int iRow=0;iRow<nPars-1;iRow++){ //0,1,2
         	for (int iCol=1;iCol<nPars;iCol++){ // 1,2,3
         		
-		        ChartPanel chartPanel = null;
 		        if (iCol>iRow){        		
 
 		        	// Calculate the response surface of parameter parSpace[iRow] and parSpace[iCol] using 
@@ -783,6 +807,21 @@ public class DiffEvo {
 		        	subplot.setDomainPannable(true);
 		        	subplot.setDomainGridlinePaint(Color.BLACK);
 		        	subplot.setRangeGridlinePaint(Color.BLACK);
+		        	
+			        
+			        subplot.getDomainAxis().setLabelPaint(Color.BLACK);
+			        subplot.getDomainAxis().setTickLabelPaint(Color.BLACK);
+			        subplot.getDomainAxis().setAxisLinePaint(Color.BLACK);
+			        subplot.getDomainAxis().setTickMarkPaint(Color.BLACK);
+			        subplot.getDomainAxis().setLabelFont(labelFont);
+			        subplot.getDomainAxis().setTickLabelFont(tickFont);
+			        
+			        subplot.getRangeAxis().setLabelPaint(Color.BLACK);
+			        subplot.getRangeAxis().setTickLabelPaint(Color.BLACK);
+			        subplot.getRangeAxis().setAxisLinePaint(Color.BLACK);
+			        subplot.getRangeAxis().setTickMarkPaint(Color.BLACK);
+			        subplot.getRangeAxis().setLabelFont(labelFont);
+			        subplot.getRangeAxis().setTickLabelFont(tickFont);		        	
 
 		        	JFreeChart chart = new JFreeChart("",JFreeChart.DEFAULT_TITLE_FONT, subplot, false);
 
@@ -791,13 +830,24 @@ public class DiffEvo {
 		        	chart.setPadding(padding);
 
 
-		        	chartPanel = new ChartPanel(chart);
+			        final ChartPanel chartPanel = new ChartPanel(chart);
+			        chartPanel.setBackground(Color.LIGHT_GRAY);
+					frame.add(chartPanel,iRow*(nPars-1)+iCol-1);
+			        frame.addComponentListener(new ComponentAdapter() {
+			            @Override
+			            public void componentResized(ComponentEvent e) {
+			                chartPanel.setMaximumDrawHeight(e.getComponent().getHeight()/(nPars-1));
+			                chartPanel.setMaximumDrawWidth(e.getComponent().getWidth()/(nPars-1));
+			                chartPanel.setMinimumDrawWidth(e.getComponent().getWidth()/(nPars-1));
+			                chartPanel.setMinimumDrawHeight(e.getComponent().getHeight()/(nPars-1));
+			            }
+			        });        
 		        }
 		        else {
-			        chartPanel = new ChartPanel(null);
+			        final ChartPanel chartPanel = new ChartPanel(null);
 			        chartPanel.setBackground(Color.LIGHT_GRAY);
+					frame.add(chartPanel,iRow*(nPars-1)+iCol-1);
 		        }
-				frame.add(chartPanel,iRow*(nPars-1)+iCol-1);
         	}
         }
 
@@ -808,6 +858,142 @@ public class DiffEvo {
 		
 	}
 
+	public int[] calcHistogram(int iPar){
+		
+
+		int nResults = evalResults.size();
+		int nBins = parSpace.getnBins(iPar);
+		int[] histogram = new int[nBins];
+	    double[] parameterVector;
+		double[] binBounds = parSpace.getBinBounds(iPar);
+		int nBinBounds = binBounds.length;
+		
+	    for (int iResult=0;iResult<nResults;iResult++){
+			parameterVector = evalResults.getParameterVector(iResult);
+			for (int iBinBound=0; iBinBound<nBinBounds;iBinBound++){
+				if (binBounds[iBinBound]>parameterVector[iPar]){
+					histogram[iBinBound-1]++;
+					break;
+				}
+			}
+	    }
+	    
+	    return histogram;		
+		
+	}
+	
+	public void margHist(){
+		
+		
+		Font tickFont = new Font("Ubuntu",Font.ROMAN_BASELINE,14);
+		Font labelFont = new Font("Ubuntu",Font.ROMAN_BASELINE,20);
+		RectangleInsets padding = new RectangleInsets(10,50,10,50); // TLBR in px
+		
+		java.awt.Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		java.awt.Dimension defaultWindowSize = new java.awt.Dimension();
+		defaultWindowSize.width = (int) (screenSize.width*0.8);
+		defaultWindowSize.height = (int) (screenSize.height*0.8); 
+		java.awt.Dimension preferredSize = new java.awt.Dimension(defaultWindowSize);
+		
+		boolean showTooltips = true;
+		boolean showURLs = false;
+		boolean showLegend = false;
+		Color barFillColor = new Color(255,128, 0);
+		Color barOutlineColor = Color.BLACK;//new Color(255,128, 0);
+
+		
+		JFrame frame = new JFrame("frame title");
+        frame.setLayout(new GridLayout(nPars,1));
+        for (int iPar=0;iPar<nPars;iPar++){
+        
+        	int[] histogram = calcHistogram(iPar);
+        	int nBins = parSpace.getnBins(iPar);
+        	double[] binBounds = parSpace.getBinBounds(iPar);
+        	
+        	XYSeries series = new XYSeries("histogram");
+        	for (int iBin=0;iBin<nBins;iBin++){
+        		series.add((binBounds[iBin]+binBounds[iBin+1])/2,histogram[iBin]);
+        	}
+
+        	XYSeriesCollection xycoll = new XYSeriesCollection();
+        	xycoll.addSeries(series);
+        	
+        	double barWidth = parSpace.getResolution(iPar);
+        	xycoll.setIntervalWidth(barWidth);
+        	
+            JFreeChart chart = ChartFactory.createXYBarChart(
+                    "",
+                    parSpace.getParName(iPar),
+                    false,
+                    "",
+                    xycoll,
+                    PlotOrientation.VERTICAL,
+                    showLegend,
+                    showTooltips,
+                    showURLs);
+            
+            chart.setBackgroundPaint(Color.LIGHT_GRAY);
+            chart.getTitle().setFont(labelFont);
+            chart.setPadding(padding);
+            
+            XYPlot plot = chart.getXYPlot();
+
+            plot.setBackgroundPaint(Color.WHITE);
+            plot.setRangeGridlinePaint(Color.BLACK);
+            plot.setDomainGridlinePaint(Color.BLACK);
+            
+            plot.getDomainAxis().setLabelPaint(Color.BLACK);
+            plot.getDomainAxis().setTickLabelPaint(Color.BLACK);
+            plot.getDomainAxis().setAxisLinePaint(Color.BLACK);
+            plot.getDomainAxis().setTickMarkPaint(Color.BLACK);
+            plot.getDomainAxis().setLabelFont(labelFont);
+            plot.getDomainAxis().setTickLabelFont(tickFont);
+            
+            plot.getRangeAxis().setLabelPaint(Color.BLACK);
+            plot.getRangeAxis().setTickLabelPaint(Color.BLACK);
+            plot.getRangeAxis().setAxisLinePaint(Color.BLACK);
+            plot.getRangeAxis().setTickMarkPaint(Color.BLACK);
+            plot.getRangeAxis().setLabelFont(labelFont);
+            plot.getRangeAxis().setTickLabelFont(tickFont);
+
+        	plot.setOutlinePaint(Color.BLACK);
+        	plot.setOutlineVisible(true);
+        	plot.setOutlineStroke(plot.getDomainAxis().getAxisLineStroke());
+        	plot.setRangePannable(true);
+        	plot.setDomainPannable(true);
+        	plot.setDomainGridlinePaint(Color.BLACK);
+        	plot.setRangeGridlinePaint(Color.BLACK);
+        	
+        	XYItemRenderer renderer = plot.getRenderer(0); 
+        	renderer.setSeriesPaint(0,barFillColor);
+        	renderer.setSeriesOutlinePaint(0,barOutlineColor);
+        	
+        	XYBarRenderer brenderer = (XYBarRenderer) renderer;
+        	StandardXYBarPainter painter = new StandardXYBarPainter();
+        	brenderer.setBarPainter(painter);
+        	
+        	
+        	
+	        final ChartPanel chartPanel = new ChartPanel(chart);
+	        chartPanel.setBackground(Color.LIGHT_GRAY);
+			frame.add(chartPanel,iPar);
+	        frame.addComponentListener(new ComponentAdapter() {
+	            @Override
+	            public void componentResized(ComponentEvent e) {
+	                chartPanel.setMaximumDrawHeight(e.getComponent().getHeight()/(nPars-1));
+	                chartPanel.setMaximumDrawWidth(e.getComponent().getWidth());
+	                chartPanel.setMinimumDrawWidth(e.getComponent().getWidth());
+	                chartPanel.setMinimumDrawHeight(e.getComponent().getHeight()/(nPars-1));
+	            }
+	        });        
+        }
+        
+        frame.setSize(preferredSize.width, preferredSize.height);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);        
+	}
+	
+	
 	
 	/* 
 	 * * * * * * * * * * * * * * * * * * * * * * * *  
