@@ -20,13 +20,14 @@ public class Test {
 		case 1:{
 			//DoubleNormalModel
 			System.out.println("DoubleNormalModel will be optimized");
-			nGens = 30;
+			nGens = 300;
 			nPop = 50;
 			model = new DoubleNormalModel();
 			double[] lowerBounds = {-20};
 			double[] upperBounds = {18};
 			String[] parNames = {"theta"};
 			parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
+			parSpace.divideIntoIntervals(50);
 			break;
 		}//case 1
 		case 2:{
@@ -51,31 +52,33 @@ public class Test {
 			double[] upperBounds = {5.12,5.12};
 			String[] parNames = {"p1","p2"};
 			parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
+			parSpace.divideIntoIntervals(200);
 			break; 
 		} //case 3
 		case 4:{
 			//RosenbrockModel
 			System.out.println("RosenbrockModel will be optimized");
-			nGens = 300;
+			nGens = 3000;
 			nPop = 50;
 			model = new RosenbrockModel();
-			double[] lowerBounds = {-100,-100};
-			double[] upperBounds = {100,100};
+			double[] lowerBounds = {-50,-40};
+			double[] upperBounds = {50,80};
 			String[] parNames = {"p1","p2"};
 			parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
-			parSpace.divideIntoIntervals(10);
+			parSpace.divideIntoIntervals(500);
 			break; 
 		} // case 4
 		case 5:{
 			//SingleNormalModel
 			System.out.println("SingleNormalModel will be optimized");
-			nGens = 3;
+			nGens = 300;
 			nPop = 50;
 			model = new SingleNormalModel();
 			double[] lowerBounds = {-20};
 			double[] upperBounds = {18};
 			String[] parNames = {"theta"};
 			parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
+			parSpace.divideIntoIntervals(50);
 			break; 
 		} // case 5
 		case 6:{
@@ -102,16 +105,19 @@ public class Test {
 			diffEvo.updateParentsWithProposals();
 		}
 
-		//diffEvo.printEvalResults();
-		//diffEvo.writeEvalResultsToJSON();
-		//diffEvo.writeEvalResultsToTextFile();
-
+//		diffEvo.printEvalResults();
+//		diffEvo.writeEvalResultsToJSON();
+//		diffEvo.writeEvalResultsToTextFile();
+	
+//		if (parSpace.getNumberOfPars()>1){
+//			diffEvo.matrixOfScatterParPar();
+//			diffEvo.matrixOfHeatmapParPar();
+//		}
+		
+		diffEvo.margHist();
+		
+		
 		System.out.println("Done.");
-
-		if (parSpace.getNumberOfPars()>1){
-			diffEvo.matrixOfScatterParPar();
-			diffEvo.matrixOfHeatmapParPar();
-		}
 
 	}
 
