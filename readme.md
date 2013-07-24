@@ -17,8 +17,9 @@ Currently, the Differential Evolution algorithm can be used to optimize any one 
 
 
 
-index | Java model class name | number of parameters | description
- 1    | CubicModel            | 4                    | polynomial
- 2    | DoubleNormalModel     | 4                    | two Gaussians, benchmark check on the accuracy of the Metropolis part
- 3    | LinearDynamicModel    | 1                    | draining linear tank
- 4    | RastriginModel        | 2                    | benchmark model with response surface containing many local minima
+| index | Java model class name | number of parameters | description    |       
+| ----- | --------------------- | -------------------- | ---------------|
+| 1     | CubicModel            | 4                    | polynomial |
+| 2     | DoubleNormalModel     | 4                    | two Gaussians, benchmark check on the accuracy of the Metropolis part |
+| 3     | LinearDynamicModel    | 1                    | draining linear tank |
+| 4     | RastriginModel        | 2                    | benchmark model with response surface containing many local minima |
