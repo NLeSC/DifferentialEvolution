@@ -23,3 +23,5 @@ Currently, the Differential Evolution algorithm can be used to optimize any one 
 | 2     | DoubleNormalModel     | 4                    | two Gaussians, benchmark check on the accuracy of the Metropolis part |
 | 3     | LinearDynamicModel    | 1                    | draining linear tank |
 | 4     | RastriginModel        | 2                    | benchmark model with response surface containing many local minima |
+| 5     | RosenbrockModel        | 2                    | benchmark model with response surface containing many local minima, large insensitive areas, and curved ridges |
+| 6     | SingleNormalModel | 2                    | simpler version of the DoubleNormalModel |
