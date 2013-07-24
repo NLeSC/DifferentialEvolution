@@ -38,7 +38,7 @@ public class Test {
 			model = new LinearDynamicModel();
 			double[] lowerBounds = {110};
 			double[] upperBounds = {180};
-			String[] parNames = {"theta"};
+			String[] parNames = {"resistance"};
 			parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
 			break; 
 		} // case 2

@@ -1,14 +1,11 @@
 package nl.esciencecenter.diffevo;
 
 
-
-import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Stroke;
 import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
