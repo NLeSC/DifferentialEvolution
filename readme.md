@@ -11,7 +11,7 @@ Standard plotting routines include:
 2. matrix of 2-D parameter correlations (scatter);
 3. matrix of 2-D parameter correlations (heatmap);
 4. parameter evolution scatter;
-5. objective score evolution.
+5. objective score evolution scatter.
 
 Currently, the Differential Evolution algorithm can be used to optimize any one of 6 models:
 
