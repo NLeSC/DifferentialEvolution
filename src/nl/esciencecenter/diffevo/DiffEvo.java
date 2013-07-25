@@ -17,6 +17,8 @@ import java.util.Random;
 
 import javax.swing.JFrame;
 
+import nl.esciencecenter.diffevo.models.Model;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -631,8 +633,8 @@ public class DiffEvo {
 		XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
 		renderer.setBaseToolTipGenerator(ttG);
 
-		JFrame frame = new JFrame("frame title");
-		
+		JFrame frame = new JFrame(model.getName()+" // matrixOfScatterParPar // "+getName());
+
         frame.setLayout(new GridLayout(nPars-1,nPars-1));
         
         for (int iRow=0;iRow<nPars-1;iRow++){
@@ -740,7 +742,7 @@ public class DiffEvo {
 			allAxes[iPar].setTickLabelPaint(Color.BLACK);
 		}
 
-		JFrame frame = new JFrame("frame title");
+		JFrame frame = new JFrame(model.getName()+" // matrixOfHeatMap //"+getName());
         frame.setLayout(new GridLayout(nPars-1,nPars-1));
         
         for (int iRow=0;iRow<nPars-1;iRow++){ //0,1,2
@@ -899,7 +901,7 @@ public class DiffEvo {
 		Color barOutlineColor = Color.BLACK;//new Color(255,128, 0);
 
 		
-		JFrame frame = new JFrame("frame title");
+		JFrame frame = new JFrame(model.getName()+" // margHist // "+getName());
         frame.setLayout(new GridLayout(nPars,1));
         for (int iPar=0;iPar<nPars;iPar++){
         
@@ -922,7 +924,7 @@ public class DiffEvo {
                     "",
                     parSpace.getParName(iPar),
                     false,
-                    "",
+                    "count",
                     xycoll,
                     PlotOrientation.VERTICAL,
                     showLegend,
@@ -977,10 +979,10 @@ public class DiffEvo {
 	        frame.addComponentListener(new ComponentAdapter() {
 	            @Override
 	            public void componentResized(ComponentEvent e) {
-	                chartPanel.setMaximumDrawHeight(e.getComponent().getHeight()/(nPars-1));
-	                chartPanel.setMaximumDrawWidth(e.getComponent().getWidth());
-	                chartPanel.setMinimumDrawWidth(e.getComponent().getWidth());
-	                chartPanel.setMinimumDrawHeight(e.getComponent().getHeight()/(nPars-1));
+	            		chartPanel.setMaximumDrawHeight(e.getComponent().getHeight()/nPars);
+	            		chartPanel.setMaximumDrawWidth(e.getComponent().getWidth());
+	            		chartPanel.setMinimumDrawWidth(e.getComponent().getWidth());
+	            		chartPanel.setMinimumDrawHeight(e.getComponent().getHeight()/nPars);
 	            }
 	        });        
         }
@@ -1006,6 +1008,9 @@ public class DiffEvo {
 		return nPop;
 	}
 
+	private String getName(){
+		return DiffEvo.class.getSimpleName();
+	}
 
 	
 	/* 
