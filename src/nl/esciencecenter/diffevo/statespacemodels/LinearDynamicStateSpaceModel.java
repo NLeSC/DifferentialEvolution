@@ -89,7 +89,7 @@ public class LinearDynamicStateSpaceModel implements Model {
 	}
 	
 	
-	private double[] calcModelPrediction(double[] initState, double[] parameterVector, double[][] forcing, double[] times){
+	public double[] calcModelPrediction(double[] initState, double[] parameterVector, double[][] forcing, double[] times){
 		
 		int nPrior = times.length;
 		double[] simulated = new double[nPrior];

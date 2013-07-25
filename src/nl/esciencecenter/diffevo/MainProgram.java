@@ -33,8 +33,8 @@ public class MainProgram {
 		int nPop = 0;
 		Model model = null;
 		double[] initState = null;
-		double[] times = null;
-		double[][] forcing = null;
+		Times times = null;
+		Forcing forcing = null;
 		double[] lowerBounds;
 		double[] upperBounds;
 		String[] parNames;
@@ -127,19 +127,29 @@ public class MainProgram {
 				nPop = 50;
 				model = new LinearDynamicStateSpaceModel();
 				initState = new double[] {30};
-				times = new double[] {
-					125.5,126.0,126.5,127.0,127.5,
-					128.0,128.5,129.0,129.5,130.0,
-					130.5,131.0,131.5,132.0,132.5,
-					133.0,133.5,134.0,134.5,135.0,
-					135.5,136.0,136.5,137.0,137.5,
-					138.0,138.5,139.0,139.5,140.0,
-					140.5,141.0,141.5,142.0,142.5,
-					143.0,143.5,144.0,144.5,145.0,
-					145.5,146.0,146.5,147.0,147.5,
-					148.0,148.5,149.0,149.5};
-				forcing = new double[][] {
-				   {0,0,0,0,0,
+				times = new Times(new double[]{
+						125.5,126.0,126.5,127.0,127.5,
+						128.0,128.5,129.0,129.5,130.0,
+						130.5,131.0,131.5,132.0,132.5,
+						133.0,133.5,134.0,134.5,135.0,
+						135.5,136.0,136.5,137.0,137.5,
+						138.0,138.5,139.0,139.5,140.0,
+						140.5,141.0,141.5,142.0,142.5,
+						143.0,143.5,144.0,144.5,145.0,
+						145.5,146.0,146.5,147.0,147.5,
+						148.0,148.5,149.0,149.5}, new boolean[]{
+						false,false,false,true,true,
+						true,true,true,true,true,
+						true,true,true,true,true,
+						true,true,true,true,true,
+						false,false,false,false,false,
+						true,true,true,true,true,
+						true,true,true,true,true,
+						true,true,true,true,true,
+						true,true,true,true,true,
+						true,true,true,true});
+				forcing = new Forcing(new double[][]{
+				   {0.1,0.2,0.5,0.6,0.3,
 					0,0,0,0,0,
 					0,0,0,0,0,
 					0,0,0,0,0,
@@ -149,14 +159,14 @@ public class MainProgram {
 					0,0,0,0,0,
 					0,0,0,0,0,
 					0,0,0,Double.NaN}
-				   };
+				   });
 				lowerBounds = new double[] {110};
 				upperBounds = new double[] {180};
 				parNames = new String[] {"resistance"};
 				parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
 				break; 
  			} // case 7
-			}//switch
+			} //switch
 
 			DiffEvo diffEvo = new DiffEvo(nGens, nPop, parSpace, model, initState, forcing, times);
 			diffEvo.start();

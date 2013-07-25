@@ -82,11 +82,11 @@ public class DiffEvo {
 	private Model model;
 	private ParSpace parSpace;
 	private double[] initState;
-	private double[][] forcing;
-	private double[] times;
+	private Forcing forcing;
+	private Times times;
 
 	// constructor:
-	DiffEvo(int nGens, int nPop, ParSpace parSpace, Model model, double[] initState, double[][] forcing, double[] times) {
+	DiffEvo(int nGens, int nPop, ParSpace parSpace, Model model, double[] initState, Forcing forcing, Times times) {
 		this.nGens = nGens;
 		this.nPop = nPop;
 		this.parSpace = parSpace;

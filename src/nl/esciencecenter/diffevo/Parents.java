@@ -61,26 +61,38 @@ public class Parents {
 		}
 	}
 
-	public void evaluateModel(Model model, double[] initState, double[][] forcing, double[] times){
+	public void evaluateModel(Model model, double[] initState, Forcing forcing, Times times){
 
 		int nStates = initState.length;
-		int nTimes = times.length;
-
-		double state[] = new double[nStates];
-		
-		for (int iState=0;iState<nStates;iState++){
-			state[iState] = initState[iState];
-		}
-
+		int nChunks = times.getnChunks();
 		
 		
 		for (int iPop=0;iPop<nPop;iPop++){
+
 			double[] parameterVector = new double[nDims];
-			double objScore;
-						
 			parameterVector = getParameterVector(iPop);
+			
+			double state[] = new double[nStates];
+			for (int iState=0;iState<nStates;iState++){
+				state[iState] = initState[iState];
+			}
+			
+			for (int iChunk=0;iChunk<nChunks;iChunk++){
+				
+				int[] indices = times.getChunk(iChunk);
+				double[][] forcingSelection = forcing.select(indices);
+				double[] timesSelection = times.select(indices);
+
+				// FIXME 
+				
+				//model.calcLogLikelihood(initState, parameterVector, forcing, priorTimes)
+				
+				
+				
+			}
+			
 			//objScore = model.calcLogLikelihood(parameterVector);
-			objScore =-1.0;
+			double objScore =-1.0;
 			this.setObjScore(iPop, objScore);
 		}
 	}
