@@ -22,7 +22,7 @@ package nl.esciencecenter.diffevo;
 
 import nl.esciencecenter.diffevo.statespacemodels.*;
 
-public class Test {
+public class MainProgram {
 
 	/**
 	 * @param args
