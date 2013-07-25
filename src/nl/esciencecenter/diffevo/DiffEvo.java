@@ -62,12 +62,20 @@ public class DiffEvo {
 	private Random generator;
 	private Model model;
 	private ParSpace parSpace;
+	private double[] initState;
+	private double[][] forcing;
+	private double[] times;
 
 	// constructor:
-	DiffEvo(int nGens, int nPop, ParSpace parSpace, Model model, double[] initState, double[][] forcing, double[] priorTimes) {
-		this.nPars = parSpace.getNumberOfPars();
-		this.nPop = nPop;
+	DiffEvo(int nGens, int nPop, ParSpace parSpace, Model model, double[] initState, double[][] forcing, double[] times) {
 		this.nGens = nGens;
+		this.nPop = nPop;
+		this.parSpace = parSpace;
+		this.model = model;		
+		this.initState = initState;
+		this.forcing = forcing;
+		this.times = times;
+		this.nPars = parSpace.getNumberOfPars();
 		this.idCol = 1;
 		this.parCols = new int[nPars]; 
 		for (int iPar = 1; iPar <= this.nPars; iPar++) {
@@ -79,10 +87,7 @@ public class DiffEvo {
 		this.evalResults = new EvalResults();
 		this.generator = new Random();
 		this.generator.setSeed(0);
-		this.model = model;
-		this.parSpace = parSpace;
 		}
-	
 
 	public void initializeParents(){
 		int nModelEvals = 0;
@@ -92,7 +97,7 @@ public class DiffEvo {
 		
 //		System.out.println("initializing parents array");
 		parents.takeUniformRandomSamples(generator);
-		parents.evaluateModel(model);
+		parents.evaluateModel(model,initState,forcing,times);
 
 		
 		// now add the initial values of parents to the record, i.e. evalResults

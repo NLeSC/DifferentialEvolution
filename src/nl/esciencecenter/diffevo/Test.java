@@ -14,7 +14,7 @@ public class Test {
 		int nPop = 0;
 		Model model = null;
 		double[] initState = null;
-		double[] priorTimes = null;
+		double[] times = null;
 		double[][] forcing = null;
 		double[] lowerBounds;
 		double[] upperBounds;
@@ -108,7 +108,7 @@ public class Test {
 				nPop = 50;
 				model = new LinearDynamicStateSpaceModel();
 				initState = new double[] {30};
-				priorTimes = new double[] {
+				times = new double[] {
 					125.5,126.0,126.5,127.0,127.5,
 					128.0,128.5,129.0,129.5,130.0,
 					130.5,131.0,131.5,132.0,132.5,
@@ -139,7 +139,7 @@ public class Test {
  			} // case 7
 			}//switch
 
-			DiffEvo diffEvo = new DiffEvo(nGens, nPop, parSpace, model, initState, forcing, priorTimes);
+			DiffEvo diffEvo = new DiffEvo(nGens, nPop, parSpace, model, initState, forcing, times);
 			diffEvo.start();
 
 			diffEvo.printEvalResults();

@@ -42,8 +42,18 @@ public class Parents {
 		}
 	}
 
-	public void evaluateModel(Model model){
-//		System.out.println("evaluate model");
+	public void evaluateModel(Model model, double[] initState, double[][] forcing, double[] times){
+
+		double state[];
+		int nStates = initState.length;
+		int nTimes = times.length;
+		
+		for (int iState=0;iState<nStates;iState++){
+			state[iState] = initState[iState];
+		}
+
+		
+		
 		for (int iPop=0;iPop<nPop;iPop++){
 			double[] parameterVector = new double[nDims];
 			double objScore;

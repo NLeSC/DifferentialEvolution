@@ -60,18 +60,19 @@ public class LinearDynamicStateSpaceModel implements Model {
 	}
 			
 	@Override
-	public double calcLogLikelihood(double[] initState, double[] parameterVector, double[][] forcing, double[] priorTimes){
+	public double calcLogLikelihood(double[] initState, double[] parameterVector, double[][] forcing, double[] times){
 		
-		double[] simulated = calcModelPrediction(initState,parameterVector,forcing,priorTimes);
-		double sumOfSquaredResiduals = calcSumOfSquaredResiduals(observed,simulated);
-		double objScore = -(1.0/2)*nObs*Math.log(sumOfSquaredResiduals);
+		double[] simulated = calcModelPrediction(initState,parameterVector,forcing,times);
+		//double sumOfSquaredResiduals = calcSumOfSquaredResiduals(observed,simulated);
+		//double objScore = -(1.0/2)*nObs*Math.log(sumOfSquaredResiduals);
+		double objScore=-1.0;
 		return objScore;
 	}
 	
 	
-	private double[] calcModelPrediction(double[] initState, double[] parameterVector, double[][] forcing, double[] priorTimes){
+	private double[] calcModelPrediction(double[] initState, double[] parameterVector, double[][] forcing, double[] times){
 		
-		int nPrior = priorTimes.length;
+		int nPrior = times.length;
 		double[] simulated = new double[nPrior];
 		double[] state = new double[1];
 		int iPrior = 0;
@@ -88,8 +89,8 @@ public class LinearDynamicStateSpaceModel implements Model {
 		
 		for (;iPrior<nPrior-1;iPrior++){
 			
-			//time = priorTimes[iPrior];
-			timeStep = priorTimes[iPrior+1]-priorTimes[iPrior];
+			//time = times[iPrior];
+			timeStep = times[iPrior+1]-times[iPrior];
 			flow = -state[0]/resistance;
 			//System.out.printf("%10.4f %10.4f %10.4f\n", time,state[0],flow);	
 			
