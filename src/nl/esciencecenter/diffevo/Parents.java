@@ -63,9 +63,10 @@ public class Parents {
 
 	public void evaluateModel(Model model, double[] initState, double[][] forcing, double[] times){
 
-		double state[];
 		int nStates = initState.length;
 		int nTimes = times.length;
+
+		double state[] = new double[nStates];
 		
 		for (int iState=0;iState<nStates;iState++){
 			state[iState] = initState[iState];
@@ -78,7 +79,8 @@ public class Parents {
 			double objScore;
 						
 			parameterVector = getParameterVector(iPop);
-			objScore = model.calcLogLikelihood(parameterVector);
+			//objScore = model.calcLogLikelihood(parameterVector);
+			objScore =-1.0;
 			this.setObjScore(iPop, objScore);
 		}
 	}

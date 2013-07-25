@@ -50,7 +50,8 @@ public class Proposals {
 			double objScore;
 						
 			parameterVector = getParameterVector(iPop);
-			objScore = model.calcLogLikelihood(parameterVector);
+			//objScore = model.calcLogLikelihood(parameterVector);
+			objScore = -1.0;
 			this.setObjScore(iPop, objScore);
 		}
 	}
