@@ -3,7 +3,7 @@ package nl.esciencecenter.diffevo.statespacemodels;
 import java.util.Random;
 
 
-public class LinearDynamicStateSpaceModel implements StateSpaceModel {
+public class LinearDynamicStateSpaceModel implements Model {
 
 //	private static double[] initialState = {30};
 //	private static double[] priorTimes = {

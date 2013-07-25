@@ -3,7 +3,7 @@ package nl.esciencecenter.diffevo;
 import java.util.ArrayList;
 import java.util.Random;
 
-import nl.esciencecenter.diffevo.models.Model;
+import nl.esciencecenter.diffevo.statespacemodels.Model;
 
 public class Parents {
 

@@ -2,7 +2,7 @@ package nl.esciencecenter.diffevo;
 
 import java.util.ArrayList;
 
-import nl.esciencecenter.diffevo.models.Model;
+import nl.esciencecenter.diffevo.statespacemodels.Model;
 
 public class Proposals {
 

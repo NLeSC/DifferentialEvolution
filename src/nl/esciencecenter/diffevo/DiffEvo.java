@@ -17,7 +17,7 @@ import java.util.Random;
 
 import javax.swing.JFrame;
 
-import nl.esciencecenter.diffevo.models.Model;
+import nl.esciencecenter.diffevo.statespacemodels.Model;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -52,6 +52,7 @@ public class DiffEvo {
 
 	private final int nPars;
 	private final int nPop;
+	private final int nGens;
 	private final int idCol;
 	private final int[] parCols;
 	private final int objCol;
@@ -63,9 +64,10 @@ public class DiffEvo {
 	private ParSpace parSpace;
 
 	// constructor:
-	DiffEvo(ParSpace parSpace, int nPop, Model model) {
+	DiffEvo(int nGens, int nPop, ParSpace parSpace, Model model, double[] initState, double[][] forcing, double[] priorTimes) {
 		this.nPars = parSpace.getNumberOfPars();
 		this.nPop = nPop;
+		this.nGens = nGens;
 		this.idCol = 1;
 		this.parCols = new int[nPars]; 
 		for (int iPar = 1; iPar <= this.nPars; iPar++) {
@@ -81,6 +83,7 @@ public class DiffEvo {
 		this.parSpace = parSpace;
 		}
 	
+
 	public void initializeParents(){
 		int nModelEvals = 0;
 		Sample sample;
@@ -1012,6 +1015,17 @@ public class DiffEvo {
 		return DiffEvo.class.getSimpleName();
 	}
 
+
+	public void start(){
+		System.out.println("Starting Differential Evolution optimization...");		
+		initializeParents();
+		for (int iGen = 1;iGen<nGens;iGen++){
+			proposeOffSpring();
+			updateParentsWithProposals();
+		}
+
+		
+	}
 	
 	/* 
 	 * * * * * * * * * * * * * * * * * * * * * * * *  
