@@ -3,6 +3,8 @@ package nl.esciencecenter.diffevo;
 import java.util.ArrayList;
 import java.util.Random;
 
+import nl.esciencecenter.diffevo.models.Model;
+
 public class Parents {
 
 	private ArrayList<Sample> sampleList; 

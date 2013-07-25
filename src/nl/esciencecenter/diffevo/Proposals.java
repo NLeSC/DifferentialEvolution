@@ -2,6 +2,8 @@ package nl.esciencecenter.diffevo;
 
 import java.util.ArrayList;
 
+import nl.esciencecenter.diffevo.models.Model;
+
 public class Proposals {
 
 	private ArrayList<Sample> sampleList; 
