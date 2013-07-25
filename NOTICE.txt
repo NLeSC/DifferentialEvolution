@@ -1,0 +1,15 @@
+                  
+                        Differential Evolution
+
+  Copyright 2012-2013 The Netherlands eScience Center
+
+
+This product includes the JFreeChart library, which is (C)opyright 
+2000-2013, by Object Refinery Limited and Contributors. See 
+"./notices/jfreechart-1.0.15-licence-LGPL.txt".
+
+This product includes the JCommon library, which is (C)opyright 
+2000-2013, by Object Refinery Limited and Contributors. See 
+"./notices/jcommon-1.0.18-licence-LGPL.txt".
+
+
