@@ -1,8 +1,7 @@
-package nl.esciencecenter.diffevo;
+package nl.esciencecenter.diffevo.statespacemodels;
 
 
-import nl.esciencecenter.diffevo.statespacemodels.LinearDynamicStateSpaceModel;
-import nl.esciencecenter.diffevo.statespacemodels.Model;
+import nl.esciencecenter.diffevo.ModelFactory;
 
 public class LinearDynamicStateSpaceModelFactory implements ModelFactory{
 
