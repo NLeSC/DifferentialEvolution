@@ -19,15 +19,15 @@
 
 package nl.esciencecenter.diffevo;
 
-public class Times {
+public class TimeChunks {
 
 	private double[] times;
 	private int nTimes; 
-	private int[][] chunks;
+	private int[][] chunkIndices;
 	private int nChunks;
 	
 	// constructor
-	public Times(double[] times, boolean[] assimilate){
+	public TimeChunks(double[] times, boolean[] assimilate){
 		
 		this.times = times;
 		this.nTimes =  times.length;
@@ -44,7 +44,7 @@ public class Times {
 		int iIndexStart = 0;
 		int iIndexEnd = 0;
 		int iChunk = 0;
-		int[][] chunks = new int[nChunks][];
+		int[][] chunkIndices = new int[nChunks][];
 		for (int iTime=0;iTime<nTimes;iTime++){
 			iIndexEnd = iTime;			
 			if (assimilate[iTime]){
@@ -53,12 +53,12 @@ public class Times {
 				for (int iIndex=iIndexStart;iIndex<=iIndexEnd;iIndex++){
 					tmp[iIndex-iIndexStart] = iIndex;
 				}
-				chunks[iChunk] = tmp;
+				chunkIndices[iChunk] = tmp;
 				iChunk = iChunk + 1;
 				iIndexStart = iIndexEnd;
 			}
 		}
-		this.chunks = chunks;
+		this.chunkIndices = chunkIndices;
 		
 	}
 	
@@ -74,24 +74,22 @@ public class Times {
 		return nChunks;
 	}
 	
-	public int[][] getChunks(){
-		return chunks;
+	public int[][] getChunkIndices(){
+		return chunkIndices;
 	}
 
-	public int[] getChunk(int iChunk){
-		return chunks[iChunk];
+	public int[] getChunkIndices(int iChunk){
+		return chunkIndices[iChunk];
 	}
 	
-	public double[] select(int[] indices){
-		
-		nTimes = getnTimes();
-		int nIndices = indices.length;
-		double[] timesSelection = new double[nIndices];
-
-		for (int iIndex=0;iIndex<nIndices;iIndex++){
-			timesSelection[iIndex] = times[indices[iIndex]];
+	public double[] getChunk(int iChunk){
+		int[] chunkIndices = getChunkIndices(iChunk);
+		int chunkSize = chunkIndices.length;
+		double[] timesChunk = new double[chunkSize];
+		for (int k=0;k<chunkSize;k++){
+			timesChunk[k] = times[chunkIndices[k]]; 
 		}
-		return timesSelection;
+		return timesChunk;
 	}
 }
 
