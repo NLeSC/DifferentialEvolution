@@ -36,8 +36,6 @@ import java.util.Random;
 
 import javax.swing.JFrame;
 
-import nl.esciencecenter.diffevo.statespacemodels.Model;
-
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -79,21 +77,22 @@ public class DiffEvo {
 	private Proposals proposals;
 	private EvalResults evalResults;
 	private Random generator;
-	private Model model;
 	private ParSpace parSpace;
 	private double[] initState;
-	private Forcing forcing;
-	private Times times;
+	private ForcingChunks forcingChunks;
+	private TimeChunks timeChunks;
+	private double[][] obs;
+	private ModelFactory modelFactory;
+	private String modelName;
 
 	// constructor:
-	DiffEvo(int nGens, int nPop, ParSpace parSpace, Model model, double[] initState, Forcing forcing, Times times) {
+	DiffEvo(int nGens, int nPop, ParSpace parSpace, double[] initState, double[] forcing, double[] times, boolean[] assimilate, double[][] obs, ModelFactory modelFactory) {
 		this.nGens = nGens;
 		this.nPop = nPop;
 		this.parSpace = parSpace;
-		this.model = model;		
 		this.initState = initState;
-		this.forcing = forcing;
-		this.times = times;
+		this.forcingChunks = new ForcingChunks(forcing, assimilate);
+		this.timeChunks = new TimeChunks(times, assimilate);
 		this.nPars = parSpace.getNumberOfPars();
 		this.idCol = 1;
 		this.parCols = new int[nPars]; 
@@ -106,6 +105,9 @@ public class DiffEvo {
 		this.evalResults = new EvalResults();
 		this.generator = new Random();
 		this.generator.setSeed(0);
+		this.obs = obs;
+		this.modelFactory = modelFactory;
+		this.modelName = modelFactory.getClass().getSimpleName().toString();
 		}
 
 	public void initializeParents(){
@@ -116,7 +118,7 @@ public class DiffEvo {
 		
 //		System.out.println("initializing parents array");
 		parents.takeUniformRandomSamples(generator);
-		parents.evaluateModel(model,initState,forcing,times);
+		parents.calcObjScore(obs, initState,forcingChunks,timeChunks,modelFactory);
 
 		
 		// now add the initial values of parents to the record, i.e. evalResults
@@ -173,7 +175,7 @@ public class DiffEvo {
 			proposals.setParameterVector(iPop, proposal);
  		}
 		proposals.reflectIfOutOfBounds();
-		proposals.evaluateModel(model);
+		proposals.calcObjScore(obs, initState, forcingChunks, timeChunks, modelFactory);
 	}
 	
 	private double[] calcDistance(int iPop, int[] availables, int distanceOneOrTwo){
@@ -660,7 +662,7 @@ public class DiffEvo {
 		XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
 		renderer.setBaseToolTipGenerator(ttG);
 
-		JFrame frame = new JFrame(model.getName()+" // matrixOfScatterParPar // "+getName());
+		JFrame frame = new JFrame(getModelName()+" // matrixOfScatterParPar // "+getName());
 
         frame.setLayout(new GridLayout(nPars-1,nPars-1));
         
@@ -769,7 +771,7 @@ public class DiffEvo {
 			allAxes[iPar].setTickLabelPaint(Color.BLACK);
 		}
 
-		JFrame frame = new JFrame(model.getName()+" // matrixOfHeatMap //"+getName());
+		JFrame frame = new JFrame(getModelName()+" // matrixOfHeatMap //"+getName());
         frame.setLayout(new GridLayout(nPars-1,nPars-1));
         
         for (int iRow=0;iRow<nPars-1;iRow++){ //0,1,2
@@ -927,8 +929,7 @@ public class DiffEvo {
 		Color barFillColor = new Color(255,128, 0);
 		Color barOutlineColor = Color.BLACK;//new Color(255,128, 0);
 
-		
-		JFrame frame = new JFrame(model.getName()+" // margHist // "+getName());
+		JFrame frame = new JFrame(getModelName()+" // margHist // "+getName());
         frame.setLayout(new GridLayout(nPars,1));
         for (int iPar=0;iPar<nPars;iPar++){
         
@@ -1047,9 +1048,12 @@ public class DiffEvo {
 			proposeOffSpring();
 			updateParentsWithProposals();
 		}
-
-		
 	}
+	
+	private String getModelName(){
+		return modelName;
+	}
+	
 	
 	/* 
 	 * * * * * * * * * * * * * * * * * * * * * * * *  
