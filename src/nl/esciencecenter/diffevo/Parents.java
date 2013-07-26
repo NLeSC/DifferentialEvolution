@@ -60,42 +60,6 @@ public class Parents {
 			this.setParameterVector(iPop-1, values);
 		}
 	}
-
-	public void evaluateModel(Model model, double[] initState, Forcing forcing, Times times){
-
-		int nStates = initState.length;
-		int nChunks = times.getnChunks();
-		
-		
-		for (int iPop=0;iPop<nPop;iPop++){
-
-			double[] parameterVector = new double[nDims];
-			parameterVector = getParameterVector(iPop);
-			
-			double state[] = new double[nStates];
-			for (int iState=0;iState<nStates;iState++){
-				state[iState] = initState[iState];
-			}
-			
-			for (int iChunk=0;iChunk<nChunks;iChunk++){
-				
-				int[] indices = times.getChunk(iChunk);
-				double[][] forcingSelection = forcing.select(indices);
-				double[] timesSelection = times.select(indices);
-
-				// FIXME 
-				
-				//model.calcLogLikelihood(initState, parameterVector, forcing, priorTimes)
-				
-				
-				
-			}
-			
-			//objScore = model.calcLogLikelihood(parameterVector);
-			double objScore =-1.0;
-			this.setObjScore(iPop, objScore);
-		}
-	}
 	
 	public ArrayList<Sample> getParents() {
 		return this.sampleList;
@@ -134,6 +98,50 @@ public class Parents {
 
 	public double getObjScore(int index) {
 		return this.sampleList.get(index).getObjScore();
+	}
+
+	public double calcObjScore(double[][] obs, double[] initState, ForcingChunks forcingChunks, TimeChunks timeChunks, ModelFactory modelFactory) {
+
+
+		int nChunks = timeChunks.getnChunks();
+		int nStates = initState.length;
+		int nTimes = timeChunks.getnTimes();
+		
+		for (int iPop=0;iPop<nPop;iPop++){
+			double[] parameterVector = getParameterVector(iPop);
+			double[] state = new double[nStates];
+			for (int iState=0;iState<nStates;iState++){
+				state[iState] = initState[iState];
+			}
+			double[][] sim = new double[nStates][nTimes];
+			for (int iState=0;iState<nStates;iState++){
+				sim[iState][0] = Double.NaN;
+			}
+			for (int iChunk=0;iChunk<nChunks;iChunk++){
+				double[] times = timeChunks.getChunk(iChunk);
+				double[] forcing = forcingChunks.getChunk(iChunk);
+				int[] indices = timeChunks.getChunkIndices(iChunk);
+				int nIndices = indices.length;
+				double[][] simChunk = new double[nStates][nIndices];
+				
+				Model model = modelFactory.create(state, parameterVector, forcing, times);
+				simChunk = model.evaluate();
+				
+				for (int iState=0;iState<nStates;iState++){
+					for (int iIndex=1;iIndex<nIndices;iIndex++){
+						sim[iState][indices[iIndex]] = simChunk[iState][iIndex];
+					}
+					state[iState] = simChunk[iState][nIndices-1];
+				}
+			}//iChunk
+			
+			LikelihoodFunction likelihoodFunction = new LikelihoodFunction();
+			double objScore = likelihoodFunction.evaluate(obs, sim);
+			setObjScore(iPop, objScore);
+			
+		} //iPop		
+		double objScore = 0;
+		return objScore;
 	}
 	
 }
