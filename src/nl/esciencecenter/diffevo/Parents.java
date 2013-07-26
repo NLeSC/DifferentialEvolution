@@ -22,30 +22,12 @@ package nl.esciencecenter.diffevo;
 import java.util.ArrayList;
 import java.util.Random;
 
-import nl.esciencecenter.diffevo.statespacemodels.Model;
+public class Parents extends ListOfSamples {
 
-public class Parents {
-
-	private ArrayList<Sample> sampleList; 
-	private int nPop;
-	private ParSpace parSpace;
-	private int nDims;
-	
 	// constructor
 	public Parents(int nPop, ParSpace parSpace){
 		
-		this.nDims = parSpace.getNumberOfPars();
-		this.sampleList = new ArrayList<Sample>();
-		this.nPop = nPop;
-		this.parSpace = parSpace;
-		for (int iPop = 1; iPop <= nPop; iPop++) {
-			Sample sample = new Sample(nDims);
-			sampleList.add(sample);
-		}
-	}
-	
-	public void add(Sample sample){
-		sampleList.add(sample);
+		super(nPop,parSpace);
 	}
 	
 	public void takeUniformRandomSamples(Random generator){
@@ -83,67 +65,6 @@ public class Parents {
 		this.sampleList.get(index).setObjScore(objScore);
 		
 	}
-
-	public void setParameterVector(int index, double[] parameterVector) {
-		this.sampleList.get(index).setParameterVector(parameterVector);
-	}
-
-	public double[] getParameterVector(int index) {
-		return this.sampleList.get(index).getParameterVector();
-	}
-
-	public void setObjScore(int index, double objScore) {
-		this.sampleList.get(index).setObjScore(objScore);
-	}
-
-	public double getObjScore(int index) {
-		return this.sampleList.get(index).getObjScore();
-	}
-
-	public double calcObjScore(double[][] obs, double[] initState, ForcingChunks forcingChunks, TimeChunks timeChunks, ModelFactory modelFactory) {
-
-
-		int nChunks = timeChunks.getnChunks();
-		int nStates = initState.length;
-		int nTimes = timeChunks.getnTimes();
-		
-		for (int iPop=0;iPop<nPop;iPop++){
-			double[] parameterVector = getParameterVector(iPop);
-			double[] state = new double[nStates];
-			for (int iState=0;iState<nStates;iState++){
-				state[iState] = initState[iState];
-			}
-			double[][] sim = new double[nStates][nTimes];
-			for (int iState=0;iState<nStates;iState++){
-				sim[iState][0] = Double.NaN;
-			}
-			for (int iChunk=0;iChunk<nChunks;iChunk++){
-				double[] times = timeChunks.getChunk(iChunk);
-				double[] forcing = forcingChunks.getChunk(iChunk);
-				int[] indices = timeChunks.getChunkIndices(iChunk);
-				int nIndices = indices.length;
-				double[][] simChunk = new double[nStates][nIndices];
-				
-				Model model = modelFactory.create(state, parameterVector, forcing, times);
-				simChunk = model.evaluate();
-				
-				for (int iState=0;iState<nStates;iState++){
-					for (int iIndex=1;iIndex<nIndices;iIndex++){
-						sim[iState][indices[iIndex]] = simChunk[iState][iIndex];
-					}
-					state[iState] = simChunk[iState][nIndices-1];
-				}
-			}//iChunk
-			
-			LikelihoodFunction likelihoodFunction = new LikelihoodFunction();
-			double objScore = likelihoodFunction.evaluate(obs, sim);
-			setObjScore(iPop, objScore);
-			
-		} //iPop		
-		double objScore = 0;
-		return objScore;
-	}
-	
 }
 
 
