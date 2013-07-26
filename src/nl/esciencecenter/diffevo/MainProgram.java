@@ -20,9 +20,10 @@
 package nl.esciencecenter.diffevo;
 
 
-import nl.esciencecenter.diffevo.statespacemodels.*;
+import java.util.Random;
 
 public class MainProgram {
+
 
 	/**
 	 * @param args
@@ -31,14 +32,16 @@ public class MainProgram {
 
 		int nGens = 0;
 		int nPop = 0;
-		Model model = null;
 		double[] initState = null;
-		Times times = null;
-		Forcing forcing = null;
+		boolean[] assimilate = null;
+		double[] times = null;
+		double[] forcing = null;
 		double[] lowerBounds;
 		double[] upperBounds;
 		String[] parNames;
 		ParSpace parSpace = null;
+		double[][] obs = null;
+		ModelFactory modelFactory = null;
 		
 		for (int modelSwitch = 7 ;modelSwitch<8;modelSwitch++){
 
@@ -125,19 +128,8 @@ public class MainProgram {
 				System.out.println("LinearDynamicStateSpaceModel will be optimized");			
 				nGens = 300;
 				nPop = 50;
-				model = new LinearDynamicStateSpaceModel();
 				initState = new double[] {30};
-				times = new Times(new double[]{
-						125.5,126.0,126.5,127.0,127.5,
-						128.0,128.5,129.0,129.5,130.0,
-						130.5,131.0,131.5,132.0,132.5,
-						133.0,133.5,134.0,134.5,135.0,
-						135.5,136.0,136.5,137.0,137.5,
-						138.0,138.5,139.0,139.5,140.0,
-						140.5,141.0,141.5,142.0,142.5,
-						143.0,143.5,144.0,144.5,145.0,
-						145.5,146.0,146.5,147.0,147.5,
-						148.0,148.5,149.0,149.5}, new boolean[]{
+				assimilate = new boolean[]{
 						false,false,false,true,true,
 						true,true,true,true,true,
 						true,true,true,true,true,
@@ -147,8 +139,21 @@ public class MainProgram {
 						true,true,true,true,true,
 						true,true,true,true,true,
 						true,true,true,true,true,
-						true,true,true,true});
-				forcing = new Forcing(new double[][]{
+						true,true,true,true};
+				
+				times = new double[]{
+						125.5,126.0,126.5,127.0,127.5,
+						128.0,128.5,129.0,129.5,130.0,
+						130.5,131.0,131.5,132.0,132.5,
+						133.0,133.5,134.0,134.5,135.0,
+						135.5,136.0,136.5,137.0,137.5,
+						138.0,138.5,139.0,139.5,140.0,
+						140.5,141.0,141.5,142.0,142.5,
+						143.0,143.5,144.0,144.5,145.0,
+						145.5,146.0,146.5,147.0,147.5,
+						148.0,148.5,149.0,149.5};
+				
+				forcing = new double[]
 				   {0.1,0.2,0.5,0.6,0.3,
 					0,0,0,0,0,
 					0,0,0,0,0,
@@ -158,19 +163,41 @@ public class MainProgram {
 					0,0,0,0,0,
 					0,0,0,0,0,
 					0,0,0,0,0,
-					0,0,0,Double.NaN}
-				   });
+					0,0,0,Double.NaN};
+
 				lowerBounds = new double[] {110};
 				upperBounds = new double[] {180};
 				parNames = new String[] {"resistance"};
 				parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
+				parSpace.divideIntoIntervals(100);
+				double[][] observedTrue = {{
+					30.000000,29.899600,29.799500,29.699800,29.600400,
+					29.501300,29.402600,29.304200,29.206100,29.108400,
+					29.011000,28.913900,28.817100,28.720600,28.624500,
+					28.528700,28.433200,28.338100,28.243200,28.148700,
+					28.054500,27.960600,27.867000,27.773800,27.680800,
+					27.588200,27.495900,27.403800,27.312100,27.220700,
+					27.129600,27.038800,26.948300,26.858100,26.768200,
+					26.678700,26.589400,26.500400,26.411700,26.323300,
+					26.235200,26.147400,26.059900,25.972700,25.885700,
+					25.799100,25.712800,25.626700,25.540900}};	// true state values for parameter = 149.39756262040834
+				int nObs = observedTrue[0].length;
+				int nStates = 1;
+				obs = new double[nStates][nObs];	
+				Random generator = new Random();
+				for (int iObs=0;iObs<nObs;iObs++){
+					obs[0][iObs] = observedTrue[0][iObs] + generator.nextDouble()*0.005; 
+				}
+				modelFactory = (ModelFactory) new LinearDynamicStateSpaceModelFactory();
 				break; 
  			} // case 7
 			} //switch
+			
 
-			DiffEvo diffEvo = new DiffEvo(nGens, nPop, parSpace, model, initState, forcing, times);
+			DiffEvo diffEvo = new DiffEvo(nGens, nPop, parSpace, initState, forcing, times, assimilate, obs, modelFactory);
 			diffEvo.start();
-
+			
+			
 			diffEvo.printEvalResults();
 			diffEvo.writeEvalResultsToJSON();
 			diffEvo.writeEvalResultsToTextFile();
@@ -179,12 +206,9 @@ public class MainProgram {
 				diffEvo.matrixOfScatterParPar();
 				diffEvo.matrixOfHeatmapParPar();
 			}
-
 			diffEvo.margHist();
 
-
-			System.out.println("Done.");
-
+			
 		} // int modelSwitch
 	} // main
 } //Test
