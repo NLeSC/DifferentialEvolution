@@ -19,11 +19,14 @@
 
 package nl.esciencecenter.diffevo;
 
-
 import java.util.Random;
 
-import nl.esciencecenter.diffevo.statespacemodels.LikelihoodFunctionSSRFactory;
 import nl.esciencecenter.diffevo.statespacemodels.LinearDynamicStateSpaceModelFactory;
+
+import likelihoodfunctions.LikelihoodFunctionFactory;
+import likelihoodfunctions.LikelihoodFunctionSSRFactory;
+
+
 
 public class MainProgram {
 
@@ -46,7 +49,7 @@ public class MainProgram {
 		double[][] obs = null;
 		ModelFactory modelFactory = null;
 		LikelihoodFunctionFactory likelihoodFunctionFactory = null;
-		for (int modelSwitch = 7 ;modelSwitch<8;modelSwitch++){
+		for (int modelSwitch = 6 ;modelSwitch<8;modelSwitch++){
 
 			switch (modelSwitch){
 //			case 1:{
@@ -113,19 +116,20 @@ public class MainProgram {
 //				parSpace.divideIntoIntervals(50);
 //				break; 
 //			} // case 5
-//			case 6:{
-//				//CubicModel
-//				System.out.println("CubicModel will be optimized");
-//				nGens = 3000;
-//				nPop = 50;
-//				model = new CubicModel();
-//				double[] lowerBounds = {-20,-40,-80,-120};
-//				double[] upperBounds = { 20, 40, 80, 120};
-//				String[] parNames = {"a","b","c","d"};
-//				parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
-//				parSpace.divideIntoIntervals(new int[]{50,50,50,50});
-//				break; 
-//			} // case 6
+			case 6:{
+				//CubicModel
+				System.out.println("CubicModel will be optimized");
+				nGens = 3000;
+				nPop = 50;
+				lowerBounds = new double[]{-20,-40,-80,-120};
+				upperBounds = new double[]{ 20, 40, 80, 120};
+				parNames = new String[]{"a","b","c","d"};
+				parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
+				parSpace.divideIntoIntervals(new int[]{50,50,50,50});
+				modelFactory = null;
+				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionCubicModelFactory();
+				break; 
+			} // case 6
 			case 7:{
 				//LinearDynamicStateSpaceModel
 				System.out.println("LinearDynamicStateSpaceModel will be optimized");			
@@ -196,11 +200,9 @@ public class MainProgram {
 				break; 
  			} // case 7
 			} //switch
-			
 
 			DiffEvo diffEvo = new DiffEvo(nGens, nPop, parSpace, initState, forcing, times, assimilate, obs, modelFactory, likelihoodFunctionFactory);
 			diffEvo.start();
-			
 			
 			diffEvo.printEvalResults();
 			diffEvo.writeEvalResultsToJSON();

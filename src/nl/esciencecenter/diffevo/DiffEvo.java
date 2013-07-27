@@ -36,6 +36,8 @@ import java.util.Random;
 
 import javax.swing.JFrame;
 
+import likelihoodfunctions.LikelihoodFunctionFactory;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -92,9 +94,15 @@ public class DiffEvo {
 		this.nGens = nGens;
 		this.nPop = nPop;
 		this.parSpace = parSpace;
-		this.initState = initState;
-		this.forcingChunks = new ForcingChunks(forcing, assimilate);
-		this.timeChunks = new TimeChunks(times, assimilate);
+		if (modelFactory!=null){
+			this.initState = initState;
+			this.forcingChunks = new ForcingChunks(forcing, assimilate);
+			this.timeChunks = new TimeChunks(times, assimilate);
+			this.modelName = modelFactory.getClass().getSimpleName().toString();
+		}
+		else {
+			this.modelName = likelihoodFunctionFactory.getClass().getSimpleName().toString();
+		}
 		this.nPars = parSpace.getNumberOfPars();
 		this.idCol = 1;
 		this.parCols = new int[nPars]; 
@@ -110,7 +118,6 @@ public class DiffEvo {
 		this.obs = obs;
 		this.modelFactory = modelFactory;
 		this.likelihoodFunctionFactory = likelihoodFunctionFactory;
-		this.modelName = modelFactory.getClass().getSimpleName().toString();
 		}
 
 	public void initializeParents(){
@@ -122,7 +129,6 @@ public class DiffEvo {
 //		System.out.println("initializing parents array");
 		parents.takeUniformRandomSamples(generator);
 		parents.calcObjScore(obs, initState,forcingChunks,timeChunks,modelFactory, likelihoodFunctionFactory);
-
 		
 		// now add the initial values of parents to the record, i.e. evalResults
 		for (int iPop=0;iPop<nPop;iPop++){

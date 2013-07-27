@@ -17,12 +17,11 @@
  * ---
  */
 
-package nl.esciencecenter.diffevo.models;
+package likelihoodfunctions;
 
 import java.util.Random;
 
-
-public class CubicModel implements Model {
+public class LikelihoodFunctionCubicModel implements LikelihoodFunction {
 
 	private double xObsStart;
 	private double xObsEnd;
@@ -36,8 +35,7 @@ public class CubicModel implements Model {
 	private double[] yObs;
 	
 	
-	public CubicModel(){
-
+	public LikelihoodFunctionCubicModel(){
 		
 		double a = -1.0;
 		double b = 7.0;
@@ -67,8 +65,7 @@ public class CubicModel implements Model {
 		}
 	}
 	
-	
-			
+		
 	private double calcSumOfSquaredResiduals(double[] yObs,double[] ySim){
 
 		double sum = 0;
@@ -80,12 +77,23 @@ public class CubicModel implements Model {
 		
 	}
 	
-	
-	public double calcLogLikelihood(double[] x){
-		double a = x[0];
-		double b = x[1];
-		double c = x[2];
-		double d = x[3];
+
+	public String getName(){
+		return LikelihoodFunctionCubicModel.class.getSimpleName();
+	}
+
+	@Override
+	public double evaluate(double[][] obs, double[][] sim) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double evaluate(double[] parameterVector) {
+		double a = parameterVector[0];
+		double b = parameterVector[1];
+		double c = parameterVector[2];
+		double d = parameterVector[3];
 		double[] ySim;
 
 		ySim = new double[nObs];
@@ -102,10 +110,6 @@ public class CubicModel implements Model {
 		double objScore = -(1.0/2)*nObs*Math.log(ssr);
 		
 		return objScore;
-	}
-
-	public String getName(){
-		return CubicModel.class.getSimpleName();
 	}
 	
 	

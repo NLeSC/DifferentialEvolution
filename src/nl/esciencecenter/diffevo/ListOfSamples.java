@@ -21,7 +21,8 @@ package nl.esciencecenter.diffevo;
 
 import java.util.ArrayList;
 
-import nl.esciencecenter.diffevo.statespacemodels.LikelihoodFunction;
+import likelihoodfunctions.LikelihoodFunction;
+import likelihoodfunctions.LikelihoodFunctionFactory;
 import nl.esciencecenter.diffevo.statespacemodels.Model;
 
 public class ListOfSamples {
@@ -30,10 +31,10 @@ public class ListOfSamples {
 	protected int nPop;
 	protected ParSpace parSpace;
 	protected int nDims;
-	
+
 	// constructor
 	public ListOfSamples(int nPop, ParSpace parSpace){
-		
+
 		this.nDims = parSpace.getNumberOfPars();
 		this.sampleList = new ArrayList<Sample>();
 		this.nPop = nPop;
@@ -43,11 +44,11 @@ public class ListOfSamples {
 			sampleList.add(sample);
 		}
 	}
-	
+
 	public void add(Sample sample){
 		sampleList.add(sample);
 	}
-	
+
 	public void setParameterVector(int index, double[] parameterVector) {
 		this.sampleList.get(index).setParameterVector(parameterVector);
 	}
@@ -64,50 +65,64 @@ public class ListOfSamples {
 		return this.sampleList.get(index).getObjScore();
 	}
 
-	public double calcObjScore(double[][] obs, double[] initState, ForcingChunks forcingChunks,
+	public void calcObjScore(double[][] obs, double[] initState, ForcingChunks forcingChunks,
 			TimeChunks timeChunks, ModelFactory modelFactory, LikelihoodFunctionFactory likelihoodFunctionFactory) {
 
-		int nChunks = timeChunks.getnChunks();
-		int nStates = initState.length;
-		int nTimes = timeChunks.getnTimes();
+		LikelihoodFunction likelihoodFunction = likelihoodFunctionFactory.create();
 		
-		for (int iPop=0;iPop<nPop;iPop++){
-			double[] parameterVector = getParameterVector(iPop);
-			double[] state = new double[nStates];
-			for (int iState=0;iState<nStates;iState++){
-				state[iState] = initState[iState];
-			}
-			double[][] sim = new double[nStates][nTimes];
-			for (int iState=0;iState<nStates;iState++){
-				sim[iState][0] = Double.NaN;
-			}
-			for (int iChunk=0;iChunk<nChunks;iChunk++){
-				double[] times = timeChunks.getChunk(iChunk);
-				double[] forcing = forcingChunks.getChunk(iChunk);
-				int[] indices = timeChunks.getChunkIndices(iChunk);
-				int nIndices = indices.length;
-				double[][] simChunk = new double[nStates][nIndices];
-				
-				Model model = modelFactory.create(state, parameterVector, forcing, times);
-				simChunk = model.evaluate();
-				
+		if (modelFactory!=null){
+			int nChunks = timeChunks.getnChunks();
+
+			int nStates = initState.length;
+			int nTimes = timeChunks.getnTimes();
+
+			for (int iPop=0;iPop<nPop;iPop++){
+				double[] parameterVector = getParameterVector(iPop);
+				double[] state = new double[nStates];
 				for (int iState=0;iState<nStates;iState++){
-					for (int iIndex=1;iIndex<nIndices;iIndex++){
-						sim[iState][indices[iIndex]] = simChunk[iState][iIndex];
-					}
-					state[iState] = simChunk[iState][nIndices-1];
+					state[iState] = initState[iState];
 				}
-			}//iChunk
-			
-			LikelihoodFunction likelihoodFunction = likelihoodFunctionFactory.create();
-			double objScore = likelihoodFunction.evaluate(obs, sim);
-			setObjScore(iPop, objScore);
-			
-		} //iPop		
-		double objScore = 0;
-		return objScore;
-	}
-	
+				double[][] sim = new double[nStates][nTimes];
+				for (int iState=0;iState<nStates;iState++){
+					sim[iState][0] = Double.NaN;
+				}
+				for (int iChunk=0;iChunk<nChunks;iChunk++){
+					double[] times = timeChunks.getChunk(iChunk);
+					double[] forcing = forcingChunks.getChunk(iChunk);
+					int[] indices = timeChunks.getChunkIndices(iChunk);
+					int nIndices = indices.length;
+					double[][] simChunk = new double[nStates][nIndices];
+
+					Model model = modelFactory.create(state, parameterVector, forcing, times);
+					simChunk = model.evaluate();
+
+					for (int iState=0;iState<nStates;iState++){
+						for (int iIndex=1;iIndex<nIndices;iIndex++){
+							sim[iState][indices[iIndex]] = simChunk[iState][iIndex];
+						}
+						state[iState] = simChunk[iState][nIndices-1];
+					}
+				}//iChunk
+
+				double objScore = likelihoodFunction.evaluate(obs, sim);
+				setObjScore(iPop, objScore);
+
+			} //iPop		
+		}
+		else {
+			for (int iPop=0;iPop<nPop;iPop++){
+				double[] parameterVector = getParameterVector(iPop);
+				double objScore = likelihoodFunction.evaluate(parameterVector);
+				setObjScore(iPop, objScore);
+			} // iPop
+		} //else
+
+
+
+	} // calcObjScore()
+
+
+
 }
 
 
