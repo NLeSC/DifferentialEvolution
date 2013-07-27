@@ -20,6 +20,8 @@
 package nl.esciencecenter.diffevo;
 
 import java.util.ArrayList;
+
+import nl.esciencecenter.diffevo.statespacemodels.LikelihoodFunction;
 import nl.esciencecenter.diffevo.statespacemodels.Model;
 
 public class ListOfSamples {
@@ -62,7 +64,8 @@ public class ListOfSamples {
 		return this.sampleList.get(index).getObjScore();
 	}
 
-	public double calcObjScore(double[][] obs, double[] initState, ForcingChunks forcingChunks, TimeChunks timeChunks, ModelFactory modelFactory) {
+	public double calcObjScore(double[][] obs, double[] initState, ForcingChunks forcingChunks,
+			TimeChunks timeChunks, ModelFactory modelFactory, LikelihoodFunctionFactory likelihoodFunctionFactory) {
 
 		int nChunks = timeChunks.getnChunks();
 		int nStates = initState.length;
@@ -96,7 +99,7 @@ public class ListOfSamples {
 				}
 			}//iChunk
 			
-			LikelihoodFunction likelihoodFunction = new LikelihoodFunction();
+			LikelihoodFunction likelihoodFunction = likelihoodFunctionFactory.create();
 			double objScore = likelihoodFunction.evaluate(obs, sim);
 			setObjScore(iPop, objScore);
 			

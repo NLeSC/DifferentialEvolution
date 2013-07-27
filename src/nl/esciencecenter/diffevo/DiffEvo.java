@@ -84,9 +84,11 @@ public class DiffEvo {
 	private double[][] obs;
 	private ModelFactory modelFactory;
 	private String modelName;
-
+	private LikelihoodFunctionFactory likelihoodFunctionFactory;
+	
 	// constructor:
-	DiffEvo(int nGens, int nPop, ParSpace parSpace, double[] initState, double[] forcing, double[] times, boolean[] assimilate, double[][] obs, ModelFactory modelFactory) {
+	DiffEvo(int nGens, int nPop, ParSpace parSpace, double[] initState, double[] forcing, double[] times, 
+			boolean[] assimilate, double[][] obs, ModelFactory modelFactory, LikelihoodFunctionFactory likelihoodFunctionFactory) {
 		this.nGens = nGens;
 		this.nPop = nPop;
 		this.parSpace = parSpace;
@@ -107,6 +109,7 @@ public class DiffEvo {
 		this.generator.setSeed(0);
 		this.obs = obs;
 		this.modelFactory = modelFactory;
+		this.likelihoodFunctionFactory = likelihoodFunctionFactory;
 		this.modelName = modelFactory.getClass().getSimpleName().toString();
 		}
 
@@ -118,7 +121,7 @@ public class DiffEvo {
 		
 //		System.out.println("initializing parents array");
 		parents.takeUniformRandomSamples(generator);
-		parents.calcObjScore(obs, initState,forcingChunks,timeChunks,modelFactory);
+		parents.calcObjScore(obs, initState,forcingChunks,timeChunks,modelFactory, likelihoodFunctionFactory);
 
 		
 		// now add the initial values of parents to the record, i.e. evalResults
@@ -175,7 +178,7 @@ public class DiffEvo {
 			proposals.setParameterVector(iPop, proposal);
  		}
 		proposals.reflectIfOutOfBounds();
-		proposals.calcObjScore(obs, initState, forcingChunks, timeChunks, modelFactory);
+		proposals.calcObjScore(obs, initState, forcingChunks, timeChunks, modelFactory, likelihoodFunctionFactory);
 	}
 	
 	private double[] calcDistance(int iPop, int[] availables, int distanceOneOrTwo){

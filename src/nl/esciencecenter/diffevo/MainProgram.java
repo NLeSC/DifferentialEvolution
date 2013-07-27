@@ -22,6 +22,7 @@ package nl.esciencecenter.diffevo;
 
 import java.util.Random;
 
+import nl.esciencecenter.diffevo.statespacemodels.LikelihoodFunctionSSRFactory;
 import nl.esciencecenter.diffevo.statespacemodels.LinearDynamicStateSpaceModelFactory;
 
 public class MainProgram {
@@ -44,7 +45,7 @@ public class MainProgram {
 		ParSpace parSpace = null;
 		double[][] obs = null;
 		ModelFactory modelFactory = null;
-		
+		LikelihoodFunctionFactory likelihoodFunctionFactory = null;
 		for (int modelSwitch = 7 ;modelSwitch<8;modelSwitch++){
 
 			switch (modelSwitch){
@@ -191,12 +192,13 @@ public class MainProgram {
 					obs[0][iObs] = observedTrue[0][iObs] + generator.nextDouble()*0.005; 
 				}
 				modelFactory = (ModelFactory) new LinearDynamicStateSpaceModelFactory();
+				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionSSRFactory();
 				break; 
  			} // case 7
 			} //switch
 			
 
-			DiffEvo diffEvo = new DiffEvo(nGens, nPop, parSpace, initState, forcing, times, assimilate, obs, modelFactory);
+			DiffEvo diffEvo = new DiffEvo(nGens, nPop, parSpace, initState, forcing, times, assimilate, obs, modelFactory, likelihoodFunctionFactory);
 			diffEvo.start();
 			
 			
