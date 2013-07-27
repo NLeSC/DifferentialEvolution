@@ -21,8 +21,7 @@ package nl.esciencecenter.diffevo;
 
 import java.util.ArrayList;
 
-import likelihoodfunctions.LikelihoodFunction;
-import likelihoodfunctions.LikelihoodFunctionFactory;
+import nl.esciencecenter.diffevo.likelihoodfunctions.*;
 import nl.esciencecenter.diffevo.statespacemodels.Model;
 
 public class ListOfSamples {

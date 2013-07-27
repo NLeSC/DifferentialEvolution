@@ -36,7 +36,7 @@ import java.util.Random;
 
 import javax.swing.JFrame;
 
-import likelihoodfunctions.LikelihoodFunctionFactory;
+import nl.esciencecenter.diffevo.likelihoodfunctions.LikelihoodFunctionFactory;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;

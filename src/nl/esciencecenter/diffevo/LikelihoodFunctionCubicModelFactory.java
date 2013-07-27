@@ -1,8 +1,7 @@
 package nl.esciencecenter.diffevo;
 
-import likelihoodfunctions.LikelihoodFunction;
-import likelihoodfunctions.LikelihoodFunctionCubicModel;
-import likelihoodfunctions.LikelihoodFunctionFactory;
+import nl.esciencecenter.diffevo.likelihoodfunctions.*;
+
 
 public class LikelihoodFunctionCubicModelFactory implements
 		LikelihoodFunctionFactory {

@@ -1,4 +1,4 @@
-package likelihoodfunctions;
+package nl.esciencecenter.diffevo.likelihoodfunctions;
 
 public class LikelihoodFunctionSSRFactory implements LikelihoodFunctionFactory{
 

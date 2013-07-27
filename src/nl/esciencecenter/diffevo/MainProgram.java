@@ -21,12 +21,8 @@ package nl.esciencecenter.diffevo;
 
 import java.util.Random;
 
-import nl.esciencecenter.diffevo.statespacemodels.LinearDynamicStateSpaceModelFactory;
-
-import likelihoodfunctions.LikelihoodFunctionFactory;
-import likelihoodfunctions.LikelihoodFunctionSSRFactory;
-
-
+import nl.esciencecenter.diffevo.likelihoodfunctions.*;
+import nl.esciencecenter.diffevo.statespacemodels.*;
 
 public class MainProgram {
 

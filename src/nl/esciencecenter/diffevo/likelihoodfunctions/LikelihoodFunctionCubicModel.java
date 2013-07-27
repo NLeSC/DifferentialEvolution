@@ -17,7 +17,7 @@
  * ---
  */
 
-package likelihoodfunctions;
+package nl.esciencecenter.diffevo.likelihoodfunctions;
 
 import java.util.Random;
 
