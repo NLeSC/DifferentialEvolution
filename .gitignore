@@ -6,4 +6,4 @@ build
 test/dist
 test/reports
 dist
-
+doc/javadoc
