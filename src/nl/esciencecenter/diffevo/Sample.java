@@ -24,6 +24,10 @@ public class Sample {
     private double[] parameterVector;
     private double objScore;
     		
+    /**
+     *  
+     * @param nDims number of dimensions of the parameter space
+     */
 	public Sample(int nDims) {
 		this.sampleCounter = -1;
 		this.parameterVector = new double[nDims];

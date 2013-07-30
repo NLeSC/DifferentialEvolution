@@ -14,40 +14,13 @@ public class TimeChunksTest {
 		boolean[] assimilate = new boolean[]{true, false, false, true, false,false, true, false, true}; 
 		TimeChunks timeChunks = new TimeChunks(times,assimilate);
 		int nChunks = timeChunks.getnChunks();
-		int[][] chunkIndices = timeChunks.getChunkIndices();
 		int nChunksExpected = 3;
 		assertEquals(nChunksExpected,nChunks);
 		
+		
+		int[][] chunksIndicesExpected = new int[][]{{0,1,2,3},{3,4,5,6},{6,7,8}};
+		int[][] chunkIndices = timeChunks.getChunkIndices();
+		assertArrayEquals(chunksIndicesExpected,chunkIndices);
+		
 	}
-
-	@Test
-	public void testGetTimes() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetnTimes() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetnChunks() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetChunkIndices() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetChunkIndicesInt() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetChunk() {
-		fail("Not yet implemented");
-	}
-
 }
