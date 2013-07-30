@@ -2,3 +2,8 @@
 evalresults.json
 evalresults.txt
 tmp-eclipse
+build
+test/dist
+test/reports
+dist
+
