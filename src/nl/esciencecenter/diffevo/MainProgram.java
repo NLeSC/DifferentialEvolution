@@ -21,8 +21,9 @@ package nl.esciencecenter.diffevo;
 
 import java.util.Random;
 
-import nl.esciencecenter.diffevo.likelihoodfunctions.*;
-import nl.esciencecenter.diffevo.statespacemodels.*;
+
+import nl.esciencecenter.diffevo.likelihoodfunctionfactories.*;
+import nl.esciencecenter.diffevo.statespacemodelfactories.*;
 
 public class MainProgram {
 
@@ -45,77 +46,83 @@ public class MainProgram {
 		double[][] obs = null;
 		ModelFactory modelFactory = null;
 		LikelihoodFunctionFactory likelihoodFunctionFactory = null;
-		for (int modelSwitch = 6 ;modelSwitch<8;modelSwitch++){
+		for (int modelSwitch = 1;modelSwitch<8;modelSwitch++){
 
 			switch (modelSwitch){
-//			case 1:{
-//				//DoubleNormalModel
-//				System.out.println("DoubleNormalModel will be optimized");
-//				nGens = 300;
-//				nPop = 50;
-//				model = new DoubleNormalModel();
-//				double[] lowerBounds = {-20};
-//				double[] upperBounds = {18};
-//				String[] parNames = {"theta"};
-//				parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
-//				parSpace.divideIntoIntervals(50);
-//				break;
-//			}//case 1
-//			case 2:{
-//				//LinearDynamicModel
-//				System.out.println("LinearDynamicModel will be optimized");			
-//				nGens = 300;
-//				nPop = 50;
-//				model = new LinearDynamicModel();
-//				double[] lowerBounds = {110};
-//				double[] upperBounds = {180};
-//				String[] parNames = {"resistance"};
-//				parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
-//				break; 
-//			} // case 2
-//			case 3:{
-//				//RastriginModel
-//				System.out.println("RastriginModel will be optimized");
-//				nGens = 3000;
-//				nPop = 50;
-//				model = new RastriginModel();
-//				double[] lowerBounds = {-5.12,-5.12};
-//				double[] upperBounds = {5.12,5.12};
-//				String[] parNames = {"p1","p2"};
-//				parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
-//				parSpace.divideIntoIntervals(200);
-//				break; 
-//			} //case 3
-//			case 4:{
-//				//RosenbrockModel
-//				System.out.println("RosenbrockModel will be optimized");
-//				nGens = 3000;
-//				nPop = 50;
-//				model = new RosenbrockModel();
-//				double[] lowerBounds = {-50,-40};
-//				double[] upperBounds = {50,80};
-//				String[] parNames = {"p1","p2"};
-//				parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
-//				parSpace.divideIntoIntervals(500);
-//				break; 
-//			} // case 4
-//			case 5:{
-//				//SingleNormalModel
-//				System.out.println("SingleNormalModel will be optimized");
-//				nGens = 300;
-//				nPop = 50;
-//				model = new SingleNormalModel();
-//				double[] lowerBounds = {-50};
-//				double[] upperBounds = {40};
-//				String[] parNames = {"theta"};
-//				parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
-//				parSpace.divideIntoIntervals(50);
-//				break; 
-//			} // case 5
+			case 1:{
+				//DoubleNormalModel
+				System.out.println("DoubleNormalModel will be optimized");
+				nGens = 300;
+				nPop = 50;
+
+				lowerBounds = new double[]{-20};
+				upperBounds = new double[]{18};
+				parNames = new String[]{"theta"};
+				parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
+				parSpace.divideIntoIntervals(50);
+				modelFactory = null;
+				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionDoubleNormalModelFactory();
+				break;
+			}//case 1
+			case 2:{
+				//LinearDynamicModel
+				System.out.println("LinearDynamicModel will be optimized");			
+				nGens = 300;
+				nPop = 50;
+				lowerBounds = new double[]{110};
+				upperBounds = new double[]{180};
+				parNames = new String[]{"resistance"};
+				parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
+				modelFactory = null;
+				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionLinearDynamicModelFactory();
+				break; 
+			} // case 2
+			case 3:{
+				//RastriginModel
+				System.out.println("RastriginModel will be optimized");
+				nGens = 300;
+				nPop = 50;
+				lowerBounds = new double[]{-5.12,-5.12};
+				upperBounds = new double[]{5.12,5.12};
+				parNames = new String[]{"p1","p2"};
+				parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
+				parSpace.divideIntoIntervals(200);
+				modelFactory = null;
+				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionRastriginModelFactory();
+				break; 
+			} //case 3
+			case 4:{
+				//RosenbrockModel
+				System.out.println("RosenbrockModel will be optimized");
+				nGens = 300;
+				nPop = 50;
+				lowerBounds = new double[]{-50,-40};
+				upperBounds = new double[]{50,80};
+				parNames = new String[]{"p1","p2"};
+				parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
+				parSpace.divideIntoIntervals(500);
+				modelFactory = null;
+				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionRosenbrockModelFactory();
+				break; 
+			} // case 4
+			case 5:{
+				//SingleNormalModel
+				System.out.println("SingleNormalModel will be optimized");
+				nGens = 300;
+				nPop = 50;
+				lowerBounds = new double[]{-50};
+				upperBounds = new double[]{40};
+				parNames = new String[]{"theta"};
+				parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
+				parSpace.divideIntoIntervals(50);
+				modelFactory = null;				
+				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionSingleNormalModelFactory();
+				break; 
+			} // case 5
 			case 6:{
 				//CubicModel
 				System.out.println("CubicModel will be optimized");
-				nGens = 3000;
+				nGens = 300;
 				nPop = 50;
 				lowerBounds = new double[]{-20,-40,-80,-120};
 				upperBounds = new double[]{ 20, 40, 80, 120};
@@ -209,6 +216,8 @@ public class MainProgram {
 				diffEvo.matrixOfHeatmapParPar();
 			}
 			diffEvo.margHist();
+			
+			System.out.println("Done.");
 
 			
 		} // int modelSwitch
