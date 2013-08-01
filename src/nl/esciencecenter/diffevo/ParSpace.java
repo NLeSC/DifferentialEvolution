@@ -33,9 +33,9 @@ public class ParSpace {
 
 	public ParSpace(double[] lowerBounds, double[] upperBounds, String[] parNames){
 		
-		this.lowerBounds = lowerBounds;
-		this.upperBounds = upperBounds;
-		this.parNames = parNames;
+		this.lowerBounds = lowerBounds.clone();
+		this.upperBounds = upperBounds.clone();
+		this.parNames = parNames.clone();
 		this.setNumberOfPars(lowerBounds.length);
 		
 		double[] resolutions = new double[getNumberOfPars()];
