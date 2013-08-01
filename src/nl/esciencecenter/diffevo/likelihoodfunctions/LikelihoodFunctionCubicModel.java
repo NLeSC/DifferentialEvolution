@@ -23,15 +23,9 @@ import java.util.Random;
 
 public class LikelihoodFunctionCubicModel implements LikelihoodFunction {
 
-	private double xObsStart;
-	private double xObsEnd;
 	private int nObs;	
-	private double xObsStep;
 	private double[] xObs;	
-	private double randnFactor;	
-	private double[] randnTerm;
 	private Random generator = new Random();
-	private double[] yObsTrue;
 	private double[] yObs;
 	
 	
@@ -42,14 +36,14 @@ public class LikelihoodFunctionCubicModel implements LikelihoodFunction {
 		double c = -5.0;
 		double d = 9.0;
 		
-		xObsStart = -1.0;
-		xObsEnd = 6.8;
+		double xObsStart = -1.0;
+		double xObsEnd = 6.8;
 		nObs = 14;
-		xObsStep = (xObsEnd-xObsStart)/(nObs-1);
-		randnFactor = 5.0;
+		double xObsStep = (xObsEnd-xObsStart)/(nObs-1);
+		double randnFactor = 5.0;
 		xObs = new double[nObs];
-		yObsTrue = new double[nObs];
-		randnTerm = new double[nObs];
+		double[] yObsTrue = new double[nObs];
+		double[] randnTerm = new double[nObs];
 		yObs = new double[nObs];
 		
 		for (int iObs = 0; iObs<nObs;iObs++){
