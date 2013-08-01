@@ -30,15 +30,11 @@ public class Proposals extends ListOfSamples{
 	
 	public void reflectIfOutOfBounds(){
 		for (int iPop=0;iPop<nPop;iPop++){
-//			double[] parameterVector = new double[nDims];
 			for (int iDim = 0;iDim<nDims;iDim++){
 				double[] parameterVector = getParameterVector(iPop);
 				double lb = parSpace.getLowerBound(iDim);
 				double ub = parSpace.getUpperBound(iDim);
 				double s = parameterVector[iDim];
-				//System.out.printf("sample in dimension %d is %6g\n",iDim,s);
-				//System.out.printf("lower boundary in dimension %d is %6g\n",iDim,lb);
-				//System.out.printf("upper boundary in dimension %d is %6g\n",iDim,ub);
 				if (s<lb){
 					parameterVector[iDim] = lb+(lb-s);
 				}					
