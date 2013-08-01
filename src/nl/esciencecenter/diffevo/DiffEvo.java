@@ -99,8 +99,8 @@ public class DiffEvo {
 		this.parSpace = parSpace;
 		if (modelFactory!=null){
 			this.initState = initState.clone();
-			this.forcingChunks = new ForcingChunks(forcing, assimilate);
-			this.timeChunks = new TimeChunks(times, assimilate);
+			this.forcingChunks = new ForcingChunks(forcing.clone(), assimilate.clone());
+			this.timeChunks = new TimeChunks(times.clone(), assimilate.clone());
 			this.modelName = modelFactory.getClass().getSimpleName().toString();
 		}
 		else {
