@@ -133,6 +133,8 @@ public class DiffEvo {
 		this.obs = obs.clone();
 		this.modelFactory = modelFactory;
 		this.likelihoodFunctionFactory = likelihoodFunctionFactory;
+		this.tickFont = new Font("Ubuntu",Font.ROMAN_BASELINE,14);
+		this.labelFont = new Font("Ubuntu",Font.ROMAN_BASELINE,20);
 		}
 	
 	
@@ -161,8 +163,8 @@ public class DiffEvo {
 	public void proposeOffSpring(){
 	
 		final int nDraws = 3;
-		final double F = 0.6;
-		final double K = 0.4;
+		final double diffEvoParF = 0.6;
+		final double diffEvoParK = 0.4;
 		int[] availables = new int[nDraws];
 		boolean drawAgain = true;
 		int index;
@@ -193,7 +195,7 @@ public class DiffEvo {
 
 			proposal = new double[nPars];
 			for (int iPar=0;iPar<nPars;iPar++){
-				proposal[iPar] = parent[iPar] + F * dist1[iPar] + K * dist2[iPar]; 				
+				proposal[iPar] = parent[iPar] + diffEvoParF * dist1[iPar] + diffEvoParK * dist2[iPar]; 				
 			}
 			proposals.setParameterVector(iPop, proposal);
  		}
