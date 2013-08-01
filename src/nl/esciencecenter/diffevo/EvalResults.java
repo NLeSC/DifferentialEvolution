@@ -40,10 +40,9 @@ public class EvalResults {
 		return this.sampleList;
 	}
 	
-	public Sample EvalResult(int index) {
+	public Sample getSample(int index) {
 		return this.sampleList.get(index);
 	}
-
 	
 	public double[] getParameterVector(int index) {
 		return this.sampleList.get(index).getParameterVector();
