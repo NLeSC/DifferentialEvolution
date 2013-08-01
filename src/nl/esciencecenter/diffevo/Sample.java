@@ -46,7 +46,7 @@ public class Sample {
 	}
 
 	public double[] getParameterVector() {
-		return parameterVector;
+		return parameterVector.clone();
 	}
 
 	public void setParameterVector(double[] parameterVector) {
