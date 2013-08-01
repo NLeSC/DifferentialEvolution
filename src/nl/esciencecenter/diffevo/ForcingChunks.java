@@ -29,7 +29,7 @@ public class ForcingChunks {
 	// constructor
 	public ForcingChunks(double[] forcing, boolean[] assimilate){
 		
-		this.forcing = forcing;
+		this.forcing = forcing.clone();
 		this.nTimes =  forcing.length;
 		
 		assimilate[0] = false;
