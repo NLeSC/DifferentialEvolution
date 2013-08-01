@@ -273,7 +273,7 @@ public class DiffEvo {
 				System.out.printf("%10.4g ",parameterVector[iPar]);
 			}
 			System.out.printf("%10.4f ",objScore);
-			System.out.printf(" \n");
+			System.out.printf(" %n");
 		}
 	}
 
@@ -306,7 +306,7 @@ public class DiffEvo {
 			for (int iDim=0;iDim<nDims;iDim++){
 				s = s + String.format("%20.20g ",parameterVector[iDim]);
 			}
-			s = s + String.format("%20.20g\n", objScore);
+			s = s + String.format("%20.20g%n", objScore);
 			stringBuilder.append(s);
 		}
 		String string = stringBuilder.toString();
