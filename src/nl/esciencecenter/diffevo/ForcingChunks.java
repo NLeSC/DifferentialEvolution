@@ -22,7 +22,6 @@ package nl.esciencecenter.diffevo;
 public class ForcingChunks {
 
 	private double[] forcing;
-	private int nTimes; 
 	private int[][] chunkIndices;
 	private int nChunks;
 	
@@ -30,9 +29,8 @@ public class ForcingChunks {
 	public ForcingChunks(double[] forcing, boolean[] assimilate){
 		
 		this.forcing = forcing.clone();
-		this.nTimes =  forcing.length;
-		
 		assimilate[0] = false;
+		int nTimes =  forcing.length;
 		for (int iTime=0;iTime<nTimes;iTime++){
 			if (assimilate[iTime]){
 				this.nChunks = this.nChunks + 1;
