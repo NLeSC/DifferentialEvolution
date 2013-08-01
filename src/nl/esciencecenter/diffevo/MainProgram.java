@@ -53,7 +53,6 @@ public class MainProgram {
 			switch (modelSwitch){
 			case 1:{
 				//DoubleNormalModel
-				System.out.println("DoubleNormalModel will be optimized");
 				nGens = 300;
 				nPop = 50;
 
@@ -68,7 +67,6 @@ public class MainProgram {
 			}//case 1
 			case 2:{
 				//LinearDynamicModel
-				System.out.println("LinearDynamicModel will be optimized");			
 				nGens = 300;
 				nPop = 50;
 				lowerBounds = new double[]{110};
@@ -81,7 +79,6 @@ public class MainProgram {
 			} // case 2
 			case 3:{
 				//RastriginModel
-				System.out.println("RastriginModel will be optimized");
 				nGens = 300;
 				nPop = 50;
 				lowerBounds = new double[]{-5.12,-5.12};
@@ -95,7 +92,6 @@ public class MainProgram {
 			} //case 3
 			case 4:{
 				//RosenbrockModel
-				System.out.println("RosenbrockModel will be optimized");
 				nGens = 300;
 				nPop = 50;
 				lowerBounds = new double[]{-50,-40};
@@ -109,7 +105,6 @@ public class MainProgram {
 			} // case 4
 			case 5:{
 				//SingleNormalModel
-				System.out.println("SingleNormalModel will be optimized");
 				nGens = 300;
 				nPop = 50;
 				lowerBounds = new double[]{-50};
@@ -123,7 +118,6 @@ public class MainProgram {
 			} // case 5
 			case 6:{
 				//CubicModel
-				System.out.println("CubicModel will be optimized");
 				nGens = 300;
 				nPop = 50;
 				lowerBounds = new double[]{-20,-40,-80,-120};
@@ -137,7 +131,6 @@ public class MainProgram {
 			} // case 6
 			case 7:{
 				//LinearDynamicStateSpaceModel
-				System.out.println("LinearDynamicStateSpaceModel will be optimized");			
 				nGens = 300;
 				nPop = 50;
 				initState = new double[] {30};
@@ -218,9 +211,6 @@ public class MainProgram {
 				diffEvo.matrixOfHeatmapParPar();
 			}
 			diffEvo.margHist();
-			
-			System.out.println("Done.");
-
 			
 		} // int modelSwitch
 	} // main
