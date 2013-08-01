@@ -75,7 +75,6 @@ public class DiffEvo {
 	private final int nPars;
 	private final int nPop;
 	private final int nGens;
-	private final int objCol;
 	private Parents parents;
 	private Proposals proposals;
 	private EvalResults evalResults;
@@ -96,7 +95,6 @@ public class DiffEvo {
 		this.parSpace = parSpace;
 		this.modelName = likelihoodFunctionFactory.getClass().getSimpleName().toString();
 		this.nPars = parSpace.getNumberOfPars();
-		this.objCol = 1 + this.nPars + 1;
 		this.parents = new Parents(nPop,parSpace);
 		this.proposals = new Proposals(nPop,parSpace);
 		this.evalResults = new EvalResults();
@@ -121,7 +119,6 @@ public class DiffEvo {
 			this.modelName = likelihoodFunctionFactory.getClass().getSimpleName().toString();
 		}
 		this.nPars = parSpace.getNumberOfPars();
-		this.objCol = 1 + this.nPars + 1;
 		this.parents = new Parents(nPop,parSpace);
 		this.proposals = new Proposals(nPop,parSpace);
 		this.evalResults = new EvalResults();

@@ -75,8 +75,8 @@ public class MainProgram {
 				upperBounds = new double[]{180};
 				parNames = new String[]{"resistance"};
 				parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
-				modelFactory = null;
 				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionLinearDynamicModelFactory();
+				diffEvo = new DiffEvo(nGens, nPop, parSpace, likelihoodFunctionFactory);
 				break; 
 			} // case 2
 			case 3:{
@@ -89,8 +89,8 @@ public class MainProgram {
 				parNames = new String[]{"p1","p2"};
 				parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
 				parSpace.divideIntoIntervals(200);
-				modelFactory = null;
 				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionRastriginModelFactory();
+				diffEvo = new DiffEvo(nGens, nPop, parSpace, likelihoodFunctionFactory);
 				break; 
 			} //case 3
 			case 4:{
@@ -103,8 +103,8 @@ public class MainProgram {
 				parNames = new String[]{"p1","p2"};
 				parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
 				parSpace.divideIntoIntervals(500);
-				modelFactory = null;
 				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionRosenbrockModelFactory();
+				diffEvo = new DiffEvo(nGens, nPop, parSpace, likelihoodFunctionFactory);
 				break; 
 			} // case 4
 			case 5:{
@@ -117,8 +117,8 @@ public class MainProgram {
 				parNames = new String[]{"theta"};
 				parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
 				parSpace.divideIntoIntervals(50);
-				modelFactory = null;				
 				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionSingleNormalModelFactory();
+				diffEvo = new DiffEvo(nGens, nPop, parSpace, likelihoodFunctionFactory);
 				break; 
 			} // case 5
 			case 6:{
@@ -131,8 +131,8 @@ public class MainProgram {
 				parNames = new String[]{"a","b","c","d"};
 				parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
 				parSpace.divideIntoIntervals(new int[]{50,50,50,50});
-				modelFactory = null;
 				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionCubicModelFactory();
+				diffEvo = new DiffEvo(nGens, nPop, parSpace, likelihoodFunctionFactory);
 				break; 
 			} // case 6
 			case 7:{
@@ -202,11 +202,11 @@ public class MainProgram {
 				}
 				modelFactory = (ModelFactory) new LinearDynamicStateSpaceModelFactory();
 				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionSSRFactory();
+				diffEvo = new DiffEvo(nGens, nPop, parSpace, initState, forcing, times, assimilate, obs, modelFactory, likelihoodFunctionFactory);
 				break; 
  			} // case 7
 			} //switch
-
-			//DiffEvo diffEvo = new DiffEvo(nGens, nPop, parSpace, initState, forcing, times, assimilate, obs, modelFactory, likelihoodFunctionFactory);
+			
 			diffEvo.start();
 			
 			diffEvo.printEvalResults();
