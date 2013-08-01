@@ -22,11 +22,7 @@ package nl.esciencecenter.diffevo.likelihoodfunctions;
 public class LikelihoodFunctionSSR implements LikelihoodFunction {
 
 	
-	public LikelihoodFunctionSSR(double[][] obs, double[][] sim){
-	}
-	
-	public LikelihoodFunctionSSR() {
-		// TODO Auto-generated constructor stub
+	public LikelihoodFunctionSSR(){
 	}
 
 	public String getName(){
