@@ -108,7 +108,7 @@ public class LikelihoodFunctionLinearDynamicModel implements LikelihoodFunction 
 		}
 
 		//time = priorTimes[iPrior];
-		flow = -state[0]/resistance;
+		//flow = -state[0]/resistance;
 		//System.out.printf("%10.4f %10.4f %10.4f\n", time,state[0],Double.NaN);			
 		
 		return simulated; 
