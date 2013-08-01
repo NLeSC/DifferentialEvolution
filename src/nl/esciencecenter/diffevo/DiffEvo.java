@@ -137,7 +137,6 @@ public class DiffEvo {
 		double[] parameterVector;
 		double objScore;
 		
-//		System.out.println("initializing parents array");
 		parents.takeUniformRandomSamples(generator);
 		parents.calcObjScore(obs, initState,forcingChunks,timeChunks,modelFactory, likelihoodFunctionFactory);
 		
@@ -154,12 +153,11 @@ public class DiffEvo {
 	}
 	
 	public void proposeOffSpring(){
-//		System.out.println("proposing offspring");
-		
+	
 		final int nDraws = 3;
 		final double F = 0.6;
 		final double K = 0.4;
-		int[] availables = new int[nDraws]; // should maybe be called inside the loop?
+		int[] availables = new int[nDraws];
 		boolean drawAgain = true;
 		int index;
 		double[] dist1;
@@ -181,7 +179,6 @@ public class DiffEvo {
 				}
 				availables[iDraw] = index;
 			}
-//			System.out.println(iPop+": ["+availables[0]+","+availables[1]+","+availables[2]+"]");
 			
 			dist1 = calcDistance(iPop, availables, 1);
 			dist2 = calcDistance(iPop, availables, 2);
@@ -213,7 +210,6 @@ public class DiffEvo {
 			fromIndex = availables[1];
 			toIndex = availables[2];
 		}
-//		System.out.println("calculating distance vector between two parents "+fromIndex+" and "+toIndex);
 		
 		fromPoint = parents.getParameterVector(fromIndex);
 		toPoint = parents.getParameterVector(toIndex);
@@ -228,7 +224,6 @@ public class DiffEvo {
 	}
 
 	public void updateParentsWithProposals(){
-//		System.out.println("accepting or rejecting proposals");
 		double scoreParent;
 		double scoreProposal;
 		int nModelEvals = evalResults.size();
@@ -275,7 +270,6 @@ public class DiffEvo {
 			sampleCounter = evalResults.getSampleCounter(iResult);
 			parameterVector = evalResults.getParameterVector(iResult);
 			objScore = evalResults.getObjScore(iResult);
-			//System.out.printf("%6d: [ ",iResult);
 			System.out.printf("%6d ",sampleCounter);
 			for (int iPar=0;iPar<nPars;iPar++){
 				System.out.printf("%10.4g ",parameterVector[iPar]);
@@ -418,10 +412,6 @@ public class DiffEvo {
 		double objScore;
 
 		StringBuilder stringBuild = new StringBuilder();
-//		stringBuild.append("<!-- attributes overview: -->\n");
-//		stringBuild.append("<!-- s: sample identifier -->\n");
-//		stringBuild.append("<!-- p: parameter vector -->\n");
-//		stringBuild.append("<!-- o: objective score -->\n");
 		stringBuild.append("[\n");
 		
 		
@@ -620,8 +610,6 @@ public class DiffEvo {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);        
         
-//        RefineryUtilities.centerFrameOnScreen(frame);
-        
 	}
 
 	private XYDataset createDatasetEvalObj(){
@@ -764,9 +752,7 @@ public class DiffEvo {
 
         frame.setSize(preferredSize.width, preferredSize.height);
         frame.setLocationRelativeTo(null);
-        frame.setVisible(true);        
-		
-		
+        frame.setVisible(true); 
 	}
 
 	
@@ -1069,14 +1055,6 @@ public class DiffEvo {
 	private String getModelName(){
 		return modelName;
 	}
-	
-	
-	/* 
-	 * * * * * * * * * * * * * * * * * * * * * * * *  
-	 * SETTERS
-	 * * * * * * * * * * * * * * * * * * * * * * * * 
-	 */
-
 	
 
 	
