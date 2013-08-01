@@ -98,7 +98,7 @@ public class DiffEvo {
 		this.nPop = nPop;
 		this.parSpace = parSpace;
 		if (modelFactory!=null){
-			this.initState = initState;
+			this.initState = initState.clone();
 			this.forcingChunks = new ForcingChunks(forcing, assimilate);
 			this.timeChunks = new TimeChunks(times, assimilate);
 			this.modelName = modelFactory.getClass().getSimpleName().toString();
@@ -118,7 +118,7 @@ public class DiffEvo {
 		this.evalResults = new EvalResults();
 		this.generator = new Random();
 		this.generator.setSeed(0);
-		this.obs = obs;
+		this.obs = obs.clone();
 		this.modelFactory = modelFactory;
 		this.likelihoodFunctionFactory = likelihoodFunctionFactory;
 		}
