@@ -75,7 +75,6 @@ public class LikelihoodFunctionLinearDynamicModel implements LikelihoodFunction 
 		for (int iObs = 0;iObs<nObs-1;iObs++){
 			sumOfSquaredResiduals = sumOfSquaredResiduals + Math.pow(observed[iObs]-simulated[iObs], 2);
 		}
-		//System.out.printf("%10.4f\n\n", sumOfSquaredResiduals);
 		return sumOfSquaredResiduals; 
 	}
 			
@@ -85,7 +84,6 @@ public class LikelihoodFunctionLinearDynamicModel implements LikelihoodFunction 
 		int nPriors = priorTimes.length;
 		int iPrior = 0;
 		double resistance = parameterVector[0];
-		//double time;
 		double timeStep;
 		double flow;
 		
@@ -93,23 +91,15 @@ public class LikelihoodFunctionLinearDynamicModel implements LikelihoodFunction 
 		state[0] = initialState[0];
 		simulated[iPrior] = initialState[0];
 		
-		//System.out.printf("%10.4f\n", parameterVector[0]);
-		
 		for (;iPrior<nPriors-1;iPrior++){
 			
-			//time = priorTimes[iPrior];
 			timeStep = priorTimes[iPrior+1]-priorTimes[iPrior];
 			flow = -state[0]/resistance;
-			//System.out.printf("%10.4f %10.4f %10.4f\n", time,state[0],flow);	
 			
 			state[0] = state[0] + flow * timeStep;
 			simulated[iPrior+1] = state[0];
 			
 		}
-
-		//time = priorTimes[iPrior];
-		//flow = -state[0]/resistance;
-		//System.out.printf("%10.4f %10.4f %10.4f\n", time,state[0],Double.NaN);			
 		
 		return simulated; 
 	}
