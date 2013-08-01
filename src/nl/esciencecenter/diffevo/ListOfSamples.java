@@ -124,6 +124,9 @@ public class ListOfSamples {
 	} // calcObjScore()
 
 
+	public int getSize(){
+		return sampleList.size();
+	}
 
 }
 
