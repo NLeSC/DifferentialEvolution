@@ -24,7 +24,7 @@ public class ParameterVector {
 	private double[] values;
 	
 	public double[] getValues() {
-		return values;
+		return values.clone();
 	}
 
 	public void setValues(double[] values) {
