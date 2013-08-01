@@ -28,7 +28,7 @@ public class ParameterVector {
 	}
 
 	public void setValues(double[] values) {
-		this.values = values;
+		this.values = values.clone();
 	}
 	
 	public ParameterVector(ParSpace parSpace){		
