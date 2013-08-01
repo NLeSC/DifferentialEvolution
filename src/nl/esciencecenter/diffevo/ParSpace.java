@@ -37,9 +37,10 @@ public class ParSpace {
 		this.upperBounds = upperBounds.clone();
 		this.parNames = parNames.clone();
 		this.setNumberOfPars(lowerBounds.length);
+		nPars = getNumberOfPars();
 		
-		double[] resolutions = new double[getNumberOfPars()];
-		double[] range = new double[getNumberOfPars()]; 
+		double[] resolutions = new double[nPars];
+		double[] range = new double[nPars]; 
 	
 		for (int iPar=0;iPar<getNumberOfPars();iPar++){
 			range[iPar] = upperBounds[iPar] - lowerBounds[iPar];
