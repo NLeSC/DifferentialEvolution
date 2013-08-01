@@ -33,18 +33,16 @@ public class TimeChunks {
 		this.nTimes =  times.length;
 		
 		assimilate[0] = false;
-		int nChunks = 0;
+		
 		for (int iTime=0;iTime<nTimes;iTime++){
 			if (assimilate[iTime]){
-				nChunks = nChunks + 1;
+				this.nChunks = this.nChunks + 1;
 			}
 		}
-		this.nChunks = nChunks;
 		
 		int iIndexStart = 0;
 		int iIndexEnd = 0;
 		int iChunk = 0;
-		int[][] chunkIndices = new int[nChunks][];
 		for (int iTime=0;iTime<nTimes;iTime++){
 			iIndexEnd = iTime;			
 			if (assimilate[iTime]){
@@ -53,13 +51,11 @@ public class TimeChunks {
 				for (int iIndex=iIndexStart;iIndex<=iIndexEnd;iIndex++){
 					tmp[iIndex-iIndexStart] = iIndex;
 				}
-				chunkIndices[iChunk] = tmp;
+				this.chunkIndices[iChunk] = tmp;
 				iChunk = iChunk + 1;
 				iIndexStart = iIndexEnd;
 			}
 		}
-		this.chunkIndices = chunkIndices;
-		
 	}
 	
 	public double[] getTimes(){
