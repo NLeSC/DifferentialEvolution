@@ -93,7 +93,6 @@ public class ListOfSamples {
 					double[] forcing = forcingChunks.getChunk(iChunk);
 					int[] indices = timeChunks.getChunkIndices(iChunk);
 					int nIndices = indices.length;
-					//double[][] simChunk = new double[nStates][nIndices];
 
 					Model model = modelFactory.create(state, parameterVector, forcing, times);
 					double[][] simChunk = model.evaluate();
