@@ -23,11 +23,11 @@ import java.util.ArrayList;
 
 public class ParSpace {
 	
-	private double[] lowerBounds;
-	private double[] upperBounds;
-	private double[] range;	
-	private String[] parNames;
-	private int nPars;
+	private final double[] lowerBounds;
+	private final double[] upperBounds;
+	private final double[] range;	
+	private final String[] parNames;
+	private final int nPars;
 	private ArrayList<double[]> binBoundsAll = new ArrayList<double[]>();
 	private double[] resolutions;
 
@@ -36,9 +36,7 @@ public class ParSpace {
 		this.lowerBounds = lowerBounds.clone();
 		this.upperBounds = upperBounds.clone();
 		this.parNames = parNames.clone();
-		this.setNumberOfPars(lowerBounds.length);
-		nPars = getNumberOfPars();
-		
+		this.nPars = lowerBounds.length;
 		double[] resolutions = new double[nPars];
 		double[] range = new double[nPars]; 
 	
@@ -58,11 +56,6 @@ public class ParSpace {
 		return nPars;
 	}
 
-	private void setNumberOfPars(int nPars) {
-		this.nPars = nPars;
-	}
-
-	
 	public double getLowerBound(int index) {
 		return lowerBounds[index];
 	}
@@ -75,11 +68,9 @@ public class ParSpace {
 		return range[index];
 	}
 
-
 	public String getParName(int index) {
 		return parNames[index];
 	}
-	
 	
 	public void divideIntoIntervals(int nIntervals){
 		int[] tmp = new int[nPars];		
