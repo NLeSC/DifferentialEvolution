@@ -33,18 +33,16 @@ public class ForcingChunks {
 		this.nTimes =  forcing.length;
 		
 		assimilate[0] = false;
-		int nChunks = 0;
 		for (int iTime=0;iTime<nTimes;iTime++){
 			if (assimilate[iTime]){
-				nChunks = nChunks + 1;
+				this.nChunks = this.nChunks + 1;
 			}
 		}
-		this.nChunks = nChunks;
-		
+	
 		int iIndexStart = 0;
 		int iIndexEnd = 0;
 		int iChunk = 0;
-		int[][] chunkIndices = new int[nChunks][];
+		this.chunkIndices = new int[nChunks][];
 		for (int iTime=0;iTime<nTimes;iTime++){
 			iIndexEnd = iTime;			
 			if (assimilate[iTime]){
@@ -53,13 +51,11 @@ public class ForcingChunks {
 				for (int iIndex=iIndexStart;iIndex<=iIndexEnd;iIndex++){
 					tmp[iIndex-iIndexStart] = iIndex;
 				}
-				chunkIndices[iChunk] = tmp;
+				this.chunkIndices[iChunk] = tmp;
 				iChunk = iChunk + 1;
 				iIndexStart = iIndexEnd;
 			}
 		}
-		this.chunkIndices = chunkIndices;
-		
 	}
 	
 	public double[] getForcing(){
@@ -79,11 +75,10 @@ public class ForcingChunks {
 	}
 	
 	public double[] getChunk(int iChunk){
-		int[] chunkIndices = getChunkIndices(iChunk);
-		int chunkSize = chunkIndices.length;
+		int chunkSize = chunkIndices[iChunk].length;
 		double[] forcingChunk = new double[chunkSize];
 		for (int k=0;k<chunkSize;k++){
-			forcingChunk[k] = forcing[chunkIndices[k]]; 
+			forcingChunk[k] = forcing[chunkIndices[iChunk][k]]; 
 		}
 		return forcingChunk;
 	}
