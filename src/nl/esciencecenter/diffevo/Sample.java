@@ -50,7 +50,7 @@ public class Sample {
 	}
 
 	public void setParameterVector(double[] parameterVector) {
-		this.parameterVector = parameterVector;
+		this.parameterVector = parameterVector.clone();
 	}
 
 	public int getSampleCounter() {
