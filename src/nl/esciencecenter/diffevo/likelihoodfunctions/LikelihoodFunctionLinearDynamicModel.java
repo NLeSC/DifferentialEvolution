@@ -71,7 +71,6 @@ public class LikelihoodFunctionLinearDynamicModel implements LikelihoodFunction 
 	
 	private double calcSumOfSquaredResiduals(double[] observed,double[] simulated){
 		double sumOfSquaredResiduals = 0.0;
-		int nObs = observed.length;
 		for (int iObs = 0;iObs<nObs-1;iObs++){
 			sumOfSquaredResiduals = sumOfSquaredResiduals + Math.pow(observed[iObs]-simulated[iObs], 2);
 		}
