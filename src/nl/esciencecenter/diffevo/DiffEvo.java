@@ -87,6 +87,9 @@ public class DiffEvo {
 	private ModelFactory modelFactory;
 	private String modelName;
 	private LikelihoodFunctionFactory likelihoodFunctionFactory;
+	private Font tickFont;
+	private Font labelFont;
+	
 	
 	// constructor:
 	DiffEvo(int nGens, int nPop, ParSpace parSpace, LikelihoodFunctionFactory likelihoodFunctionFactory) {
@@ -101,6 +104,9 @@ public class DiffEvo {
 		this.generator = new Random();
 		this.generator.setSeed(0);
 		this.likelihoodFunctionFactory = likelihoodFunctionFactory;
+		this.tickFont = new Font("Ubuntu",Font.ROMAN_BASELINE,14);
+		this.labelFont = new Font("Ubuntu",Font.ROMAN_BASELINE,20);
+
 		}
 	
 	// constructor:
@@ -540,8 +546,6 @@ public class DiffEvo {
 	private void scatter(XYDataset data,String figureName, Color markerFillColor, String xAxisLabel, 
 			String yAxisLabel, Boolean showLegend, Boolean showTooltips){
 		
-		Font tickFont = new Font("Ubuntu",Font.ROMAN_BASELINE,14);
-		Font labelFont = new Font("Ubuntu",Font.ROMAN_BASELINE,20);
 		RectangleInsets padding = new RectangleInsets(50,50,50,50); // TLBR in px
 		
 		Rectangle marker = new Rectangle(-3,-3,6,6);
@@ -644,8 +648,6 @@ public class DiffEvo {
 	
 	public void matrixOfScatterParPar(){
 		
-		Font tickFont = new Font("Ubuntu",Font.ROMAN_BASELINE,14);
-		Font labelFont = new Font("Ubuntu",Font.ROMAN_BASELINE,20);
 		RectangleInsets padding = new RectangleInsets(10,10,10,10); // TLBR in px
 		java.awt.Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		java.awt.Dimension defaultWindowSize = new java.awt.Dimension();
@@ -759,8 +761,6 @@ public class DiffEvo {
 	
 	public void matrixOfHeatmapParPar(){
 		
-		Font tickFont = new Font("Ubuntu",Font.ROMAN_BASELINE,14);
-		Font labelFont = new Font("Ubuntu",Font.ROMAN_BASELINE,20);
 		RectangleInsets padding = new RectangleInsets(0,0,0,0); // TLBR in px
 		java.awt.Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		java.awt.Dimension defaultWindowSize = new java.awt.Dimension();
@@ -918,9 +918,6 @@ public class DiffEvo {
 	
 	public void margHist(){
 		
-		
-		Font tickFont = new Font("Ubuntu",Font.ROMAN_BASELINE,14);
-		Font labelFont = new Font("Ubuntu",Font.ROMAN_BASELINE,20);
 		RectangleInsets padding = new RectangleInsets(10,50,10,50); // TLBR in px
 		
 		java.awt.Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
