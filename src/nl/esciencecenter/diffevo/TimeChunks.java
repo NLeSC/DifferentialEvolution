@@ -29,7 +29,7 @@ public class TimeChunks {
 	// constructor
 	public TimeChunks(double[] times, boolean[] assimilate){
 		
-		this.times = times;
+		this.times = times.clone();
 		this.nTimes =  times.length;
 		
 		assimilate[0] = false;
