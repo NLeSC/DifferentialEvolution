@@ -30,9 +30,9 @@ public class Proposals extends ListOfSamples{
 	
 	public void reflectIfOutOfBounds(){
 		for (int iPop=0;iPop<nPop;iPop++){
-			double[] parameterVector = new double[nDims];
+//			double[] parameterVector = new double[nDims];
 			for (int iDim = 0;iDim<nDims;iDim++){
-				parameterVector = getParameterVector(iPop);
+				double[] parameterVector = getParameterVector(iPop);
 				double lb = parSpace.getLowerBound(iDim);
 				double ub = parSpace.getUpperBound(iDim);
 				double s = parameterVector[iDim];
