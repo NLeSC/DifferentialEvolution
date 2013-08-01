@@ -21,8 +21,7 @@ package nl.esciencecenter.diffevo.likelihoodfunctions;
 
 public class LikelihoodFunctionRastriginModel implements LikelihoodFunction {
 	private static final double A = 10;
-	private double probabilityDensity;
-	
+
 	public LikelihoodFunctionRastriginModel(){
 		//
 	}
@@ -37,7 +36,7 @@ public class LikelihoodFunctionRastriginModel implements LikelihoodFunction {
         	sum = sum + (Math.pow(x[iDim],2) - A*Math.cos(2*Math.PI*x[iDim]));
         }
 		
-		probabilityDensity = A*nDims + sum; // not a real probability density, just a benchmark function value
+		double probabilityDensity = A*nDims + sum; // not a real probability density, just a benchmark function value
 		return probabilityDensity; 
 	}
 			
