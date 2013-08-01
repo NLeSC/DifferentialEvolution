@@ -27,10 +27,10 @@ public class LinearDynamicStateSpaceModel implements Model {
 	private double[] times;
 	
 	public LinearDynamicStateSpaceModel(double[] initState, double[] parameterVector, double[] forcing, double[] times){
-		this.initState = initState;
-		this.parameterVector = parameterVector;
+		this.initState = initState.clone();
+		this.parameterVector = parameterVector.clone();
 		//this.forcing = forcing;
-		this.times = times;
+		this.times = times.clone();
 	}
 	
 	public String getName(){
