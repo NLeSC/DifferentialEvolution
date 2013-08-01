@@ -238,12 +238,12 @@ public class DiffEvo {
 			scoreProposal = proposals.getObjScore(iPop);
 			logOfUnifRandDraw = Math.log(generator.nextDouble());
 			if (scoreProposal-scoreParent >= logOfUnifRandDraw){
-				// accept proposals[iPop];
+				// accept proposal
 				parameterVector = proposals.getParameterVector(iPop);
 				objScore = proposals.getObjScore(iPop);
 			}
 			else{
-				// reject proposals[iPop];
+				// reject proposal
 				parameterVector = parents.getParameterVector(iPop);
 				objScore = parents.getObjScore(iPop);
 			}
@@ -933,7 +933,7 @@ public class DiffEvo {
 		boolean showURLs = false;
 		boolean showLegend = false;
 		Color barFillColor = new Color(255,128, 0);
-		Color barOutlineColor = Color.BLACK;//new Color(255,128, 0);
+		Color barOutlineColor = Color.BLACK;
 
 		JFrame frame = new JFrame(getModelName()+" // margHist // "+getName());
         frame.setLayout(new GridLayout(nPars,1));
