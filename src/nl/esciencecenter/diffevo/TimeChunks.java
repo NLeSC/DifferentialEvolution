@@ -36,13 +36,14 @@ public class TimeChunks {
 		
 		for (int iTime=0;iTime<nTimes;iTime++){
 			if (assimilate[iTime]){
-				this.nChunks = this.nChunks + 1;
+				this.nChunks = nChunks + 1;
 			}
 		}
 		
 		int iIndexStart = 0;
 		int iIndexEnd = 0;
 		int iChunk = 0;
+		this.chunkIndices = new int[nChunks][];
 		for (int iTime=0;iTime<nTimes;iTime++){
 			iIndexEnd = iTime;			
 			if (assimilate[iTime]){
@@ -79,11 +80,10 @@ public class TimeChunks {
 	}
 	
 	public double[] getChunk(int iChunk){
-		int[] chunkIndices = getChunkIndices(iChunk);
-		int chunkSize = chunkIndices.length;
+		int chunkSize = chunkIndices[iChunk].length;
 		double[] timesChunk = new double[chunkSize];
 		for (int k=0;k<chunkSize;k++){
-			timesChunk[k] = times[chunkIndices[k]]; 
+			timesChunk[k] = times[chunkIndices[iChunk][k]]; 
 		}
 		return timesChunk.clone();
 	}
