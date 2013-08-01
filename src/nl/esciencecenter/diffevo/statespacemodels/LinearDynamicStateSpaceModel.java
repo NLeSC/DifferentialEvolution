@@ -23,13 +23,11 @@ public class LinearDynamicStateSpaceModel implements Model {
 
 	private double[] initState;
 	private double[] parameterVector;
-	//private double[] forcing;
 	private double[] times;
 	
 	public LinearDynamicStateSpaceModel(double[] initState, double[] parameterVector, double[] forcing, double[] times){
 		this.initState = initState.clone();
 		this.parameterVector = parameterVector.clone();
-		//this.forcing = forcing;
 		this.times = times.clone();
 	}
 	
@@ -53,8 +51,6 @@ public class LinearDynamicStateSpaceModel implements Model {
 		
 		state[0] = initState[0];
 		simulated[0][0] = initState[0];
-		
-		//System.out.printf("%10.4f\n", parameterVector[0]);
 		
 		for (int iTime=0;iTime<nTimes-1;iTime++){
 			
