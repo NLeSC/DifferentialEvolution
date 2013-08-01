@@ -2,6 +2,8 @@ package nl.esciencecenter.diffevo;
 
 import static org.junit.Assert.*;
 
+import nl.esciencecenter.diffevo.TimeChunks;
+
 import org.junit.Test;
 
 public class TimeChunksTest {
