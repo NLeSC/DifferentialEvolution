@@ -41,7 +41,7 @@ public class ParSpace {
 		this.resolutions = new double[nPars];
 		double[] range = new double[nPars]; 
 	
-		for (int iPar=0;iPar<getNumberOfPars();iPar++){
+		for (int iPar=0;iPar<nPars;iPar++){
 			range[iPar] = upperBounds[iPar] - lowerBounds[iPar];
 			this.resolutions[iPar] = 0;
 		}
