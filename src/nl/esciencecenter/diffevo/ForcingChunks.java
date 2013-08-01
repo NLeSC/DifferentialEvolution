@@ -63,7 +63,7 @@ public class ForcingChunks {
 	}
 	
 	public double[] getForcing(){
-		return forcing;
+		return forcing.clone();
 	}
 
 	public int getnChunks(){
@@ -71,7 +71,7 @@ public class ForcingChunks {
 	}
 	
 	public int[][] getChunkIndices(){
-		return chunkIndices;
+		return chunkIndices.clone();
 	}
 
 	public int[] getChunkIndices(int iChunk){
