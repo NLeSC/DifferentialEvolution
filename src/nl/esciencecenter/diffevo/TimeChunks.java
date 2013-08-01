@@ -63,7 +63,7 @@ public class TimeChunks {
 	}
 	
 	public double[] getTimes(){
-		return times;
+		return times.clone();
 	}
 	
 	public int getnTimes(){
@@ -75,11 +75,11 @@ public class TimeChunks {
 	}
 	
 	public int[][] getChunkIndices(){
-		return chunkIndices;
+		return chunkIndices.clone();
 	}
 
 	public int[] getChunkIndices(int iChunk){
-		return chunkIndices[iChunk];
+		return chunkIndices[iChunk].clone();
 	}
 	
 	public double[] getChunk(int iChunk){
@@ -89,7 +89,7 @@ public class TimeChunks {
 		for (int k=0;k<chunkSize;k++){
 			timesChunk[k] = times[chunkIndices[k]]; 
 		}
-		return timesChunk;
+		return timesChunk.clone();
 	}
 }
 
