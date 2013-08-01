@@ -80,10 +80,9 @@ public class ListOfSamples {
 
 			for (int iPop=0;iPop<nPop;iPop++){
 				double[] parameterVector = getParameterVector(iPop);
-				double[] state = new double[nStates];
-				for (int iState=0;iState<nStates;iState++){
-					state[iState] = initState[iState];
-				}
+				double[] state = new double[initState.length];
+				System.arraycopy(initState, 0, state, 0, nStates);
+				
 				double[][] sim = new double[nStates][nTimes];
 				for (int iState=0;iState<nStates;iState++){
 					sim[iState][0] = Double.NaN;
