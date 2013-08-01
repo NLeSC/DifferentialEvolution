@@ -46,6 +46,8 @@ public class MainProgram {
 		double[][] obs = null;
 		ModelFactory modelFactory = null;
 		LikelihoodFunctionFactory likelihoodFunctionFactory = null;
+		DiffEvo diffEvo = null;
+		
 		for (int modelSwitch = 1;modelSwitch<8;modelSwitch++){
 
 			switch (modelSwitch){
@@ -60,8 +62,8 @@ public class MainProgram {
 				parNames = new String[]{"theta"};
 				parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
 				parSpace.divideIntoIntervals(50);
-				modelFactory = null;
 				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionDoubleNormalModelFactory();
+				diffEvo = new DiffEvo(nGens, nPop, parSpace, likelihoodFunctionFactory);
 				break;
 			}//case 1
 			case 2:{
@@ -204,7 +206,7 @@ public class MainProgram {
  			} // case 7
 			} //switch
 
-			DiffEvo diffEvo = new DiffEvo(nGens, nPop, parSpace, initState, forcing, times, assimilate, obs, modelFactory, likelihoodFunctionFactory);
+			//DiffEvo diffEvo = new DiffEvo(nGens, nPop, parSpace, initState, forcing, times, assimilate, obs, modelFactory, likelihoodFunctionFactory);
 			diffEvo.start();
 			
 			diffEvo.printEvalResults();

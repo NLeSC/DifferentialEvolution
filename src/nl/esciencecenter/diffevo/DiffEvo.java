@@ -75,8 +75,6 @@ public class DiffEvo {
 	private final int nPars;
 	private final int nPop;
 	private final int nGens;
-	private final int idCol;
-	private final int[] parCols;
 	private final int objCol;
 	private Parents parents;
 	private Proposals proposals;
@@ -90,6 +88,22 @@ public class DiffEvo {
 	private ModelFactory modelFactory;
 	private String modelName;
 	private LikelihoodFunctionFactory likelihoodFunctionFactory;
+	
+	// constructor:
+	DiffEvo(int nGens, int nPop, ParSpace parSpace, LikelihoodFunctionFactory likelihoodFunctionFactory) {
+		this.nGens = nGens;
+		this.nPop = nPop;
+		this.parSpace = parSpace;
+		this.modelName = likelihoodFunctionFactory.getClass().getSimpleName().toString();
+		this.nPars = parSpace.getNumberOfPars();
+		this.objCol = 1 + this.nPars + 1;
+		this.parents = new Parents(nPop,parSpace);
+		this.proposals = new Proposals(nPop,parSpace);
+		this.evalResults = new EvalResults();
+		this.generator = new Random();
+		this.generator.setSeed(0);
+		this.likelihoodFunctionFactory = likelihoodFunctionFactory;
+		}
 	
 	// constructor:
 	DiffEvo(int nGens, int nPop, ParSpace parSpace, double[] initState, double[] forcing, double[] times, 
@@ -107,11 +121,6 @@ public class DiffEvo {
 			this.modelName = likelihoodFunctionFactory.getClass().getSimpleName().toString();
 		}
 		this.nPars = parSpace.getNumberOfPars();
-		this.idCol = 1;
-		this.parCols = new int[nPars]; 
-		for (int iPar = 1; iPar <= this.nPars; iPar++) {
-			this.parCols[iPar-1] = this.idCol + iPar;
-		}
 		this.objCol = 1 + this.nPars + 1;
 		this.parents = new Parents(nPop,parSpace);
 		this.proposals = new Proposals(nPop,parSpace);
@@ -122,7 +131,9 @@ public class DiffEvo {
 		this.modelFactory = modelFactory;
 		this.likelihoodFunctionFactory = likelihoodFunctionFactory;
 		}
-
+	
+	
+	
 	public void initializeParents(){
 		int nModelEvals = 0;
 		Sample sample;
@@ -1039,10 +1050,6 @@ public class DiffEvo {
 	 * GETTERS
 	 * * * * * * * * * * * * * * * * * * * * * * * * 
 	 */
-
-	public int getObjCol() {
-		return objCol;
-	}
 
 	public int getnPop() {
 		return nPop;
