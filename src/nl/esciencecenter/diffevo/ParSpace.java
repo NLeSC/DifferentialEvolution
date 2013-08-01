@@ -20,6 +20,7 @@
 package nl.esciencecenter.diffevo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ParSpace {
 	
@@ -28,7 +29,7 @@ public class ParSpace {
 	private final double[] range;	
 	private final String[] parNames;
 	private final int nPars;
-	private ArrayList<double[]> binBoundsAll = new ArrayList<double[]>();
+	private List<double[]> binBoundsAll = new ArrayList<double[]>();
 	private double[] resolutions;
 
 	public ParSpace(double[] lowerBounds, double[] upperBounds, String[] parNames){

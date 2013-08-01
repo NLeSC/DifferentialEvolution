@@ -20,10 +20,11 @@
 package nl.esciencecenter.diffevo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class EvalResults {
 
-	private ArrayList<Sample> sampleList; 
+	private List<Sample> sampleList; 
 	
 	// constructor
 	public EvalResults(){
@@ -35,7 +36,7 @@ public class EvalResults {
 		sampleList.add(sample);
 	}
 	
-	public ArrayList<Sample> getEvalResults() {
+	public List<Sample> getEvalResults() {
 		return this.sampleList;
 	}
 	

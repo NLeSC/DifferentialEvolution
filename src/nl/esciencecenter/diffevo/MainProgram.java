@@ -31,7 +31,7 @@ public class MainProgram {
 	/**
 	 * @param args
 	 */
-	protected static void main(String[] args) {
+	public static void main(String[] args) {
 
 		int nGens = 0;
 		int nPop = 0;

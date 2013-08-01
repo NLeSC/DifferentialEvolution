@@ -20,7 +20,7 @@
 package nl.esciencecenter.diffevo;
 
 import java.util.ArrayList;
-
+import java.util.List;
 
 import nl.esciencecenter.diffevo.likelihoodfunctionfactories.LikelihoodFunctionFactory;
 import nl.esciencecenter.diffevo.likelihoodfunctions.*;
@@ -29,7 +29,7 @@ import nl.esciencecenter.diffevo.statespacemodels.Model;
 
 public class ListOfSamples {
 
-	protected ArrayList<Sample> sampleList; 
+	protected List<Sample> sampleList; 
 	protected int nPop;
 	protected ParSpace parSpace;
 	protected int nDims;

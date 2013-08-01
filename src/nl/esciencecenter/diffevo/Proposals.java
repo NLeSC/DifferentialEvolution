@@ -19,7 +19,7 @@
 
 package nl.esciencecenter.diffevo;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Proposals extends ListOfSamples{
 
@@ -46,7 +46,7 @@ public class Proposals extends ListOfSamples{
 		}
 	}
 
-	public ArrayList<Sample> getProposals() {
+	public List<Sample> getProposals() {
 		return this.sampleList;
 	}
 	

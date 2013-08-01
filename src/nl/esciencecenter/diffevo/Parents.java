@@ -19,7 +19,7 @@
 
 package nl.esciencecenter.diffevo;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Parents extends ListOfSamples {
@@ -43,7 +43,7 @@ public class Parents extends ListOfSamples {
 		}
 	}
 	
-	public ArrayList<Sample> getParents() {
+	public List<Sample> getParents() {
 		return this.sampleList;
 	}
 	
