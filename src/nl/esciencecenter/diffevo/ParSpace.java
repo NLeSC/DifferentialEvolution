@@ -39,13 +39,12 @@ public class ParSpace {
 		this.parNames = parNames.clone();
 		this.nPars = lowerBounds.length;
 		this.resolutions = new double[nPars];
-		double[] range = new double[nPars]; 
+		this.range = new double[nPars]; 
 	
 		for (int iPar=0;iPar<nPars;iPar++){
-			range[iPar] = upperBounds[iPar] - lowerBounds[iPar];
+			this.range[iPar] = upperBounds[iPar] - lowerBounds[iPar];
 			this.resolutions[iPar] = 0;
 		}
-		this.range = range;
 		divideIntoIntervals(5);
 	}
 
