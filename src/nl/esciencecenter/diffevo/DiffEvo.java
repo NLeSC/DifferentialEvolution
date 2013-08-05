@@ -548,7 +548,7 @@ public class DiffEvo {
 	private void scatter(XYDataset data,String figureName, Color markerFillColor, String xAxisLabel, 
 			String yAxisLabel, Boolean showLegend, Boolean showTooltips){
 		
-		RectangleInsets padding = new RectangleInsets(50,50,50,50); // TLBR in px
+		RectangleInsets padding = new RectangleInsets(50,50,50,50);
 		
 		Rectangle marker = new Rectangle(-3,-3,6,6);
 		
@@ -650,7 +650,7 @@ public class DiffEvo {
 	
 	public void matrixOfScatterParPar(){
 		
-		RectangleInsets padding = new RectangleInsets(10,10,10,10); // TLBR in px
+		RectangleInsets padding = new RectangleInsets(10,10,10,10);
 		java.awt.Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		java.awt.Dimension defaultWindowSize = new java.awt.Dimension();
 		defaultWindowSize.width = (int) (screenSize.width*0.8);
@@ -763,7 +763,7 @@ public class DiffEvo {
 	
 	public void matrixOfHeatmapParPar(){
 		
-		RectangleInsets padding = new RectangleInsets(0,0,0,0); // TLBR in px
+		RectangleInsets padding = new RectangleInsets(0,0,0,0);
 		java.awt.Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		java.awt.Dimension defaultWindowSize = new java.awt.Dimension();
 		defaultWindowSize.width = (int) (screenSize.width*0.8);
@@ -782,14 +782,16 @@ public class DiffEvo {
 		JFrame frame = new JFrame(getModelName()+" // matrixOfHeatMap //"+getName());
         frame.setLayout(new GridLayout(nPars-1,nPars-1));
         
-        for (int iRow=0;iRow<nPars-1;iRow++){ //0,1,2
-        	for (int iCol=1;iCol<nPars;iCol++){ // 1,2,3
+        for (int iRow=0;iRow<nPars-1;iRow++){
+        	for (int iCol=1;iCol<nPars;iCol++){
         		
 		        if (iCol>iRow){        		
 
-		        	// Calculate the response surface of parameter parSpace[iRow] and parSpace[iCol] using 
-		        	// parSpace.getResponseSurfaceBinBounds[iRow] and parSpace.getResponseSurfaceBinBounds[iCol]
-
+		        	/*
+		        	Calculate the response surface of parameter parSpace[iRow] and parSpace[iCol] using 
+		        	parSpace.getResponseSurfaceBinBounds[iRow] and parSpace.getResponseSurfaceBinBounds[iCol]
+		        	 */
+		        	
 		        	int[][] responseSurface = calcResponseSurface(iRow, iCol);
 		        	
 		        	int responseSurfaceMin = 0;
@@ -920,7 +922,7 @@ public class DiffEvo {
 	
 	public void margHist(){
 		
-		RectangleInsets padding = new RectangleInsets(10,50,10,50); // TLBR in px
+		RectangleInsets padding = new RectangleInsets(10,50,10,50);
 		
 		java.awt.Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		java.awt.Dimension defaultWindowSize = new java.awt.Dimension();
