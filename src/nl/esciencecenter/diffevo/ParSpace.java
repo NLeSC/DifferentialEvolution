@@ -45,7 +45,8 @@ public class ParSpace {
 			this.range[iPar] = upperBounds[iPar] - lowerBounds[iPar];
 			this.resolutions[iPar] = 0;
 		}
-		divideIntoIntervals(5);
+		int nIntervalsDefault = 5;
+		divideIntoIntervals(nIntervalsDefault);
 	}
 
 
