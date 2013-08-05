@@ -57,7 +57,9 @@ public class LikelihoodFunctionLinearDynamicModel implements LikelihoodFunction 
 		27.129600,27.038800,26.948300,26.858100,26.768200,
 		26.678700,26.589400,26.500400,26.411700,26.323300,
 		26.235200,26.147400,26.059900,25.972700,25.885700,
-		25.799100,25.712800,25.626700,25.540900};	// true state values for parameter = 149.39756262040834
+		25.799100,25.712800,25.626700,25.540900};	
+	
+	// true state values for parameter = 149.39756262040834
 	private static int nObs = observedTrue.length;
 	private static double[] observed = new double[nObs];	
 	private Random generator = new Random();
