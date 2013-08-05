@@ -51,7 +51,6 @@ public class LikelihoodFunctionSingleNormalModel implements LikelihoodFunction {
 
 	@Override
 	public double evaluate(double[] parameterVector) {
-		// TODO Auto-generated method stub
 		double objScore;
 		probabilityDensity = calcProbabilityDensity(parameterVector);
 		objScore = Math.log(probabilityDensity);

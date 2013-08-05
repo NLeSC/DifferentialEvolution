@@ -117,7 +117,6 @@ public class LikelihoodFunctionLinearDynamicModel implements LikelihoodFunction 
 
 	@Override
 	public double evaluate(double[] parameterVector) {
-		// TODO Auto-generated method stub
 		double[] simulated = calcModelPrediction(initialState,parameterVector,forcings,priorTimes);
 		double sumOfSquaredResiduals = calcSumOfSquaredResiduals(observed,simulated);
 		double objScore = -(1.0/2)*nObs*Math.log(sumOfSquaredResiduals);
