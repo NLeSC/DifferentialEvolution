@@ -29,10 +29,10 @@ import nl.esciencecenter.diffevo.statespacemodels.Model;
 
 public class ListOfSamples {
 
-	protected List<Sample> sampleList; 
-	protected int nPop;
-	protected ParSpace parSpace;
-	protected int nDims;
+	private List<Sample> sampleList; 
+	private int nPop;
+	private ParSpace parSpace;
+	private int nDims;
 
 	// constructor
 	public ListOfSamples(int nPop, ParSpace parSpace){
@@ -125,6 +125,23 @@ public class ListOfSamples {
 	public int getSize(){
 		return sampleList.size();
 	}
+	
+	public int getnPop(){
+		return nPop;
+	}
+
+	public int getnDims(){
+		return nDims;
+	}
+	
+	public ParSpace getparSpace(){
+		return parSpace;
+	}
+	
+	public List<Sample> getSampleList(){
+		return sampleList;
+	}
+	
 
 }
 

@@ -29,6 +29,11 @@ public class Proposals extends ListOfSamples{
 	}
 	
 	public void reflectIfOutOfBounds(){
+
+		int nPop = getnPop();
+		int nDims = getnDims();
+		ParSpace parSpace = getparSpace();
+		
 		for (int iPop=0;iPop<nPop;iPop++){
 			for (int iDim = 0;iDim<nDims;iDim++){
 				double[] parameterVector = getParameterVector(iPop);
@@ -47,11 +52,11 @@ public class Proposals extends ListOfSamples{
 	}
 
 	public List<Sample> getProposals() {
-		return this.sampleList;
+		return this.getSampleList();
 	}
 	
 	public Sample getProposal(int index) {
-		return this.sampleList.get(index);
+		return this.getSampleList().get(index);
 	}
 }
 

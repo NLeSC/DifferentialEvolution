@@ -31,6 +31,9 @@ public class Parents extends ListOfSamples {
 	}
 	
 	public void takeUniformRandomSamples(Random generator){
+		int nPop = getnPop();
+		int nDims = getnDims();
+		ParSpace parSpace = getparSpace();
 
 		for (int iPop=1;iPop<=nPop;iPop++){
 			double[] values = new double[nDims];			
@@ -44,11 +47,11 @@ public class Parents extends ListOfSamples {
 	}
 	
 	public List<Sample> getParents() {
-		return this.sampleList;
+		return this.getSampleList();
 	}
 	
 	public Sample getParent(int index) {
-		return this.sampleList.get(index);
+		return this.getSampleList().get(index);
 	}
 
 	public void setParent(int index, Sample sample) {
@@ -60,9 +63,9 @@ public class Parents extends ListOfSamples {
 		parameterVector = sample.getParameterVector();
 		objScore = sample.getObjScore();
 		
-		this.sampleList.get(index).setSampleCounter(sampleIdentifier);
-		this.sampleList.get(index).setParameterVector(parameterVector);
-		this.sampleList.get(index).setObjScore(objScore);
+		this.getSampleList().get(index).setSampleCounter(sampleIdentifier);
+		this.getSampleList().get(index).setParameterVector(parameterVector);
+		this.getSampleList().get(index).setObjScore(objScore);
 		
 	}
 }
