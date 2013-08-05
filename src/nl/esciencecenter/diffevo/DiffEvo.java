@@ -106,7 +106,6 @@ public class DiffEvo {
 		this.likelihoodFunctionFactory = likelihoodFunctionFactory;
 		this.tickFont = new Font("Ubuntu",Font.ROMAN_BASELINE,14);
 		this.labelFont = new Font("Ubuntu",Font.ROMAN_BASELINE,20);
-
 		}
 	
 	// constructor:
