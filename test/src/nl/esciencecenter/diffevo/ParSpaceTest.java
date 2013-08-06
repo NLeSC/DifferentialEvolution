@@ -6,6 +6,21 @@ import org.junit.Test;
 
 public class ParSpaceTest {
 
+	private double[] lowerBoundsExpected;
+	private double[] upperBoundsExpected;
+	private String[] parNamesExpected;
+	private ParSpace parSpace;
+	private int nParsExpected = lowerBoundsExpected.length; 
+	
+	public ParSpaceTest(){
+		
+		lowerBoundsExpected = new double[]{-5.12,-5.12};
+		upperBoundsExpected = new double[]{5.12,5.12};
+		parNamesExpected = new String[]{"p1","p2"};
+		parSpace = new ParSpace(lowerBoundsExpected,upperBoundsExpected,parNamesExpected);
+
+	}
+	
 	@Test
 	public void testParSpace() {
 		fail("Not yet implemented");
@@ -13,12 +28,16 @@ public class ParSpaceTest {
 
 	@Test
 	public void testGetNumberOfPars() {
-		fail("Not yet implemented");
+		int nParsActual = parSpace.getNumberOfPars(); 
+		assertEquals(nParsExpected, nParsActual);
 	}
 
 	@Test
 	public void testGetLowerBound() {
-		fail("Not yet implemented");
+		for (int iPar=0;iPar<nParsExpected;iPar++){
+			double lowerBoundActual = parSpace.getLowerBound(iPar);
+			assertTrue(lowerBoundsExpected[iPar]==lowerBoundActual);
+		}
 	}
 
 	@Test
