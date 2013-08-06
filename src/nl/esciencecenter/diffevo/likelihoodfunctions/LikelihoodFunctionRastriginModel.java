@@ -53,9 +53,8 @@ public class LikelihoodFunctionRastriginModel implements LikelihoodFunction {
 
 	@Override
 	public double evaluate(double[] parameterVector) {
-		double objScore;
-		objScore = -calcProbabilityDensity(parameterVector);
-		return objScore;
+		// return the objective score:
+		return -calcProbabilityDensity(parameterVector);
 	}
 	
 	

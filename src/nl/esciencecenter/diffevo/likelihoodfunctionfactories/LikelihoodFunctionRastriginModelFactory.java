@@ -8,8 +8,7 @@ public class LikelihoodFunctionRastriginModelFactory implements
 
 	@Override
 	public LikelihoodFunction create() {
-		LikelihoodFunction likelihoodFunction = new LikelihoodFunctionRastriginModel();
-		return likelihoodFunction;
+		return new LikelihoodFunctionRastriginModel();
 	}
 
 }

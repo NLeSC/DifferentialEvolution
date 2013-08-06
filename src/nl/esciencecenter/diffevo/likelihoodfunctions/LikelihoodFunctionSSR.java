@@ -42,8 +42,8 @@ public class LikelihoodFunctionSSR implements LikelihoodFunction {
 		}
 		
 		int nObs = (nTimes-1) * nStates;
-		double objScore = -(1.0/2) * nObs * Math.log(ssr);
-		return objScore;
+		// return the objective score:
+		return -(1.0/2) * nObs * Math.log(ssr);
 	}
 
 	@Override
