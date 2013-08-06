@@ -27,15 +27,15 @@ public class TimeChunks {
 	private int nChunks;
 	
 	// constructor
-	public TimeChunks(double[] times, boolean[] assimilate){
+	public TimeChunks(double[] times, double[] assimilate){
 		
 		this.times = times.clone();
 		this.nTimes =  times.length;
 		
-		assimilate[0] = false;
+		assimilate[0] = 0;
 		
 		for (int iTime=0;iTime<nTimes;iTime++){
-			if (assimilate[iTime]){
+			if (assimilate[iTime]==1){
 				this.nChunks = nChunks + 1;
 			}
 		}
@@ -46,7 +46,7 @@ public class TimeChunks {
 		this.chunkIndices = new int[nChunks][];
 		for (int iTime=0;iTime<nTimes;iTime++){
 			iIndexEnd = iTime;			
-			if (assimilate[iTime]){
+			if (assimilate[iTime]==1){
 				int nIndices = iIndexEnd-iIndexStart+1;
 				int[] tmp = new int[nIndices];
 				for (int iIndex=iIndexStart;iIndex<=iIndexEnd;iIndex++){

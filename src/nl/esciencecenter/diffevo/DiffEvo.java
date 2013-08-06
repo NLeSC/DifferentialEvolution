@@ -110,7 +110,7 @@ public class DiffEvo {
 	
 	// constructor:
 	DiffEvo(int nGens, int nPop, ParSpace parSpace, double[] initState, double[] forcing, double[] times, 
-			boolean[] assimilate, double[][] obs, ModelFactory modelFactory, LikelihoodFunctionFactory likelihoodFunctionFactory) {
+			double[] assimilate, double[][] obs, ModelFactory modelFactory, LikelihoodFunctionFactory likelihoodFunctionFactory) {
 		this.nGens = nGens;
 		this.nPop = nPop;
 		this.parSpace = parSpace;
