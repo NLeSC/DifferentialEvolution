@@ -287,7 +287,7 @@ public class DiffEvo {
 	}
 
 	
-	public void writeEvalResultsToTextFile(){
+	public void writeEvalResultsToTextFile(File file){
 		
 		int nResults;
 		int sampleCounter;
@@ -319,7 +319,6 @@ public class DiffEvo {
 		String string = stringBuilder.toString();
 		
 		try {
-			File file = new File("evalresults.txt");
 			System.out.println("Writing results to file: \'"+file+"\'.");
 			BufferedWriter output = new BufferedWriter(new FileWriter(file));
 			output.write(string);

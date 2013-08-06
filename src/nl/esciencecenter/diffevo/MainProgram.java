@@ -144,7 +144,8 @@ public class MainProgram {
 			diffEvo.start();
 			diffEvo.printEvalResults();
 			diffEvo.writeEvalResultsToJSON();
-			diffEvo.writeEvalResultsToTextFile();
+			File file = new File("data"+File.separator+"evalresults.txt");
+			diffEvo.writeEvalResultsToTextFile(file);
 
 			if (parSpace.getNumberOfPars()>1){
 				diffEvo.matrixOfScatterParPar();
