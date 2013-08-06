@@ -45,6 +45,7 @@ public class MainProgram {
 		ModelFactory modelFactory = null;
 		LikelihoodFunctionFactory likelihoodFunctionFactory = null;
 		DiffEvo diffEvo = null;
+		File file = null;
 		
 		for (int modelSwitch = 0;modelSwitch<6;modelSwitch++){
 
@@ -67,7 +68,7 @@ public class MainProgram {
 				//LinearDynamicStateSpaceModel
 				nGens = 300;
 				nPop = 50;
-				File file  = new File("data"+File.separator+"lineartank.eas");
+				file  = new File("data"+File.separator+"lineartank.eas");
 				DataReader reader = new DataReader(file);
 				double[][] data = reader.getData();
 				
@@ -142,9 +143,13 @@ public class MainProgram {
 			} //switch
 			
 			diffEvo.start();
+			
 			diffEvo.printEvalResults();
-			diffEvo.writeEvalResultsToJSON();
-			File file = new File("data"+File.separator+"evalresults.txt");
+			
+			file = new File("data"+File.separator+"evalresults.json");
+			diffEvo.writeEvalResultsToJSON(file);
+			
+			file = new File("data"+File.separator+"evalresults.txt");
 			diffEvo.writeEvalResultsToTextFile(file);
 
 			if (parSpace.getNumberOfPars()>1){

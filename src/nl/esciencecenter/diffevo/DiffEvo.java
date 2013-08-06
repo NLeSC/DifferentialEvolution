@@ -329,7 +329,7 @@ public class DiffEvo {
 	}	
 	
 	
-	public void writeEvalResultsToJSON(){
+	public void writeEvalResultsToJSON(File file){
 		
 		int nResults;
 		int sampleCounter;
@@ -371,7 +371,6 @@ public class DiffEvo {
 		String str = stringBuild.toString();
 		
 		try {
-			File file = new File("evalresults.json");
 			System.out.println("Writing results to file: \'"+file+"\'.");
 			BufferedWriter output = new BufferedWriter(new FileWriter(file));
 			output.write(str);
