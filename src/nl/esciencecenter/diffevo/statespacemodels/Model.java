@@ -21,8 +21,8 @@ package nl.esciencecenter.diffevo.statespacemodels;
 
 public interface Model {
 	
-	public double[][] evaluate();
+	double[][] evaluate();
 	
-	public String getName();
+	String getName();
 
 }

@@ -5,6 +5,6 @@ import nl.esciencecenter.diffevo.likelihoodfunctions.LikelihoodFunction;
 
 public interface LikelihoodFunctionFactory {
 	
-	public LikelihoodFunction create();
+	LikelihoodFunction create();
 
 }
