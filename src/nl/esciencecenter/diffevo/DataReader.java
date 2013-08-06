@@ -16,7 +16,7 @@ public class DataReader {
 			Scanner fileScanner = new Scanner(file);
 			int nSkipLines = fileScanner.nextInt();
 			for (int iSkipLine=0;iSkipLine<nSkipLines;iSkipLine++){
-				String line = fileScanner.nextLine();
+				fileScanner.nextLine();
 			}
 			int nLines = 0;
 			int nParts = 0;
