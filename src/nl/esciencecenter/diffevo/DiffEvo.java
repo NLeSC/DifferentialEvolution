@@ -310,13 +310,11 @@ public class DiffEvo {
 			// objScore part
 			objScore = evalResults.getObjScore(iResult);
 
-			String s = new String();
-			s = s + String.format("%d ", sampleCounter);
+			stringBuilder.append(String.format("%d ", sampleCounter));
 			for (int iDim=0;iDim<nDims;iDim++){
-				s = s + String.format("%20.20g ",parameterVector[iDim]);
+				stringBuilder.append(String.format("%20.20g ",parameterVector[iDim]));
 			}
-			s = s + String.format("%20.20g%n", objScore);
-			stringBuilder.append(s);
+			stringBuilder.append(String.format("%20.20g%n", objScore));
 		}
 		String string = stringBuilder.toString();
 		
