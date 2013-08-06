@@ -41,7 +41,7 @@ public class DataReader {
 	} //main
 
 	public double[][] getData() {
-		return dataArrayTransposed;
+		return dataArrayTransposed.clone();
 	} // getDataArray
 
 	private void setData(double[][] dataArray) {
