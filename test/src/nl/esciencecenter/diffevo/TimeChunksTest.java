@@ -13,7 +13,7 @@ public class TimeChunksTest {
 	@Test
 	public void testTimeChunks() {
 		double[] times = new double[]{0,1,2,3,4,5,6,7,8};
-		boolean[] assimilate = new boolean[]{true, false, false, true, false,false, true, false, true}; 
+		double[] assimilate = new double[]{1, 0, 0, 1, 0, 0, 1, 0, 1}; 
 		TimeChunks timeChunks = new TimeChunks(times,assimilate);
 		int nChunks = timeChunks.getnChunks();
 		int nChunksExpected = 3;
