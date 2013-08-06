@@ -146,10 +146,10 @@ public class MainProgram {
 			
 			diffEvo.printEvalResults();
 			
-			file = new File("data"+File.separator+"evalresults.json");
+			file = new File("out"+File.separator+"evalresults.json");
 			diffEvo.writeEvalResultsToJSON(file);
 			
-			file = new File("data"+File.separator+"evalresults.txt");
+			file = new File("out"+File.separator+"evalresults.txt");
 			diffEvo.writeEvalResultsToTextFile(file);
 
 			if (parSpace.getNumberOfPars()>1){
