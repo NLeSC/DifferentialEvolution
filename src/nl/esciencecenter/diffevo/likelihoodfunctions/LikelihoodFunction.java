@@ -21,8 +21,8 @@ package nl.esciencecenter.diffevo.likelihoodfunctions;
 
 public interface LikelihoodFunction {
 	
-	public double evaluate(double[][] obs, double[][] sim);
-	public double evaluate(double[] parameterVector);
-	public String getName();
+	double evaluate(double[][] obs, double[][] sim);
+	double evaluate(double[] parameterVector);
+	String getName();
 
 }
