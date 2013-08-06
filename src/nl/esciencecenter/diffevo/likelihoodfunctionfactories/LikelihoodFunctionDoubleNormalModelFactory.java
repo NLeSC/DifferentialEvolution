@@ -8,8 +8,7 @@ public class LikelihoodFunctionDoubleNormalModelFactory implements
 
 	@Override
 	public LikelihoodFunction create() {
-		LikelihoodFunction likelihoodFunction = new LikelihoodFunctionDoubleNormalModel();
-		return likelihoodFunction;
+		return  new LikelihoodFunctionDoubleNormalModel();
 	}
 
 }

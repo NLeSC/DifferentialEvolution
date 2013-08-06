@@ -8,8 +8,7 @@ public class LikelihoodFunctionCubicModelFactory implements
 
 	@Override
 	public LikelihoodFunction create() {
-		LikelihoodFunction likelihoodFunction = new LikelihoodFunctionCubicModel();
-		return likelihoodFunction;
+		return new LikelihoodFunctionCubicModel();
 	}
 
 }

@@ -8,8 +8,7 @@ public class LikelihoodFunctionRosenbrockModelFactory implements
 
 	@Override
 	public LikelihoodFunction create() {
-		LikelihoodFunction likelihoodFunction = new LikelihoodFunctionRosenbrockModel();
-		return likelihoodFunction;
+		return new LikelihoodFunctionRosenbrockModel();
 	}
 
 }
