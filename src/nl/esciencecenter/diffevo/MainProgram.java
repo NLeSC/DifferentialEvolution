@@ -142,7 +142,6 @@ public class MainProgram {
 			} //switch
 			
 			diffEvo.start();
-			
 			diffEvo.printEvalResults();
 			diffEvo.writeEvalResultsToJSON();
 			diffEvo.writeEvalResultsToTextFile();
