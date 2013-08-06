@@ -64,15 +64,27 @@ public class MainProgram {
 				break;
 			}//case 1
 			case 2:{
-				//LinearDynamicModel
+				//LinearDynamicStateSpaceModel
 				nGens = 300;
 				nPop = 50;
-				lowerBounds = new double[]{110};
-				upperBounds = new double[]{180};
-				parNames = new String[]{"resistance"};
+				File file  = new File("data"+File.separator+"lineartank.eas");
+				DataReader reader = new DataReader(file);
+				double[][] data = reader.getData();
+				
+				initState = new double[] {30};
+				times = data[0];
+				assimilate = data[1];
+				obs = new double[][]{data[3]};
+				forcing = data[4];				
+				lowerBounds = new double[] {110};
+				upperBounds = new double[] {180};
+				parNames = new String[] {"resistance"};
 				parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
-				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionLinearDynamicModelFactory();
-				diffEvo = new DiffEvo(nGens, nPop, parSpace, likelihoodFunctionFactory);
+				parSpace.divideIntoIntervals(100);
+
+				modelFactory = (ModelFactory) new LinearDynamicStateSpaceModelFactory();
+				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionSSRFactory();
+				diffEvo = new DiffEvo(nGens, nPop, parSpace, initState, forcing, times, assimilate, obs, modelFactory, likelihoodFunctionFactory);
 				break; 
 			} // case 2
 			case 3:{
@@ -127,30 +139,6 @@ public class MainProgram {
 				diffEvo = new DiffEvo(nGens, nPop, parSpace, likelihoodFunctionFactory);
 				break; 
 			} // case 6
-			case 7:{
-				//LinearDynamicStateSpaceModel
-				nGens = 300;
-				nPop = 50;
-				File file  = new File("data"+File.separator+"lineartank.eas");
-				DataReader reader = new DataReader(file);
-				double[][] data = reader.getData();
-				
-				initState = new double[] {30};
-				times = data[0];
-				assimilate = data[1];
-				obs = new double[][]{data[3]};
-				forcing = data[4];				
-				lowerBounds = new double[] {110};
-				upperBounds = new double[] {180};
-				parNames = new String[] {"resistance"};
-				parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
-				parSpace.divideIntoIntervals(100);
-
-				modelFactory = (ModelFactory) new LinearDynamicStateSpaceModelFactory();
-				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionSSRFactory();
-				diffEvo = new DiffEvo(nGens, nPop, parSpace, initState, forcing, times, assimilate, obs, modelFactory, likelihoodFunctionFactory);
-				break; 
- 			} // case 7
 			} //switch
 			
 			diffEvo.start();
