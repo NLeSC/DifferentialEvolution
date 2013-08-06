@@ -140,6 +140,9 @@ public class MainProgram {
 				diffEvo = new DiffEvo(nGens, nPop, parSpace, likelihoodFunctionFactory);
 				break; 
 			} // case 5
+			default: {
+				System.out.println("You asked for a case that isn\'t there.");
+			}
 			} //switch
 			
 			diffEvo.start();
