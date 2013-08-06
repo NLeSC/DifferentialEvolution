@@ -46,10 +46,10 @@ public class MainProgram {
 		LikelihoodFunctionFactory likelihoodFunctionFactory = null;
 		DiffEvo diffEvo = null;
 		
-		for (int modelSwitch = 7;modelSwitch<8;modelSwitch++){
+		for (int modelSwitch = 0;modelSwitch<6;modelSwitch++){
 
 			switch (modelSwitch){
-			case 1:{
+			case 0:{
 				//DoubleNormalModel
 				nGens = 300;
 				nPop = 50;
@@ -62,8 +62,8 @@ public class MainProgram {
 				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionDoubleNormalModelFactory();
 				diffEvo = new DiffEvo(nGens, nPop, parSpace, likelihoodFunctionFactory);
 				break;
-			}//case 1
-			case 2:{
+			}//case 0
+			case 1:{
 				//LinearDynamicStateSpaceModel
 				nGens = 300;
 				nPop = 50;
@@ -86,8 +86,8 @@ public class MainProgram {
 				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionSSRFactory();
 				diffEvo = new DiffEvo(nGens, nPop, parSpace, initState, forcing, times, assimilate, obs, modelFactory, likelihoodFunctionFactory);
 				break; 
-			} // case 2
-			case 3:{
+			} // case 1
+			case 2:{
 				//RastriginModel
 				nGens = 300;
 				nPop = 50;
@@ -99,8 +99,8 @@ public class MainProgram {
 				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionRastriginModelFactory();
 				diffEvo = new DiffEvo(nGens, nPop, parSpace, likelihoodFunctionFactory);
 				break; 
-			} //case 3
-			case 4:{
+			} //case 2
+			case 3:{
 				//RosenbrockModel
 				nGens = 300;
 				nPop = 50;
@@ -112,8 +112,8 @@ public class MainProgram {
 				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionRosenbrockModelFactory();
 				diffEvo = new DiffEvo(nGens, nPop, parSpace, likelihoodFunctionFactory);
 				break; 
-			} // case 4
-			case 5:{
+			} // case 3
+			case 4:{
 				//SingleNormalModel
 				nGens = 300;
 				nPop = 50;
@@ -125,8 +125,8 @@ public class MainProgram {
 				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionSingleNormalModelFactory();
 				diffEvo = new DiffEvo(nGens, nPop, parSpace, likelihoodFunctionFactory);
 				break; 
-			} // case 5
-			case 6:{
+			} // case 4
+			case 5:{
 				//CubicModel
 				nGens = 300;
 				nPop = 50;
@@ -138,7 +138,7 @@ public class MainProgram {
 				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionCubicModelFactory();
 				diffEvo = new DiffEvo(nGens, nPop, parSpace, likelihoodFunctionFactory);
 				break; 
-			} // case 6
+			} // case 5
 			} //switch
 			
 			diffEvo.start();
