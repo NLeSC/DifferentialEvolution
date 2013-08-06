@@ -6,9 +6,26 @@ import org.junit.Test;
 
 public class ProposalsTest {
 
+	private ParSpace parSpace;
+	int nPopExpected = 12;
+	Proposals proposals;
+	
+	public ProposalsTest(){
+		double[] lowerBounds = new double[]{-20};
+		double[] upperBounds = new double[]{18};
+		String[] parNames = new String[]{"theta"};
+		
+		parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
+		parSpace.divideIntoIntervals(50);
+
+		proposals = new Proposals(nPopExpected,parSpace);
+		
+	} 
+	
 	@Test
 	public void testProposals() {
-		fail("Not yet implemented");
+		int nPopActual = proposals.getSampleList().size(); 
+		assertTrue(nPopExpected==nPopActual);
 	}
 
 	@Test
