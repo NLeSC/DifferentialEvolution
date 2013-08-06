@@ -19,6 +19,7 @@
 
 package nl.esciencecenter.diffevo;
 
+import java.io.File;
 import java.util.Random;
 
 
@@ -48,7 +49,7 @@ public class MainProgram {
 		LikelihoodFunctionFactory likelihoodFunctionFactory = null;
 		DiffEvo diffEvo = null;
 		
-		for (int modelSwitch = 1;modelSwitch<8;modelSwitch++){
+		for (int modelSwitch = 7;modelSwitch<8;modelSwitch++){
 
 			switch (modelSwitch){
 			case 1:{
@@ -133,6 +134,10 @@ public class MainProgram {
 				//LinearDynamicStateSpaceModel
 				nGens = 300;
 				nPop = 50;
+				File file  = new File("RAILWAY.eas");
+				DataReader reader = new DataReader(file);
+				double[][] data = reader.getData();
+				
 				initState = new double[] {30};
 				assimilate = new boolean[]{
 						false,false,false,true,true,
