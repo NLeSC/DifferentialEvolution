@@ -36,9 +36,10 @@ public class LikelihoodFunctionRastriginModel implements LikelihoodFunction {
         	sum = sum + (Math.pow(x[iDim],2) - A*Math.cos(2*Math.PI*x[iDim]));
         }
 		
-     // not a real probability density, just a benchmark function value
-		double probabilityDensity = A*nDims + sum; 
-		return probabilityDensity; 
+        // not a real probability density, just a benchmark function value
+        
+        // return the (not so real) probability density: 
+		return A*nDims + sum; 
 	}
 			
 	public String getName(){
