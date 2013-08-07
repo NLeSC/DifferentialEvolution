@@ -152,9 +152,10 @@ public class DiffEvoTest {
 		assertTrue(nPopActual==nPopExpected);
 	}
 
-//	@Test
-//	public void testStart() {
-//		fail("Not yet implemented");
-//	}
+	@Test
+	public void testStart() {
+		diffEvo.start();
+	
+	}
 
 }
