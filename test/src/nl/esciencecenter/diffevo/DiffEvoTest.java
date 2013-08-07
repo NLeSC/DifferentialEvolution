@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 
-import nl.esciencecenter.diffevo.likelihoodfunctionfactories.LikelihoodFunctionCubicModelFactory;
 import nl.esciencecenter.diffevo.likelihoodfunctionfactories.LikelihoodFunctionFactory;
 import nl.esciencecenter.diffevo.likelihoodfunctionfactories.LikelihoodFunctionSSRFactory;
 import nl.esciencecenter.diffevo.statespacemodelfactories.LinearDynamicStateSpaceModelFactory;
@@ -26,7 +25,7 @@ public class DiffEvoTest {
 		
 		nGensExpected = 10;
 		nPopExpected = 50;
-		File file  = new File("data"+File.separator+"lineartank.eas");
+		File file  = new File("test"+File.separator+"data"+File.separator+"lineartank.eas");
 		DataReader reader = new DataReader(file);
 		double[][] data = reader.getData();
 		
