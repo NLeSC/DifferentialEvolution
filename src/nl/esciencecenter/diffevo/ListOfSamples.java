@@ -32,18 +32,34 @@ public class ListOfSamples {
 	private List<Sample> sampleList; 
 	private int nPop;
 	private ParSpace parSpace;
-	private int nDims;
+	private StateSpace stateSpace;	
+	private int nPars;
+	private int nStates;
+	private double[][][] statesPriors;
 
 	// constructor
-	public ListOfSamples(int nPop, ParSpace parSpace){
+	public ListOfSamples(int nPop, ParSpace parSpace, StateSpace stateSpace, int nTimes ){
 
-		this.nDims = parSpace.getNumberOfPars();
+		this.nPars = parSpace.getNumberOfPars();
 		this.sampleList = new ArrayList<Sample>();
 		this.nPop = nPop;
 		this.parSpace = parSpace;
+		this.stateSpace = stateSpace;
 		for (int iPop = 1; iPop <= nPop; iPop++) {
-			Sample sample = new Sample(nDims);
+			Sample sample = new Sample(nPars);
 			sampleList.add(sample);
+		}
+		if (stateSpace==null){
+	        this.nStates = 0;
+		}
+		else {
+	        this.nStates = stateSpace.getNumberOfStates();
+		}
+		statesPriors = new double[nPop][nStates][nTimes];
+		for (int iPop=0;iPop<nPop;iPop++){
+			for (int iState=0;iState<nStates;iState++){
+				statesPriors[iPop][iState][0] = Double.NaN;
+			}
 		}
 	}
 
@@ -102,7 +118,11 @@ public class ListOfSamples {
 						}
 						state[iState] = simChunk[iState][nIndices-1];
 					}
+					
+					updateStatesPrior(iPop, indices, simChunk);					
 				}//iChunk
+				
+
 
 				double objScore = likelihoodFunction.evaluate(obs, sim);
 				setObjScore(iPop, objScore);
@@ -120,6 +140,20 @@ public class ListOfSamples {
 
 
 	} // calcObjScore()
+	
+	
+	public void updateStatesPrior(int iPop, int[] timeIndices, double[][] stateValues){
+		
+		int nStates = stateValues.length;
+		int nTimes = timeIndices.length;
+		
+		for (int iTime=1;iTime<nTimes;iTime++){
+			for (int iState=0;iState<nStates;iState++){
+				int t = timeIndices[iTime];
+				statesPriors[iPop][iState][t] = stateValues[iState][iTime];
+			}
+		}
+	}
 
 
 	public int getSize(){
@@ -130,8 +164,8 @@ public class ListOfSamples {
 		return nPop;
 	}
 
-	public int getnDims(){
-		return nDims;
+	public int getnPars(){
+		return nPars;
 	}
 	
 	public ParSpace getparSpace(){
