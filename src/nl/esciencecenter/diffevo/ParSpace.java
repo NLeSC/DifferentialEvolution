@@ -20,58 +20,38 @@
 package nl.esciencecenter.diffevo;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class ParSpace {
+public class ParSpace extends Space {
 
-	private final double[] lowerBounds;
-	private final double[] upperBounds;
-	private final double[] range;	
-	private final String[] parNames;
-	private final int nPars;
 	private List<double[]> binBoundsAll = new ArrayList<double[]>();
 	private double[] resolutions;
+	
 
 	public ParSpace(double[] lowerBounds, double[] upperBounds, String[] parNames){
+		
+		super(lowerBounds, upperBounds, parNames);
 
-		this.lowerBounds = lowerBounds.clone();
-		this.upperBounds = upperBounds.clone();
-		this.parNames = parNames.clone();
-		this.nPars = lowerBounds.length;
+		int nPars = getNumberOfDimensions();
 		this.resolutions = new double[nPars];
-		this.range = new double[nPars]; 
 
 		for (int iPar=0;iPar<nPars;iPar++){
-			this.range[iPar] = upperBounds[iPar] - lowerBounds[iPar];
 			this.resolutions[iPar] = 0;
 		}
 		int nIntervalsDefault = 5;
 		divideIntoIntervals(nIntervalsDefault);
 	}
 
-
 	public int getNumberOfPars() {
-		return nPars;
-	}
-
-	public double getLowerBound(int index) {
-		return lowerBounds[index];
-	}
-
-	public double getUpperBound(int index) {
-		return upperBounds[index];
-	}
-
-	public double getRange(int index) {
-		return range[index];
+		return getNumberOfDimensions();
 	}
 
 	public String getParName(int index) {
-		return parNames[index];
+		return getDimensionName(index);
 	}
 
 	public void divideIntoIntervals(int nIntervals){
+		int nPars = getNumberOfPars();
 		int[] tmp = new int[nPars];		
 		for (int iPar=0;iPar<nPars;iPar++){
 			tmp[iPar] = nIntervals;
@@ -80,6 +60,9 @@ public class ParSpace {
 	}
 
 	public void divideIntoIntervals(int[] nIntervals){
+		int nPars = getNumberOfPars();
+		double[] lowerBounds = getLowerBounds();
+		double[] range = getRange();
 		int[] nBinBounds = new int[nIntervals.length];
 		for (int iPar=0;iPar<nPars;iPar++){
 			nBinBounds[iPar] = nIntervals[iPar]+1;
@@ -106,69 +89,6 @@ public class ParSpace {
 	public int getnBins(int iPar){
 		return getBinBounds(iPar).length-1;
 	}
-
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((binBoundsAll == null) ? 0 : binBoundsAll.hashCode());
-		result = prime * result + Arrays.hashCode(lowerBounds);
-		result = prime * result + nPars;
-		result = prime * result + Arrays.hashCode(parNames);
-		result = prime * result + Arrays.hashCode(range);
-		result = prime * result + Arrays.hashCode(resolutions);
-		result = prime * result + Arrays.hashCode(upperBounds);
-		return result;
-	}
-
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		ParSpace other = (ParSpace) obj;
-		if (binBoundsAll == null) {
-			if (other.binBoundsAll != null) {
-				return false;
-			}
-		} 
-		else {
-			if (!binBoundsAll.equals(other.binBoundsAll)) {
-				return false;
-			}
-			if (!Arrays.equals(lowerBounds, other.lowerBounds)) {
-				return false;
-			}
-			if (nPars != other.nPars) {
-				return false;
-			}
-			if (!Arrays.equals(parNames, other.parNames)) {
-				return false;
-			}
-			if (!Arrays.equals(range, other.range)) {
-				return false;
-			}
-			if (!Arrays.equals(resolutions, other.resolutions)) {
-				return false;
-			}
-			if (!Arrays.equals(upperBounds, other.upperBounds)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-
-
 
 
 }
