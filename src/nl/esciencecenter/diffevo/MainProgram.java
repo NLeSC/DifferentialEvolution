@@ -37,16 +37,14 @@ public class MainProgram {
 		double[] assimilate = null;
 		double[] times = null;
 		double[] forcing = null;
-		double[] lowerBounds;
-		double[] upperBounds;
-		String[] parNames;
 		ParSpace parSpace = null;
+		StateSpace stateSpace = null;		
 		double[][] obs = null;
 		ModelFactory modelFactory = null;
 		LikelihoodFunctionFactory likelihoodFunctionFactory = null;
 		DiffEvo diffEvo = null;
 		File file = null;
-		
+
 		for (int modelSwitch = 0;modelSwitch<6;modelSwitch++){
 
 			switch (modelSwitch){
@@ -54,12 +52,13 @@ public class MainProgram {
 				//DoubleNormalModel
 				nGens = 300;
 				nPop = 50;
-
-				lowerBounds = new double[]{-20};
-				upperBounds = new double[]{18};
-				parNames = new String[]{"theta"};
-				parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
-				parSpace.divideIntoIntervals(50);
+				{
+					double[] lowerBoundsParSpace = new double[]{-20};
+					double[] upperBoundsParSpace = new double[]{18};
+					String[] parNames = new String[]{"theta"};
+					parSpace = new ParSpace(lowerBoundsParSpace,upperBoundsParSpace,parNames);
+					parSpace.divideIntoIntervals(50);
+				}
 				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionDoubleNormalModelFactory();
 				diffEvo = new DiffEvo(nGens, nPop, parSpace, likelihoodFunctionFactory);
 				break;
@@ -71,32 +70,41 @@ public class MainProgram {
 				file  = new File("data"+File.separator+"lineartank.eas");
 				DataReader reader = new DataReader(file);
 				double[][] data = reader.getData();
-				
+
 				initState = new double[] {30};
 				times = data[0];
 				assimilate = data[1];
 				obs = new double[][]{data[3]};
-				forcing = data[4];				
-				lowerBounds = new double[] {110};
-				upperBounds = new double[] {180};
-				parNames = new String[] {"resistance"};
-				parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
-				parSpace.divideIntoIntervals(100);
-
+				forcing = data[4];
+				{
+					double[] lowerBoundsParSpace = new double[] {110};
+					double[] upperBoundsParSpace = new double[] {180};
+					String[] parNames = new String[] {"resistance"};
+					parSpace = new ParSpace(lowerBoundsParSpace,upperBoundsParSpace,parNames);
+					parSpace.divideIntoIntervals(100);
+				}
+				{
+					double[] lowerBoundsStateSpace = new double[] {0};
+					double[] upperBoundsStateSpace = new double[] {100};
+					String[] stateNames = new String[] {"waterlevel"};
+					stateSpace = new StateSpace(lowerBoundsStateSpace,upperBoundsStateSpace,stateNames);
+				}
 				modelFactory = (ModelFactory) new LinearDynamicStateSpaceModelFactory();
 				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionSSRFactory();
-				diffEvo = new DiffEvo(nGens, nPop, parSpace, initState, forcing, times, assimilate, obs, modelFactory, likelihoodFunctionFactory);
+				diffEvo = new DiffEvo(nGens, nPop, parSpace, stateSpace, initState, forcing, times, assimilate, obs, modelFactory, likelihoodFunctionFactory);
 				break; 
 			} // case 1
 			case 2:{
 				//RastriginModel
 				nGens = 300;
 				nPop = 50;
-				lowerBounds = new double[]{-5.12,-5.12};
-				upperBounds = new double[]{5.12,5.12};
-				parNames = new String[]{"p1","p2"};
-				parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
-				parSpace.divideIntoIntervals(200);
+				{
+					double[] lowerBoundsParSpace = new double[]{-5.12,-5.12};
+					double[] upperBoundsParSpace  = new double[]{5.12,5.12};
+					String[] parNames = new String[]{"p1","p2"};
+					parSpace = new ParSpace(lowerBoundsParSpace,upperBoundsParSpace,parNames);
+					parSpace.divideIntoIntervals(200);
+				}
 				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionRastriginModelFactory();
 				diffEvo = new DiffEvo(nGens, nPop, parSpace, likelihoodFunctionFactory);
 				break; 
@@ -105,11 +113,13 @@ public class MainProgram {
 				//RosenbrockModel
 				nGens = 300;
 				nPop = 50;
-				lowerBounds = new double[]{-50,-40};
-				upperBounds = new double[]{50,80};
-				parNames = new String[]{"p1","p2"};
-				parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
-				parSpace.divideIntoIntervals(500);
+				{
+					double[] lowerBoundsParSpace = new double[]{-50,-40};
+					double[] upperBoundsParSpace = new double[]{50,80};
+					String[] parNames = new String[]{"p1","p2"};
+					parSpace = new ParSpace(lowerBoundsParSpace,upperBoundsParSpace,parNames);
+					parSpace.divideIntoIntervals(500);
+				}
 				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionRosenbrockModelFactory();
 				diffEvo = new DiffEvo(nGens, nPop, parSpace, likelihoodFunctionFactory);
 				break; 
@@ -118,11 +128,13 @@ public class MainProgram {
 				//SingleNormalModel
 				nGens = 300;
 				nPop = 50;
-				lowerBounds = new double[]{-50};
-				upperBounds = new double[]{40};
-				parNames = new String[]{"theta"};
-				parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
-				parSpace.divideIntoIntervals(50);
+				{
+					double[] lowerBoundsParSpace = new double[]{-50};
+					double[] upperBoundsParSpace = new double[]{40};
+					String[] parNames = new String[]{"theta"};
+					parSpace = new ParSpace(lowerBoundsParSpace,upperBoundsParSpace,parNames);
+					parSpace.divideIntoIntervals(50);
+				}
 				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionSingleNormalModelFactory();
 				diffEvo = new DiffEvo(nGens, nPop, parSpace, likelihoodFunctionFactory);
 				break; 
@@ -131,11 +143,13 @@ public class MainProgram {
 				//CubicModel
 				nGens = 300;
 				nPop = 50;
-				lowerBounds = new double[]{-20,-40,-80,-120};
-				upperBounds = new double[]{ 20, 40, 80, 120};
-				parNames = new String[]{"a","b","c","d"};
-				parSpace = new ParSpace(lowerBounds,upperBounds,parNames);
-				parSpace.divideIntoIntervals(new int[]{50,50,50,50});
+				{
+					double[] lowerBoundsParSpace = new double[]{-20,-40,-80,-120};
+					double[]  upperBoundsParSpace = new double[]{ 20, 40, 80, 120};
+					String[] parNames = new String[]{"a","b","c","d"};
+					parSpace = new ParSpace(lowerBoundsParSpace,upperBoundsParSpace,parNames);
+					parSpace.divideIntoIntervals(new int[]{50,50,50,50});
+				}
 				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionCubicModelFactory();
 				diffEvo = new DiffEvo(nGens, nPop, parSpace, likelihoodFunctionFactory);
 				break; 
@@ -144,14 +158,14 @@ public class MainProgram {
 				System.out.println("You asked for a case that isn\'t there.");
 			}
 			} //switch
-			
+
 			diffEvo.start();
-			
+
 			diffEvo.printEvalResults();
-			
+
 			file = new File("out"+File.separator+"evalresults.json");
 			diffEvo.writeEvalResultsToJSON(file);
-			
+
 			file = new File("out"+File.separator+"evalresults.txt");
 			diffEvo.writeEvalResultsToTextFile(file);
 
@@ -160,7 +174,7 @@ public class MainProgram {
 				diffEvo.matrixOfHeatmapParPar();
 			}
 			diffEvo.margHist();
-			
+
 		} // int modelSwitch
 	} // main
 } //Test
