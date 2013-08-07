@@ -63,11 +63,13 @@ public class DiffEvoTest {
 //		fail("Not yet implemented");
 //	}
 //
-//	@Test
-//	public void testInitializeParents() {
-//		fail("Not yet implemented");
-//	}
-//
+	@Test
+	public void testInitializeParents() {
+		
+		diffEvo.initializeParents();
+		
+	}
+
 //	@Test
 //	public void testProposeOffSpring() {
 //		fail("Not yet implemented");
@@ -135,8 +137,6 @@ public class DiffEvoTest {
 			sum = sum + hist[iBin];
 		}
 		assertTrue(nPopExpected*nGensExpected==sum);
-		
-
 		
 	}
 
