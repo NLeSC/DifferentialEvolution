@@ -20,6 +20,7 @@
 package nl.esciencecenter.diffevo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ParSpace {
@@ -104,6 +105,52 @@ public class ParSpace {
 	
 	public int getnBins(int iPar){
 		return getBinBounds(iPar).length-1;
+	}
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((binBoundsAll == null) ? 0 : binBoundsAll.hashCode());
+		result = prime * result + Arrays.hashCode(lowerBounds);
+		result = prime * result + nPars;
+		result = prime * result + Arrays.hashCode(parNames);
+		result = prime * result + Arrays.hashCode(range);
+		result = prime * result + Arrays.hashCode(resolutions);
+		result = prime * result + Arrays.hashCode(upperBounds);
+		return result;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ParSpace other = (ParSpace) obj;
+		if (binBoundsAll == null) {
+			if (other.binBoundsAll != null)
+				return false;
+		} else if (!binBoundsAll.equals(other.binBoundsAll))
+			return false;
+		if (!Arrays.equals(lowerBounds, other.lowerBounds))
+			return false;
+		if (nPars != other.nPars)
+			return false;
+		if (!Arrays.equals(parNames, other.parNames))
+			return false;
+		if (!Arrays.equals(range, other.range))
+			return false;
+		if (!Arrays.equals(resolutions, other.resolutions))
+			return false;
+		if (!Arrays.equals(upperBounds, other.upperBounds))
+			return false;
+		return true;
 	}
 
 
