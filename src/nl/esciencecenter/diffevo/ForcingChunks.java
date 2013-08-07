@@ -28,6 +28,8 @@ public class ForcingChunks {
 	// constructor
 	public ForcingChunks(double[] forcing, double[] assimilate){
 		
+		// TODO make superclass Chunks
+		
 		this.forcing = forcing.clone();
 		assimilate[0] = 0;
 		int nTimes =  forcing.length;
