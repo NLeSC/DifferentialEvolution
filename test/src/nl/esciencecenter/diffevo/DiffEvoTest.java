@@ -103,21 +103,21 @@ public class DiffEvoTest {
 		diffEvo.writeEvalResultsToJSON(file);
 	}
 
-	@Test
-	public void testScatterEvalObj() {
-		diffEvo.start();
-		diffEvo.scatterEvalObj();
-	}
-
-	@Test
-	public void testScatterEvalPar() {
-		
-		int nPars = parSpace.getNumberOfPars();
-		diffEvo.start();
-		for (int iPar=0;iPar<nPars;iPar++){
-			diffEvo.scatterEvalPar(iPar);
-		}
-	}
+//	@Test
+//	public void testScatterEvalObj() {
+//		diffEvo.start();
+//		diffEvo.scatterEvalObj();
+//	}
+//
+//	@Test
+//	public void testScatterEvalPar() {
+//		
+//		int nPars = parSpace.getNumberOfPars();
+//		diffEvo.start();
+//		for (int iPar=0;iPar<nPars;iPar++){
+//			diffEvo.scatterEvalPar(iPar);
+//		}
+//	}
 
 	@Test
 	public void testCalcHistogram() {
@@ -140,11 +140,11 @@ public class DiffEvoTest {
 		
 	}
 
-	@Test
-	public void testMargHist() {
-		diffEvo.start();
-		diffEvo.margHist();
-	}
+//	@Test
+//	public void testMargHist() {
+//		diffEvo.start();
+//		diffEvo.margHist();
+//	}
 
 	@Test
 	public void testGetnPop() {
