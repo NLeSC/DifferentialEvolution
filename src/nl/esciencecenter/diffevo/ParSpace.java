@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ParSpace {
-	
+
 	private final double[] lowerBounds;
 	private final double[] upperBounds;
 	private final double[] range;	
@@ -34,14 +34,14 @@ public class ParSpace {
 	private double[] resolutions;
 
 	public ParSpace(double[] lowerBounds, double[] upperBounds, String[] parNames){
-		
+
 		this.lowerBounds = lowerBounds.clone();
 		this.upperBounds = upperBounds.clone();
 		this.parNames = parNames.clone();
 		this.nPars = lowerBounds.length;
 		this.resolutions = new double[nPars];
 		this.range = new double[nPars]; 
-	
+
 		for (int iPar=0;iPar<nPars;iPar++){
 			this.range[iPar] = upperBounds[iPar] - lowerBounds[iPar];
 			this.resolutions[iPar] = 0;
@@ -70,7 +70,7 @@ public class ParSpace {
 	public String getParName(int index) {
 		return parNames[index];
 	}
-	
+
 	public void divideIntoIntervals(int nIntervals){
 		int[] tmp = new int[nPars];		
 		for (int iPar=0;iPar<nPars;iPar++){
@@ -97,12 +97,12 @@ public class ParSpace {
 		return binBoundsAll.get(iPar);
 	}
 
-	
+
 	public double getResolution(int iPar) {
 		return resolutions[iPar];
 	}
 
-	
+
 	public int getnBins(int iPar){
 		return getBinBounds(iPar).length-1;
 	}
@@ -126,35 +126,49 @@ public class ParSpace {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		ParSpace other = (ParSpace) obj;
 		if (binBoundsAll == null) {
-			if (other.binBoundsAll != null)
+			if (other.binBoundsAll != null) {
 				return false;
-		} else if (!binBoundsAll.equals(other.binBoundsAll))
-			return false;
-		if (!Arrays.equals(lowerBounds, other.lowerBounds))
-			return false;
-		if (nPars != other.nPars)
-			return false;
-		if (!Arrays.equals(parNames, other.parNames))
-			return false;
-		if (!Arrays.equals(range, other.range))
-			return false;
-		if (!Arrays.equals(resolutions, other.resolutions))
-			return false;
-		if (!Arrays.equals(upperBounds, other.upperBounds))
-			return false;
+			}
+		} 
+		else {
+			if (!binBoundsAll.equals(other.binBoundsAll)) {
+				return false;
+			}
+			if (!Arrays.equals(lowerBounds, other.lowerBounds)) {
+				return false;
+			}
+			if (nPars != other.nPars) {
+				return false;
+			}
+			if (!Arrays.equals(parNames, other.parNames)) {
+				return false;
+			}
+			if (!Arrays.equals(range, other.range)) {
+				return false;
+			}
+			if (!Arrays.equals(resolutions, other.resolutions)) {
+				return false;
+			}
+			if (!Arrays.equals(upperBounds, other.upperBounds)) {
+				return false;
+			}
+		}
 		return true;
 	}
 
 
 
 
-	
+
 }
