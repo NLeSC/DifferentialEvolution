@@ -60,4 +60,24 @@ public class Space {
 		return dimensionNames[index];
 	}
 
+	public double[] getLowerBounds() {
+		return lowerBounds;
+	}
+
+	public double[] getUpperBounds() {
+		return upperBounds;
+	}
+
+	public double[] getRange() {
+		return range;
+	}
+
+	public String[] getDimensionNames() {
+		return dimensionNames;
+	}
+
+	public int getnDimensions() {
+		return nDimensions;
+	}
+
 }
