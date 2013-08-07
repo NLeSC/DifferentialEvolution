@@ -80,6 +80,7 @@ public class DiffEvo {
 	private EvalResults evalResults;
 	private Random generator;
 	private ParSpace parSpace;
+	private StateSpace stateSpace;
 	private double[] initState;
 	private ForcingChunks forcingChunks;
 	private TimeChunks timeChunks;
@@ -98,8 +99,8 @@ public class DiffEvo {
 		this.parSpace = parSpace;
 		this.modelName = likelihoodFunctionFactory.getClass().getSimpleName().toString();
 		this.nPars = parSpace.getNumberOfPars();
-		this.parents = new Parents(nPop,parSpace);
-		this.proposals = new Proposals(nPop,parSpace);
+		this.parents = new Parents(nPop,parSpace,stateSpace,0);
+		this.proposals = new Proposals(nPop,parSpace,stateSpace,0);
 		this.evalResults = new EvalResults();
 		this.generator = new Random();
 		this.generator.setSeed(0);
@@ -109,11 +110,12 @@ public class DiffEvo {
 		}
 	
 	// constructor:
-	DiffEvo(int nGens, int nPop, ParSpace parSpace, double[] initState, double[] forcing, double[] times, 
+	DiffEvo(int nGens, int nPop, ParSpace parSpace, StateSpace stateSpace, double[] initState, double[] forcing, double[] times, 
 			double[] assimilate, double[][] obs, ModelFactory modelFactory, LikelihoodFunctionFactory likelihoodFunctionFactory) {
 		this.nGens = nGens;
 		this.nPop = nPop;
 		this.parSpace = parSpace;
+		this.stateSpace = stateSpace;
 		if (modelFactory!=null){
 			this.initState = initState.clone();
 			this.forcingChunks = new ForcingChunks(forcing.clone(), assimilate.clone());
@@ -124,8 +126,8 @@ public class DiffEvo {
 			this.modelName = likelihoodFunctionFactory.getClass().getSimpleName().toString();
 		}
 		this.nPars = parSpace.getNumberOfPars();
-		this.parents = new Parents(nPop,parSpace);
-		this.proposals = new Proposals(nPop,parSpace);
+		this.parents = new Parents(nPop,parSpace,stateSpace,times.length);
+		this.proposals = new Proposals(nPop,parSpace,stateSpace,times.length);
 		this.evalResults = new EvalResults();
 		this.generator = new Random();
 		this.generator.setSeed(0);
@@ -135,8 +137,7 @@ public class DiffEvo {
 		this.tickFont = new Font("Ubuntu",Font.ROMAN_BASELINE,14);
 		this.labelFont = new Font("Ubuntu",Font.ROMAN_BASELINE,20);
 		}
-	
-	
+
 	
 	public void initializeParents(){
 		int nModelEvals = 0;

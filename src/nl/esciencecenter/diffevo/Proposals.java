@@ -24,27 +24,27 @@ import java.util.List;
 public class Proposals extends ListOfSamples{
 
 	// constructor
-	public Proposals(int nPop, ParSpace parSpace){
-		super(nPop,parSpace);
+	public Proposals(int nPop, ParSpace parSpace, StateSpace stateSpace,int nTimes){
+		super(nPop,parSpace,stateSpace,nTimes);
 	}
 	
 	public void reflectIfOutOfBounds(){
 
 		int nPop = getnPop();
-		int nDims = getnDims();
+		int nPars = getnPars();
 		ParSpace parSpace = getparSpace();
 		
 		for (int iPop=0;iPop<nPop;iPop++){
-			for (int iDim = 0;iDim<nDims;iDim++){
+			for (int iPar = 0;iPar<nPars;iPar++){
 				double[] parameterVector = getParameterVector(iPop);
-				double lb = parSpace.getLowerBound(iDim);
-				double ub = parSpace.getUpperBound(iDim);
-				double s = parameterVector[iDim];
+				double lb = parSpace.getLowerBound(iPar);
+				double ub = parSpace.getUpperBound(iPar);
+				double s = parameterVector[iPar];
 				if (s<lb){
-					parameterVector[iDim] = lb+(lb-s);
+					parameterVector[iPar] = lb+(lb-s);
 				}					
 				if (s>ub){
-					parameterVector[iDim] = ub+(ub-s);
+					parameterVector[iPar] = ub+(ub-s);
 				}
 				setParameterVector(iPop, parameterVector);
 			}

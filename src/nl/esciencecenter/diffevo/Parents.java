@@ -25,22 +25,22 @@ import java.util.Random;
 public class Parents extends ListOfSamples {
 
 	// constructor
-	public Parents(int nPop, ParSpace parSpace){
+	public Parents(int nPop, ParSpace parSpace, StateSpace stateSpace, int nTimes){
 		
-		super(nPop,parSpace);
+		super(nPop,parSpace, stateSpace, nTimes);
 	}
 	
 	public void takeUniformRandomSamples(Random generator){
 		int nPop = getnPop();
-		int nDims = getnDims();
+		int nPars = getnPars();
 		ParSpace parSpace = getparSpace();
 
 		for (int iPop=1;iPop<=nPop;iPop++){
-			double[] values = new double[nDims];			
-			for (int iDim=1;iDim<=nDims;iDim++){
+			double[] values = new double[nPars];			
+			for (int iPar=1;iPar<=nPars;iPar++){
 				double g = generator.nextDouble();
-				values[iDim-1] = parSpace.getLowerBound(iDim-1) + 
-						g * parSpace.getRange(iDim-1);
+				values[iPar-1] = parSpace.getLowerBound(iPar-1) + 
+						g * parSpace.getRange(iPar-1);
 			}
 			this.setParameterVector(iPop-1, values);
 		}
