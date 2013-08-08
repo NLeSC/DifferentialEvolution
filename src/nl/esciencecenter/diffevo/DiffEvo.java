@@ -24,7 +24,9 @@ package nl.esciencecenter.diffevo;
 import java.util.Random;
 
 import nl.esciencecenter.diffevo.likelihoodfunctionfactories.LikelihoodFunctionFactory;
+import nl.esciencecenter.diffevo.likelihoodfunctions.LikelihoodFunction;
 import nl.esciencecenter.diffevo.statespacemodelfactories.ModelFactory;
+import nl.esciencecenter.diffevo.statespacemodels.Model;
 
 /**
  * This is the Differential Evolution algorithm by Storn and Price
@@ -94,7 +96,7 @@ public class DiffEvo {
 		double objScore;
 		
 		parents.takeUniformRandomSamples(generator);
-		parents.calcObjScore(obs, initState,forcingChunks,timeChunks,modelFactory, likelihoodFunctionFactory);
+		parents = (Parents) calcObjScore(parents, obs, initState,forcingChunks,timeChunks,modelFactory, likelihoodFunctionFactory);
 		
 		// now add the initial values of parents to the record, i.e. evalResults
 		for (int iPop=0;iPop<nPop;iPop++){
@@ -148,7 +150,7 @@ public class DiffEvo {
 			proposals.setParameterVector(iPop, proposal);
  		}
 		proposals.reflectIfOutOfBounds();
-		proposals.calcObjScore(obs, initState, forcingChunks, timeChunks, modelFactory, likelihoodFunctionFactory);
+		proposals = (Proposals) calcObjScore(proposals, obs, initState, forcingChunks, timeChunks, modelFactory, likelihoodFunctionFactory);
 	}
 	
 	private double[] calcDistance(int iPop, int[] availables, int distanceOneOrTwo){
@@ -218,7 +220,7 @@ public class DiffEvo {
 		return nPop;
 	}
 
-	public EvalResults start(){
+	public EvalResults runOptimization(){
 		System.out.println("Starting Differential Evolution optimization...");		
 		initializeParents();
 		for (int iGen = 1;iGen<nGens;iGen++){
@@ -227,6 +229,66 @@ public class DiffEvo {
 		}
 		return evalResults; 
 	}
+	
+	public ListOfSamples calcObjScore(ListOfSamples listOfSamples, double[][] obs, double[] initState, ForcingChunks forcingChunks,
+			TimeChunks timeChunks, ModelFactory modelFactory, LikelihoodFunctionFactory likelihoodFunctionFactory) {
+
+		LikelihoodFunction likelihoodFunction = likelihoodFunctionFactory.create();
+		
+		if (modelFactory!=null){
+			int nChunks = timeChunks.getnChunks();
+
+			int nStates = initState.length;
+			int nTimes = timeChunks.getnTimes();
+
+			for (int iPop=0;iPop<nPop;iPop++){
+				double[] parameterVector = listOfSamples.getParameterVector(iPop);
+				double[] state = new double[initState.length];
+				System.arraycopy(initState, 0, state, 0, nStates);
+				
+				double[][] sim = new double[nStates][nTimes];
+				for (int iState=0;iState<nStates;iState++){
+					sim[iState][0] = Double.NaN;
+				}
+				for (int iChunk=0;iChunk<nChunks;iChunk++){
+					double[] times = timeChunks.getChunk(iChunk);
+					double[] forcing = forcingChunks.getChunk(iChunk);
+					int[] indices = timeChunks.getChunkIndices(iChunk);
+					int nIndices = indices.length;
+
+					Model model = modelFactory.create(state, parameterVector, forcing, times);
+					double[][] simChunk = model.evaluate();
+
+					for (int iState=0;iState<nStates;iState++){
+						for (int iIndex=1;iIndex<nIndices;iIndex++){
+							sim[iState][indices[iIndex]] = simChunk[iState][iIndex];
+						}
+						state[iState] = simChunk[iState][nIndices-1];
+					}
+					
+					//updateStatesPrior(iPop, indices, simChunk);
+				}//iChunk
+				
+
+
+				double objScore = likelihoodFunction.evaluate(obs, sim);
+				listOfSamples.setObjScore(iPop, objScore);
+
+			} //iPop		
+		}
+		else {
+			for (int iPop=0;iPop<nPop;iPop++){
+				double[] parameterVector = listOfSamples.getParameterVector(iPop);
+				double objScore = likelihoodFunction.evaluate(parameterVector);
+				listOfSamples.setObjScore(iPop, objScore);
+			} // iPop
+		} //else
+		
+		return listOfSamples;
+
+	} // calcObjScore()
+
+	
 	
 	
 }
