@@ -145,7 +145,7 @@ public class MainProgram {
 				nPop = 50;
 				{
 					double[] lowerBoundsParSpace = new double[]{-20,-40,-80,-120};
-					double[]  upperBoundsParSpace = new double[]{ 20, 40, 80, 120};
+					double[] upperBoundsParSpace = new double[]{ 20, 40, 80, 120};
 					String[] parNames = new String[]{"a","b","c","d"};
 					parSpace = new ParSpace(lowerBoundsParSpace,upperBoundsParSpace,parNames);
 					parSpace.divideIntoIntervals(new int[]{50,50,50,50});
@@ -159,21 +159,28 @@ public class MainProgram {
 			}
 			} //switch
 
-			diffEvo.start();
-
-			diffEvo.printEvalResults();
-
-			file = new File("out"+File.separator+"evalresults.json");
-			diffEvo.writeEvalResultsToJSON(file);
-
-			file = new File("out"+File.separator+"evalresults.txt");
-			diffEvo.writeEvalResultsToTextFile(file);
-
-			if (parSpace.getNumberOfPars()>1){
-				diffEvo.matrixOfScatterParPar();
-				diffEvo.matrixOfHeatmapParPar();
+			// run the optimization:
+			EvalResults evalResults = diffEvo.start();
+	
+			// do some visualization of the results:
+			DiffEvoVisualization vis = new DiffEvoVisualization(evalResults);
+			vis.matrixOfScatterParPar();
+			vis.matrixOfHeatmapParPar();
+			vis.margHist();
+			vis.scatterEvalObj();
+			for (int iPar=0;iPar<parSpace.getNumberOfPars();iPar++){
+				vis.scatterEvalPar(iPar);
 			}
-			diffEvo.margHist();
+		
+			// do some printing to file and standard out:
+			DiffEvoOutputWriters writers = new DiffEvoOutputWriters(evalResults);
+			writers.printEvalResults();
+			writers.printEvalResults();
+			file = new File("out"+File.separator+"evalresults.json");
+			writers.writeEvalResultsToJSON(file);
+			file = new File("out"+File.separator+"evalresults.txt");
+			writers.writeEvalResultsToTextFile(file);
+
 
 		} // int modelSwitch
 	} // main
