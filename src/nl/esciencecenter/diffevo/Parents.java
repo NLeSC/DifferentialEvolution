@@ -25,15 +25,16 @@ import java.util.Random;
 public class Parents extends ListOfSamples {
 
 	// constructor
+	private ParSpace parSpace;
 	public Parents(int nPop, ParSpace parSpace, StateSpace stateSpace, int nTimes){
 		
 		super(nPop,parSpace, stateSpace, nTimes);
+		this.parSpace = parSpace;
 	}
 	
 	public void takeUniformRandomSamples(Random generator){
 		int nPop = getnPop();
 		int nPars = getnPars();
-		ParSpace parSpace = getparSpace();
 
 		for (int iPop=1;iPop<=nPop;iPop++){
 			double[] values = new double[nPars];			

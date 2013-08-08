@@ -23,16 +23,18 @@ import java.util.List;
 
 public class Proposals extends ListOfSamples{
 
+	private ParSpace parSpace;
+	
 	// constructor
 	public Proposals(int nPop, ParSpace parSpace, StateSpace stateSpace,int nTimes){
 		super(nPop,parSpace,stateSpace,nTimes);
+		this.parSpace = parSpace;
 	}
 	
 	public void reflectIfOutOfBounds(){
 
 		int nPop = getnPop();
 		int nPars = getnPars();
-		ParSpace parSpace = getparSpace();
 		
 		for (int iPop=0;iPop<nPop;iPop++){
 			for (int iPar = 0;iPar<nPars;iPar++){
