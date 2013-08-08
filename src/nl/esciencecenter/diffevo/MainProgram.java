@@ -160,7 +160,7 @@ public class MainProgram {
 			} //switch
 
 			// run the optimization:
-			EvalResults evalResults = diffEvo.start();
+			EvalResults evalResults = diffEvo.runOptimization();
 	
 			// do some visualization of the results:
 			DiffEvoVisualization vis = new DiffEvoVisualization(evalResults);
