@@ -50,10 +50,25 @@ public class DiffEvo {
 	private double[][] obs;
 	private ModelFactory modelFactory;
 	private LikelihoodFunctionFactory likelihoodFunctionFactory;
+	private final static long defaultRandomSeed = 0; 
 	
 	
 	// constructor:
 	DiffEvo(int nGens, int nPop, ParSpace parSpace, LikelihoodFunctionFactory likelihoodFunctionFactory) {
+		// use seed of zero by default:
+		this(nGens, nPop, parSpace, likelihoodFunctionFactory, defaultRandomSeed);
+	}
+
+	// constructor:
+	DiffEvo(int nGens, int nPop, ParSpace parSpace, StateSpace stateSpace, double[] initState, double[] forcing, double[] times, 
+			double[] assimilate, double[][] obs, ModelFactory modelFactory, LikelihoodFunctionFactory likelihoodFunctionFactory) {
+		// use seed of zero by default:
+		this(nGens, nPop, parSpace, stateSpace, initState, forcing, times, assimilate, obs, 
+				modelFactory, likelihoodFunctionFactory, defaultRandomSeed);
+	}
+	
+	// constructor:
+	DiffEvo(int nGens, int nPop, ParSpace parSpace, LikelihoodFunctionFactory likelihoodFunctionFactory, long seed) {
 		this.nGens = nGens;
 		this.nPop = nPop;
 		this.nPars = parSpace.getNumberOfPars();
@@ -61,14 +76,14 @@ public class DiffEvo {
 		this.parents = new ListOfParameterCombinations(nPop, nPars);
 		this.proposals = new ListOfParameterCombinations(nPop, nPars);
 		this.generator = new Random();
-		this.generator.setSeed(0);
+		this.generator.setSeed(seed);
 		this.likelihoodFunctionFactory = likelihoodFunctionFactory;
 		this.evalResults = new EvalResults(nGens, nPop, parSpace, likelihoodFunctionFactory, generator);
 	}
-	
+
 	// constructor:
 	DiffEvo(int nGens, int nPop, ParSpace parSpace, StateSpace stateSpace, double[] initState, double[] forcing, double[] times, 
-			double[] assimilate, double[][] obs, ModelFactory modelFactory, LikelihoodFunctionFactory likelihoodFunctionFactory) {
+			double[] assimilate, double[][] obs, ModelFactory modelFactory, LikelihoodFunctionFactory likelihoodFunctionFactory, long seed) {
 		this.nGens = nGens;
 		this.nPop = nPop;
 		this.parSpace = parSpace;
@@ -81,7 +96,7 @@ public class DiffEvo {
 		this.parents = new ListOfParameterCombinations(nPop, nPars);
 		this.proposals = new ListOfParameterCombinations(nPop, nPars);
 		this.generator = new Random();
-		this.generator.setSeed(0);
+		this.generator.setSeed(seed);
 		this.obs = obs.clone();
 		this.modelFactory = modelFactory;
 		this.likelihoodFunctionFactory = likelihoodFunctionFactory;
