@@ -44,6 +44,25 @@ public class DataReader {
 		return dataArrayTransposed.clone();
 	} // getDataArray
 
+
+	public double[] getColumn(int iCol) {
+		return dataArrayTransposed[iCol].clone();
+	} // getDataArray
+
+	public double[] getRow(int iRow) {
+		
+		int nCols = dataArrayTransposed.length;
+		
+		double[] row = new double[nCols];
+		for (int iCol=0;iCol<nCols;iCol++){
+			row[iCol] = dataArrayTransposed[iCol][iRow]; 
+		}
+		return row;
+	} // getDataArray
+	
+	
+	
+	
 	private void setData(double[][] dataArray) {
 		
 		int nRows = dataArray.length;
