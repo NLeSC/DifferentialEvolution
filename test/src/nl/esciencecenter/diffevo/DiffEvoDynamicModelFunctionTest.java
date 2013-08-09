@@ -57,9 +57,7 @@ public class DiffEvoDynamicModelFunctionTest {
 	public void testDiffEvoDynamicModelFunction() {
 		EvalResults evalResults = diffEvo.runOptimization();
 		
-		System.out.println(System.getProperty("user.dir"));
-		
-		File file = new File("test"+File.separator+"testDiffEvoDynamicModelFunction.eas"); 
+		File file = new File("testDiffEvoDynamicModelFunction.eas"); 
 		DataReader reader = new DataReader(file);
 		
 		int nCols = evalResults.getParSpace().getNumberOfPars()+1+1;
