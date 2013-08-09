@@ -21,6 +21,7 @@ package nl.esciencecenter.diffevo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class ParSpace extends Space {
 
@@ -90,5 +91,42 @@ public class ParSpace extends Space {
 		return getBinBounds(iPar).length-1;
 	}
 
+	
+	public double[] takeUniformRandomSample(Random generator){
+		
+		int nPars = getNumberOfPars();
+			double[] parameterCombination = new double[nPars];			
+			for (int iPar=1;iPar<=nPars;iPar++){
+				double g = generator.nextDouble();
+				parameterCombination[iPar-1] = getLowerBound(iPar-1) + 
+						g * getRange(iPar-1);
+			}
+		return parameterCombination;	
+	}
+	
+	
+	public ListOfParameterCombinations reflectIfOutOfBounds(ListOfParameterCombinations proposals){
+
+		int nPop = proposals.getPopulationSize();
+		int nPars = proposals.getNumberOfPars();
+		
+		for (int iPop=0;iPop<nPop;iPop++){
+			for (int iPar = 0;iPar<nPars;iPar++){
+				double[] parameterVector = proposals.getParameterCombination(iPop);
+				double lb = getLowerBound(iPar);
+				double ub = getUpperBound(iPar);
+				double s = parameterVector[iPar];
+				if (s<lb){
+					parameterVector[iPar] = lb+(lb-s);
+				}					
+				if (s>ub){
+					parameterVector[iPar] = ub+(ub-s);
+				}
+				proposals.setParameterCombination(iPop, parameterVector);
+			}
+		}
+		return proposals;
+	}	
+	
 
 }

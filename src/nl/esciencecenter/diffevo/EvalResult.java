@@ -19,21 +19,29 @@
 
 package nl.esciencecenter.diffevo;
 
-public class ParameterVector {
-
-	private double[] values;
+public class EvalResult {
 	
-	public double[] getValues() {
-		return values.clone();
+	private int sampleIdentifier;
+    private double[] parameterCombination;
+    private double objScore;
+    		
+	public EvalResult(int sampleIdentifier, double[] parameterCombination, double objScore) {
+		this.sampleIdentifier = sampleIdentifier;
+		this.parameterCombination = parameterCombination.clone();
+		this.objScore = objScore;
 	}
 
-	public void setValues(double[] values) {
-		this.values = values.clone();
+
+	public int getSampleIdentifier() {
+		return sampleIdentifier;
 	}
 	
-	public ParameterVector(ParSpace parSpace){		
-		int nDims = parSpace.getNumberOfPars();
-		values = new double[nDims];
-	}		
+	public double[] getParameterVector() {
+		return parameterCombination.clone();
+	}
+
+	public double getObjScore() {
+		return objScore;
+	}
 
 }

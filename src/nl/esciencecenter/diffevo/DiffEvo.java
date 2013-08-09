@@ -39,17 +39,19 @@ public class DiffEvo {
 	private final int nPars;
 	private final int nPop;
 	private final int nGens;
-	private Parents parents;
-	private Proposals proposals;
+	private ListOfParameterCombinations parents;
+	private ListOfParameterCombinations  proposals;
 	private EvalResults evalResults;
 	private Random generator;
-	private StateSpace stateSpace;
+	private ParSpace parSpace;	
 	private double[] initState;
 	private ForcingChunks forcingChunks;
 	private TimeChunks timeChunks;
 	private double[][] obs;
 	private ModelFactory modelFactory;
 	private LikelihoodFunctionFactory likelihoodFunctionFactory;
+	private RecordOfValues statesPriors;
+
 	
 	
 	// constructor:
@@ -57,28 +59,29 @@ public class DiffEvo {
 		this.nGens = nGens;
 		this.nPop = nPop;
 		this.nPars = parSpace.getNumberOfPars();
-		this.parents = new Parents(nPop,parSpace,stateSpace,0);
-		this.proposals = new Proposals(nPop,parSpace,stateSpace,0);
+		this.parSpace = parSpace;
+		this.parents = new ListOfParameterCombinations(nPop, nPars);
+		this.proposals = new ListOfParameterCombinations(nPop, nPars);
 		this.generator = new Random();
 		this.generator.setSeed(0);
 		this.likelihoodFunctionFactory = likelihoodFunctionFactory;
 		this.evalResults = new EvalResults(nGens, nPop, parSpace, likelihoodFunctionFactory, generator);
-		}
+	}
 	
 	// constructor:
 	DiffEvo(int nGens, int nPop, ParSpace parSpace, StateSpace stateSpace, double[] initState, double[] forcing, double[] times, 
 			double[] assimilate, double[][] obs, ModelFactory modelFactory, LikelihoodFunctionFactory likelihoodFunctionFactory) {
 		this.nGens = nGens;
 		this.nPop = nPop;
-		this.stateSpace = stateSpace;
+		this.parSpace = parSpace;
 		if (modelFactory!=null){
 			this.initState = initState.clone();
 			this.forcingChunks = new ForcingChunks(forcing.clone(), assimilate.clone());
 			this.timeChunks = new TimeChunks(times.clone(), assimilate.clone());
 		}
 		this.nPars = parSpace.getNumberOfPars();
-		this.parents = new Parents(nPop,parSpace,stateSpace,times.length);
-		this.proposals = new Proposals(nPop,parSpace,stateSpace,times.length);
+		this.parents = new ListOfParameterCombinations(nPop, nPars);
+		this.proposals = new ListOfParameterCombinations(nPop, nPars);
 		this.generator = new Random();
 		this.generator.setSeed(0);
 		this.obs = obs.clone();
@@ -86,29 +89,94 @@ public class DiffEvo {
 		this.likelihoodFunctionFactory = likelihoodFunctionFactory;
 		this.evalResults = new EvalResults(nGens, nPop, parSpace, stateSpace, initState, forcing, times, 
 				assimilate, obs, modelFactory, likelihoodFunctionFactory, generator);
-		}
+	}
 
 	
+	public EvalResults runOptimization(){
+		System.out.println("Starting Differential Evolution optimization...");		
+		initializeParents();
+		for (int iGen = 1;iGen<nGens;iGen++){
+			proposeOffSpring();
+			updateParentsWithProposals();
+		}
+		return evalResults; 
+	}
+	
+	
 	public void initializeParents(){
-		int nModelEvals = 0;
-		Sample sample;
-		double[] parameterVector;
-		double objScore;
 		
-		parents.takeUniformRandomSamples(generator);
-		parents = (Parents) calcObjScore(parents, obs, initState,forcingChunks,timeChunks,modelFactory, likelihoodFunctionFactory);
+		for (int iPop=0;iPop<nPop;iPop++){
+			double[] parameterCombination = parSpace.takeUniformRandomSample(generator);
+			parents.setParameterCombination(iPop, parameterCombination);
+		}
+		parents = calcObjScores(parents, obs, initState,forcingChunks,timeChunks,modelFactory, likelihoodFunctionFactory);
 		
 		// now add the initial values of parents to the record, i.e. evalResults
 		for (int iPop=0;iPop<nPop;iPop++){
-			parameterVector = parents.getParameterVector(iPop);
-			sample = new Sample(nPars);
-			objScore = parents.getObjScore(iPop);
-			sample.setSampleCounter(nModelEvals+iPop);
-			sample.setParameterVector(parameterVector);
-			sample.setObjScore(objScore);
-			evalResults.add(sample);
+			int sampleIdentifier = iPop; 
+			double[] parameterCombination = parents.getParameterCombination(iPop);
+			double objScore = parents.getObjScore(iPop);
+			EvalResult evalResult = new EvalResult(sampleIdentifier, parameterCombination, objScore);
+			evalResults.add(evalResult);
 		}
 	}
+	
+	public ListOfParameterCombinations calcObjScores(ListOfParameterCombinations parameterCombinations, double[][] obs, double[] initState, ForcingChunks forcingChunks,
+			TimeChunks timeChunks, ModelFactory modelFactory, LikelihoodFunctionFactory likelihoodFunctionFactory) {
+
+		LikelihoodFunction likelihoodFunction = likelihoodFunctionFactory.create();
+		
+		if (modelFactory!=null){
+			int nChunks = timeChunks.getnChunks();
+
+			int nStates = initState.length;
+			int nTimes = timeChunks.getnTimes();
+
+			for (int iPop=0;iPop<nPop;iPop++){
+				double[] parameterVector = parameterCombinations.getParameterCombination(iPop);
+				double[] state = new double[initState.length];
+				System.arraycopy(initState, 0, state, 0, nStates);
+				
+				double[][] sim = new double[nStates][nTimes];
+				for (int iState=0;iState<nStates;iState++){
+					sim[iState][0] = Double.NaN;
+				}
+				for (int iChunk=0;iChunk<nChunks;iChunk++){
+					double[] times = timeChunks.getChunk(iChunk);
+					double[] forcing = forcingChunks.getChunk(iChunk);
+					int[] indices = timeChunks.getChunkIndices(iChunk);
+					int nIndices = indices.length;
+
+					Model model = modelFactory.create(state, parameterVector, forcing, times);
+					double[][] simChunk = model.evaluate();
+
+					for (int iState=0;iState<nStates;iState++){
+						for (int iIndex=1;iIndex<nIndices;iIndex++){
+							sim[iState][indices[iIndex]] = simChunk[iState][iIndex];
+						}
+						state[iState] = simChunk[iState][nIndices-1];
+					}
+				}//iChunk
+				
+				double objScore = likelihoodFunction.evaluate(obs, sim);
+				parameterCombinations.setObjScore(iPop, objScore);
+
+			} //iPop		
+		}
+		else {
+			for (int iPop=0;iPop<nPop;iPop++){
+				double[] parameterVector = parameterCombinations.getParameterCombination(iPop);
+				double objScore = likelihoodFunction.evaluate(parameterVector);
+				parameterCombinations.setObjScore(iPop, objScore);
+			} // iPop
+		} //else
+		
+		return parameterCombinations;
+
+	} // calcObjScore()
+
+	
+	
 	
 	public void proposeOffSpring(){
 	
@@ -141,16 +209,16 @@ public class DiffEvo {
 			dist1 = calcDistance(iPop, availables, 1);
 			dist2 = calcDistance(iPop, availables, 2);
 			
-			parent = parents.getParameterVector(iPop);
+			parent = parents.getParameterCombination(iPop);
 
 			proposal = new double[nPars];
 			for (int iPar=0;iPar<nPars;iPar++){
 				proposal[iPar] = parent[iPar] + diffEvoParF * dist1[iPar] + diffEvoParK * dist2[iPar]; 				
 			}
-			proposals.setParameterVector(iPop, proposal);
+			proposals.setParameterCombination(iPop, proposal);
  		}
-		proposals.reflectIfOutOfBounds();
-		proposals = (Proposals) calcObjScore(proposals, obs, initState, forcingChunks, timeChunks, modelFactory, likelihoodFunctionFactory);
+		proposals = parSpace.reflectIfOutOfBounds(proposals);
+		proposals = calcObjScores(proposals, obs, initState, forcingChunks, timeChunks, modelFactory, likelihoodFunctionFactory);
 	}
 	
 	private double[] calcDistance(int iPop, int[] availables, int distanceOneOrTwo){
@@ -169,8 +237,8 @@ public class DiffEvo {
 			toIndex = availables[2];
 		}
 		
-		fromPoint = parents.getParameterVector(fromIndex);
-		toPoint = parents.getParameterVector(toIndex);
+		fromPoint = parents.getParameterCombination(fromIndex);
+		toPoint = parents.getParameterCombination(toIndex);
 		
 		dist = new double[nPars];
 
@@ -184,35 +252,34 @@ public class DiffEvo {
 	public void updateParentsWithProposals(){
 		double scoreParent;
 		double scoreProposal;
-		int nModelEvals = evalResults.size();
-		Sample sample;
+		int nModelEvals = evalResults.getNumberOfEvalResults();
+
 		double logOfUnifRandDraw;
-		double[] parameterVector;
+		double[] parameterCombination;
 		double objScore;
-		
 		
 		for (int iPop=0;iPop<nPop;iPop++){
 			scoreParent = parents.getObjScore(iPop);
 			scoreProposal = proposals.getObjScore(iPop);
 			logOfUnifRandDraw = Math.log(generator.nextDouble());
+			int sampleIdentifier = nModelEvals+iPop;
 			if (scoreProposal-scoreParent >= logOfUnifRandDraw){
 				// accept proposal
-				parameterVector = proposals.getParameterVector(iPop);
+				parameterCombination = proposals.getParameterCombination(iPop);
 				objScore = proposals.getObjScore(iPop);
 			}
 			else{
 				// reject proposal
-				parameterVector = parents.getParameterVector(iPop);
+				parameterCombination = parents.getParameterCombination(iPop);
 				objScore = parents.getObjScore(iPop);
 			}
-			sample = new Sample(nPars);
-			sample.setSampleCounter(nModelEvals+iPop);
-			sample.setParameterVector(parameterVector);
-			sample.setObjScore(objScore);
-			parents.setParent(iPop, sample);
+			
+			parents.setParameterCombination(iPop, parameterCombination);
+			parents.setObjScore(iPop, objScore);
 			
 			// add most recent sample to the record array evalResults:
-			evalResults.add(sample);
+			EvalResult evalResult = new EvalResult(sampleIdentifier, parameterCombination, objScore);
+			evalResults.add(evalResult);
 		}
 	}
 	
@@ -220,75 +287,6 @@ public class DiffEvo {
 		return nPop;
 	}
 
-	public EvalResults runOptimization(){
-		System.out.println("Starting Differential Evolution optimization...");		
-		initializeParents();
-		for (int iGen = 1;iGen<nGens;iGen++){
-			proposeOffSpring();
-			updateParentsWithProposals();
-		}
-		return evalResults; 
-	}
-	
-	public ListOfSamples calcObjScore(ListOfSamples listOfSamples, double[][] obs, double[] initState, ForcingChunks forcingChunks,
-			TimeChunks timeChunks, ModelFactory modelFactory, LikelihoodFunctionFactory likelihoodFunctionFactory) {
-
-		LikelihoodFunction likelihoodFunction = likelihoodFunctionFactory.create();
-		
-		if (modelFactory!=null){
-			int nChunks = timeChunks.getnChunks();
-
-			int nStates = initState.length;
-			int nTimes = timeChunks.getnTimes();
-
-			for (int iPop=0;iPop<nPop;iPop++){
-				double[] parameterVector = listOfSamples.getParameterVector(iPop);
-				double[] state = new double[initState.length];
-				System.arraycopy(initState, 0, state, 0, nStates);
-				
-				double[][] sim = new double[nStates][nTimes];
-				for (int iState=0;iState<nStates;iState++){
-					sim[iState][0] = Double.NaN;
-				}
-				for (int iChunk=0;iChunk<nChunks;iChunk++){
-					double[] times = timeChunks.getChunk(iChunk);
-					double[] forcing = forcingChunks.getChunk(iChunk);
-					int[] indices = timeChunks.getChunkIndices(iChunk);
-					int nIndices = indices.length;
-
-					Model model = modelFactory.create(state, parameterVector, forcing, times);
-					double[][] simChunk = model.evaluate();
-
-					for (int iState=0;iState<nStates;iState++){
-						for (int iIndex=1;iIndex<nIndices;iIndex++){
-							sim[iState][indices[iIndex]] = simChunk[iState][iIndex];
-						}
-						state[iState] = simChunk[iState][nIndices-1];
-					}
-					
-					//updateStatesPrior(iPop, indices, simChunk);
-				}//iChunk
-				
-
-
-				double objScore = likelihoodFunction.evaluate(obs, sim);
-				listOfSamples.setObjScore(iPop, objScore);
-
-			} //iPop		
-		}
-		else {
-			for (int iPop=0;iPop<nPop;iPop++){
-				double[] parameterVector = listOfSamples.getParameterVector(iPop);
-				double objScore = likelihoodFunction.evaluate(parameterVector);
-				listOfSamples.setObjScore(iPop, objScore);
-			} // iPop
-		} //else
-		
-		return listOfSamples;
-
-	} // calcObjScore()
-
-	
 	
 	
 }

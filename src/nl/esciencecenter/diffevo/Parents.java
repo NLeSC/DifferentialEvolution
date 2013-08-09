@@ -19,56 +19,25 @@
 
 package nl.esciencecenter.diffevo;
 
-import java.util.List;
-import java.util.Random;
+import java.util.ArrayList;
 
-public class Parents extends ListOfSamples {
+public class Parents {
 
-	// constructor
-	private ParSpace parSpace;
-	public Parents(int nPop, ParSpace parSpace, StateSpace stateSpace, int nTimes){
-		
-		super(nPop,parSpace, stateSpace, nTimes);
-		this.parSpace = parSpace;
-	}
+	private ArrayList<Parent> parents;
 	
-	public void takeUniformRandomSamples(Random generator){
-		int nPop = getnPop();
-		int nPars = getnPars();
-
-		for (int iPop=1;iPop<=nPop;iPop++){
-			double[] values = new double[nPars];			
-			for (int iPar=1;iPar<=nPars;iPar++){
-				double g = generator.nextDouble();
-				values[iPar-1] = parSpace.getLowerBound(iPar-1) + 
-						g * parSpace.getRange(iPar-1);
-			}
-			this.setParameterVector(iPop-1, values);
+	
+	// constructor
+	public Parents(int nPop, int nPars){
+		
+		
+		for (int iPop=0;iPop<nPop;iPop++){
+			
+			Parent parent = new Parent(nPars);
+			parents.add(parent);
+			
 		}
 	}
 	
-	public List<Sample> getParents() {
-		return this.getSampleList();
-	}
-	
-	public Sample getParent(int index) {
-		return this.getSampleList().get(index);
-	}
-
-	public void setParent(int index, Sample sample) {
-		int sampleIdentifier;
-		double[] parameterVector;
-		double objScore;
-		
-		sampleIdentifier = sample.getSampleCounter();
-		parameterVector = sample.getParameterVector();
-		objScore = sample.getObjScore();
-		
-		this.getSampleList().get(index).setSampleCounter(sampleIdentifier);
-		this.getSampleList().get(index).setParameterVector(parameterVector);
-		this.getSampleList().get(index).setObjScore(objScore);
-		
-	}
 }
 
 

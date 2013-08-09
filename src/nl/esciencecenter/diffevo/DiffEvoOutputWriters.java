@@ -23,10 +23,10 @@ public class DiffEvoOutputWriters {
 		double[] parameterVector; 
 		double objScore;
 		
-		nResults = evalResults.size();
+		nResults = evalResults.getNumberOfEvalResults();
 		for (int iResult=0;iResult<nResults;iResult++){
-			sampleCounter = evalResults.getSampleCounter(iResult);
-			parameterVector = evalResults.getParameterVector(iResult);
+			sampleCounter = evalResults.getSampleIdentifier(iResult);
+			parameterVector = evalResults.getParameterCombination(iResult);
 			objScore = evalResults.getObjScore(iResult);
 			System.out.printf("%6d ",sampleCounter);
 			for (int iPar=0;iPar<nPars;iPar++){
@@ -48,15 +48,15 @@ public class DiffEvoOutputWriters {
 
 		StringBuilder stringBuilder = new StringBuilder();
 		
-		nResults = evalResults.size();
-		nDims = evalResults.getParameterVector(0).length;
+		nResults = evalResults.getNumberOfEvalResults();
+		nDims = evalResults.getParameterCombination(0).length;
 		for (int iResult=0;iResult<nResults;iResult++){
 			
 			// sampleCounter part
-			sampleCounter = evalResults.getSampleCounter(iResult);
+			sampleCounter = evalResults.getSampleIdentifier(iResult);
 
 			// parameterVector part
-			parameterVector = evalResults.getParameterVector(iResult);
+			parameterVector = evalResults.getParameterCombination(iResult);
 
 			// objScore part
 			objScore = evalResults.getObjScore(iResult);
@@ -91,13 +91,13 @@ public class DiffEvoOutputWriters {
 		stringBuild.append("[\n");
 		
 		
-		nResults = evalResults.size();
+		nResults = evalResults.getNumberOfEvalResults();
 		for (int iResult=0;iResult<nResults;iResult++){
 			
 			// sampleCounter part
-			sampleCounter = evalResults.getSampleCounter(iResult);
+			sampleCounter = evalResults.getSampleIdentifier(iResult);
 			// parameterVector part
-			parameterVector = evalResults.getParameterVector(iResult);
+			parameterVector = evalResults.getParameterCombination(iResult);
 			// objScore part
 			objScore = evalResults.getObjScore(iResult);
 			

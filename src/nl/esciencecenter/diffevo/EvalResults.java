@@ -20,15 +20,15 @@
 package nl.esciencecenter.diffevo;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import nl.esciencecenter.diffevo.likelihoodfunctionfactories.LikelihoodFunctionFactory;
+import nl.esciencecenter.diffevo.likelihoodfunctions.LikelihoodFunction;
 import nl.esciencecenter.diffevo.statespacemodelfactories.ModelFactory;
 
 public class EvalResults {
 
-	private List<Sample> sampleList;
+	private ArrayList<EvalResult> listOfEvalResult;
 	private ParSpace parSpace;
 	private int nGens;
 	private int nPop;
@@ -51,8 +51,9 @@ public class EvalResults {
 		this.parSpace = parSpace;
 		this.likelihoodFunctionFactory = likelihoodFunctionFactory;
 		this.generator = generator;
-		this.modelName = likelihoodFunctionFactory.getClass().getSimpleName().toString();
-		this.sampleList = new ArrayList<Sample>();
+		LikelihoodFunction likelihoodFunction = likelihoodFunctionFactory.create();
+		this.modelName = likelihoodFunction.getName();
+		this.listOfEvalResult = new ArrayList<EvalResult>();
 		
 	}
 
@@ -72,151 +73,55 @@ public class EvalResults {
 		this.modelFactory = modelFactory;
 		this.likelihoodFunctionFactory = likelihoodFunctionFactory;
 		this.generator = generator;
-		this.modelName = likelihoodFunctionFactory.getClass().getSimpleName().toString();
-		this.sampleList = new ArrayList<Sample>();
+		LikelihoodFunction likelihoodFunction = likelihoodFunctionFactory.create();
+		this.modelName = likelihoodFunction.getName();
+		this.listOfEvalResult= new ArrayList<EvalResult>();
 	}
 	
 	
-	public void add(Sample sample){
-		sampleList.add(sample);
-	}
-	
-	public List<Sample> getEvalResults() {
-		return this.sampleList;
-	}
-	
-	public Sample getSample(int index) {
-		return this.sampleList.get(index);
-	}
-	
-	public double[] getParameterVector(int index) {
-		return this.sampleList.get(index).getParameterVector();
+	public void add(EvalResult evalResult){
+		listOfEvalResult.add(evalResult);
 	}
 
+	
+	// get the whole list:
+	public ArrayList<EvalResult> getEvalResults() {
+		return this.listOfEvalResult;
+	}
+
+	// get an element of the list:
+	public EvalResult getEvalResult(int index) {
+		return this.listOfEvalResult.get(index);
+	}
+	
+	// get only the sample identifier of one element of the list:
+	public int getSampleIdentifier(int index) {
+		return this.listOfEvalResult.get(index).getSampleIdentifier();
+	}
+
+	// get only the parameter combination of one element of the list:
+	public double[] getParameterCombination(int index) {
+		return this.listOfEvalResult.get(index).getParameterVector();
+	}
+	
+	// get only the objective score of one element of the list:
 	public double getObjScore(int index) {
-		return this.sampleList.get(index).getObjScore();
-	}
-
-	public int size() {
-		return this.sampleList.size();
+		return this.listOfEvalResult.get(index).getObjScore();
 	}
 	
-	public int getSampleCounter(int index) {
-		return this.sampleList.get(index).getSampleCounter();
+	public int getNumberOfEvalResults(){
+		return listOfEvalResult.size();
 	}
-
-	public List<Sample> getSampleList() {
-		return sampleList;
-	}
-
-	public ParSpace getParSpace() {
+	
+	public ParSpace getParSpace(){
 		return parSpace;
 	}
 
-	public int getnGens() {
-		return nGens;
-	}
-
-	public int getnPop() {
-		return nPop;
-	}
-
-	public StateSpace getStateSpace() {
-		return stateSpace;
-	}
-
-	public double[] getInitState() {
-		return initState;
-	}
-
-	public double[] getForcing() {
-		return forcing;
-	}
-
-	public double[] getTimes() {
-		return times;
-	}
-
-	public double[] getAssimilate() {
-		return assimilate;
-	}
-
-	public double[][] getObs() {
-		return obs;
-	}
-
-	public ModelFactory getModelFactory() {
-		return modelFactory;
-	}
-
-	public LikelihoodFunctionFactory getLikelihoodFunctionFactory() {
-		return likelihoodFunctionFactory;
-	}
-
-	public Random getGenerator() {
-		return generator;
-	}
-
-	public String getModelName() {
+	public String getModelName(){
 		return modelName;
 	}
-
-	public void setSampleList(List<Sample> sampleList) {
-		this.sampleList = sampleList;
-	}
-
-	public void setParSpace(ParSpace parSpace) {
-		this.parSpace = parSpace;
-	}
-
-	public void setnGens(int nGens) {
-		this.nGens = nGens;
-	}
-
-	public void setnPop(int nPop) {
-		this.nPop = nPop;
-	}
-
-	public void setStateSpace(StateSpace stateSpace) {
-		this.stateSpace = stateSpace;
-	}
-
-	public void setInitState(double[] initState) {
-		this.initState = initState;
-	}
-
-	public void setForcing(double[] forcing) {
-		this.forcing = forcing;
-	}
-
-	public void setTimes(double[] times) {
-		this.times = times;
-	}
-
-	public void setAssimilate(double[] assimilate) {
-		this.assimilate = assimilate;
-	}
-
-	public void setObs(double[][] obs) {
-		this.obs = obs;
-	}
-
-	public void setModelFactory(ModelFactory modelFactory) {
-		this.modelFactory = modelFactory;
-	}
-
-	public void setLikelihoodFunctionFactory(
-			LikelihoodFunctionFactory likelihoodFunctionFactory) {
-		this.likelihoodFunctionFactory = likelihoodFunctionFactory;
-	}
-
-	public void setGenerator(Random generator) {
-		this.generator = generator;
-	}
-
-	public void setModelName(String modelName) {
-		this.modelName = modelName;
-	}
+	
+	// 
 	
 	
 	

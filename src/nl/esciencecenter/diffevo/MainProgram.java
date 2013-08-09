@@ -96,7 +96,7 @@ public class MainProgram {
 			} // case 1
 			case 2:{
 				//RastriginModel
-				nGens = 300;
+				nGens = 3000;
 				nPop = 50;
 				{
 					double[] lowerBoundsParSpace = new double[]{-5.12,-5.12};
@@ -111,7 +111,7 @@ public class MainProgram {
 			} //case 2
 			case 3:{
 				//RosenbrockModel
-				nGens = 300;
+				nGens = 3000;
 				nPop = 50;
 				{
 					double[] lowerBoundsParSpace = new double[]{-50,-40};
@@ -126,7 +126,7 @@ public class MainProgram {
 			} // case 3
 			case 4:{
 				//SingleNormalModel
-				nGens = 300;
+				nGens = 3000;
 				nPop = 50;
 				{
 					double[] lowerBoundsParSpace = new double[]{-50};
@@ -161,7 +161,7 @@ public class MainProgram {
 
 			// run the optimization:
 			EvalResults evalResults = diffEvo.runOptimization();
-	
+			
 			// do some visualization of the results:
 			DiffEvoVisualization vis = new DiffEvoVisualization(evalResults);
 			vis.matrixOfScatterParPar();
@@ -171,6 +171,9 @@ public class MainProgram {
 			for (int iPar=0;iPar<parSpace.getNumberOfPars();iPar++){
 				vis.scatterEvalPar(iPar);
 			}
+			
+			
+			
 		
 			// do some printing to file and standard out:
 			DiffEvoOutputWriters writers = new DiffEvoOutputWriters(evalResults);

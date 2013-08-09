@@ -55,7 +55,7 @@ public class DiffEvoVisualization {
 	
 	private int[][] calcResponseSurface(int iParRow,int iParCol){
 		
-		int nResults = evalResults.size();
+		int nResults = evalResults.getNumberOfEvalResults();
 		int iResult;
 		int iPar;
 		int iRowResponseSurface;
@@ -67,7 +67,7 @@ public class DiffEvoVisualization {
 	    double[] parameterVector;
 
 	    for (iResult=0;iResult<nResults;iResult++){
-			parameterVector = evalResults.getParameterVector(iResult);
+			parameterVector = evalResults.getParameterCombination(iResult);
 			
 			int k=0;
 			while (k<2){
@@ -210,10 +210,10 @@ public class DiffEvoVisualization {
 
 	private XYDataset createDatasetEvalObj(){
 		
-		int nResults = evalResults.size();
+		int nResults = evalResults.getNumberOfEvalResults();
 		XYSeries series = new XYSeries("eval-obj");
 		for (int iResult=0;iResult<nResults;iResult++){
-			series.add(evalResults.getSampleCounter(iResult),evalResults.getObjScore(iResult));
+			series.add(evalResults.getSampleIdentifier(iResult),evalResults.getObjScore(iResult));
 		}
 		
 		XYSeriesCollection dataset = new XYSeriesCollection();
@@ -224,11 +224,11 @@ public class DiffEvoVisualization {
 	
 	private XYDataset createDatasetEvalPar(int iPar){
 		
-		int nResults = evalResults.size();
+		int nResults = evalResults.getNumberOfEvalResults();
 		XYSeries series = new XYSeries("eval-par"+iPar);
 		for (int iResult=0;iResult<nResults;iResult++){
-			double[] parameterVector = evalResults.getParameterVector(iResult);
-			series.add(evalResults.getSampleCounter(iResult),parameterVector[iPar]);
+			double[] parameterVector = evalResults.getParameterCombination(iResult);
+			series.add(evalResults.getSampleIdentifier(iResult),parameterVector[iPar]);
 		}
 		
 		XYSeriesCollection dataset = new XYSeriesCollection();
@@ -251,7 +251,7 @@ public class DiffEvoVisualization {
 		Color markerFillColor = new Color(255,128, 0);
 		Rectangle marker = new Rectangle(-2,-2,4,4);
 		
-		int nResults = evalResults.size();
+		int nResults = evalResults.getNumberOfEvalResults();
 		
 		NumberAxis[] allAxes = new NumberAxis[nPars];
 		for (int iPar=0;iPar<nPars;iPar++){
@@ -274,7 +274,7 @@ public class DiffEvoVisualization {
 
 				XYSeries series = new XYSeries("("+parSpace.getParName(iCol)+","+parSpace.getParName(iRow)+")");
 				for (int iResult=0;iResult<nResults;iResult++){
-					double[] parameterVector = evalResults.getParameterVector(iResult);
+					double[] parameterVector = evalResults.getParameterCombination(iResult);
 					series.add(parameterVector[iCol],parameterVector[iRow]);
 				}
 
@@ -500,7 +500,7 @@ public class DiffEvoVisualization {
 	public int[] calcHistogram(int iPar){
 		
 
-		int nResults = evalResults.size();
+		int nResults = evalResults.getNumberOfEvalResults();
 		int nBins = parSpace.getnBins(iPar);
 		int[] histogram = new int[nBins];
 	    double[] parameterVector;
@@ -508,7 +508,7 @@ public class DiffEvoVisualization {
 		int nBinBounds = binBounds.length;
 		
 	    for (int iResult=0;iResult<nResults;iResult++){
-			parameterVector = evalResults.getParameterVector(iResult);
+			parameterVector = evalResults.getParameterCombination(iResult);
 			for (int iBinBound=0; iBinBound<nBinBounds;iBinBound++){
 				if (binBounds[iBinBound]>parameterVector[iPar]){
 					histogram[iBinBound-1]++;
