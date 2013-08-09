@@ -20,7 +20,7 @@ public class DiffEvoDynamicModelFunctionTest {
 		
 		int nGens = 2;
 		nPopExpected = 5;
-		File file  = new File("data"+File.separator+"lineartank.eas");
+		File file  = new File("test"+File.separator+"data"+File.separator+"lineartank.eas");
 		DataReader reader = new DataReader(file);
 		double[][] data = reader.getData();
 		ParSpace parSpace;
@@ -57,7 +57,7 @@ public class DiffEvoDynamicModelFunctionTest {
 	public void testDiffEvoDynamicModelFunction() {
 		EvalResults evalResults = diffEvo.runOptimization();
 		
-		File file = new File("data"+File.separator+"testDiffEvoDynamicModelFunction.eas");
+		File file = new File("test"+File.separator+"data"+File.separator+"testDiffEvoDynamicModelFunction.eas");
 		DataReader reader = new DataReader(file);
 		
 		int nCols = evalResults.getParSpace().getNumberOfPars()+1+1;
