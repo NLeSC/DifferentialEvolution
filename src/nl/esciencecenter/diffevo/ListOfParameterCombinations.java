@@ -66,9 +66,7 @@ public class ListOfParameterCombinations{
 	}
 
 	public void setParameterCombination(int iPop,double[] parameterValues){
-		for (int iPar = 0;iPar<nPars;iPar++){
-			parameterCombinations[iPop][iPar] = parameterValues[iPar];
-		}
+		System.arraycopy(parameterValues, 0, parameterCombinations[iPop], 0, nPars);
 	}
 	
 }
