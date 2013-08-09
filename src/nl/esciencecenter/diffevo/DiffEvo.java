@@ -50,8 +50,6 @@ public class DiffEvo {
 	private double[][] obs;
 	private ModelFactory modelFactory;
 	private LikelihoodFunctionFactory likelihoodFunctionFactory;
-	private RecordOfValues statesPriors;
-
 	
 	
 	// constructor:
