@@ -36,7 +36,7 @@ public class EvalResult {
 		return sampleIdentifier;
 	}
 	
-	public double[] getParameterVector() {
+	public double[] getParameterCombination() {
 		return parameterCombination.clone();
 	}
 

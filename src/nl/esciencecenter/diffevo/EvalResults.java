@@ -29,19 +29,19 @@ import nl.esciencecenter.diffevo.statespacemodelfactories.ModelFactory;
 public class EvalResults {
 
 	private ArrayList<EvalResult> listOfEvalResult;
-	private ParSpace parSpace;
-	private int nGens;
-	private int nPop;
-	private StateSpace stateSpace;
-	private double[] initState;
-	private double[] forcing;
-	private double[] times;
-	private double[] assimilate;
-	private double[][] obs;
-	private ModelFactory modelFactory;
-	private LikelihoodFunctionFactory likelihoodFunctionFactory;
-	private Random generator;
-	private String modelName;
+	private final ParSpace parSpace;
+	private final int nGens;
+	private final int nPop;
+	private final StateSpace stateSpace;
+	private final double[] initState;
+	private final double[] forcing;
+	private final double[] times;
+	private final double[] assimilate;
+	private final double[][] obs;
+	private final ModelFactory modelFactory;
+	private final LikelihoodFunctionFactory likelihoodFunctionFactory;
+	private final Random generator;
+	private final String modelName;
 	
 	// constructor
 	public EvalResults(int nGens, int nPop, ParSpace parSpace, LikelihoodFunctionFactory likelihoodFunctionFactory, Random generator){
@@ -49,11 +49,21 @@ public class EvalResults {
 		this.nGens = nGens;
 		this.nPop = nPop;
 		this.parSpace = parSpace;
-		this.likelihoodFunctionFactory = likelihoodFunctionFactory;
-		this.generator = generator;
+		this.stateSpace = null;
+
 		LikelihoodFunction likelihoodFunction = likelihoodFunctionFactory.create();
 		this.modelName = likelihoodFunction.getName();
-		this.listOfEvalResult = new ArrayList<EvalResult>();
+		this.modelFactory = null;
+		this.likelihoodFunctionFactory = likelihoodFunctionFactory;
+		this.generator = generator;
+
+		this.initState = null;
+		this.forcing = null;
+		this.times = null;
+		this.assimilate = null;
+		this.obs = null;
+		
+		this.listOfEvalResult= new ArrayList<EvalResult>();
 		
 	}
 
@@ -65,17 +75,21 @@ public class EvalResults {
 		this.nPop = nPop;
 		this.parSpace = parSpace;
 		this.stateSpace = stateSpace;
+
+		LikelihoodFunction likelihoodFunction = likelihoodFunctionFactory.create();
+		this.modelName = likelihoodFunction.getName();
+		this.modelFactory = modelFactory;
+		this.likelihoodFunctionFactory = likelihoodFunctionFactory;
+		this.generator = generator;
+
 		this.initState = initState.clone();
 		this.forcing = forcing.clone();
 		this.times = times.clone();
 		this.assimilate = assimilate.clone();
 		this.obs = obs.clone();
-		this.modelFactory = modelFactory;
-		this.likelihoodFunctionFactory = likelihoodFunctionFactory;
-		this.generator = generator;
-		LikelihoodFunction likelihoodFunction = likelihoodFunctionFactory.create();
-		this.modelName = likelihoodFunction.getName();
+		
 		this.listOfEvalResult= new ArrayList<EvalResult>();
+
 	}
 	
 	
@@ -101,7 +115,7 @@ public class EvalResults {
 
 	// get only the parameter combination of one element of the list:
 	public double[] getParameterCombination(int index) {
-		return this.listOfEvalResult.get(index).getParameterVector();
+		return this.listOfEvalResult.get(index).getParameterCombination();
 	}
 	
 	// get only the objective score of one element of the list:
@@ -120,11 +134,56 @@ public class EvalResults {
 	public String getModelName(){
 		return modelName;
 	}
-	
-	// 
-	
-	
-	
+
+	public ArrayList<EvalResult> getListOfEvalResult() {
+		return listOfEvalResult;
+	}
+
+	public int getnGens() {
+		return nGens;
+	}
+
+	public int getnPop() {
+		return nPop;
+	}
+
+	public StateSpace getStateSpace() {
+		return stateSpace;
+	}
+
+	public double[] getInitState() {
+		return initState;
+	}
+
+	public double[] getForcing() {
+		return forcing;
+	}
+
+	public double[] getTimes() {
+		return times;
+	}
+
+	public double[] getAssimilate() {
+		return assimilate;
+	}
+
+	public double[][] getObs() {
+		return obs;
+	}
+
+	public ModelFactory getModelFactory() {
+		return modelFactory;
+	}
+
+	public LikelihoodFunctionFactory getLikelihoodFunctionFactory() {
+		return likelihoodFunctionFactory;
+	}
+
+	public Random getGenerator() {
+		return generator;
+	}
+
+
 }
 
 
