@@ -19,6 +19,7 @@
 
 package nl.esciencecenter.diffevo;
 
+
 import java.io.File;
 import nl.esciencecenter.diffevo.likelihoodfunctionfactories.*;
 import nl.esciencecenter.diffevo.statespacemodelfactories.*;
@@ -172,7 +173,15 @@ public class MainProgram {
 				vis.scatterEvalPar(iPar);
 			}
 			
+			boolean modelIsDynamic = modelFactory!=null;
 			
+			if (modelIsDynamic){
+				
+				// a call to the vis method in DiffEvoVisualization
+				// makes the scatter data set
+				// visualizes the scatter/line plot  
+				
+			}
 			
 		
 			// do some printing to file and standard out:

@@ -24,6 +24,7 @@ public class EvalResult {
 	private int sampleIdentifier;
     private double[] parameterCombination;
     private double objScore;
+    private double[][] modelResult;
     		
 	public EvalResult(int sampleIdentifier, double[] parameterCombination, double objScore) {
 		this.sampleIdentifier = sampleIdentifier;
@@ -31,7 +32,13 @@ public class EvalResult {
 		this.objScore = objScore;
 	}
 
+	public EvalResult(int sampleIdentifier, double[] parameterCombination, double objScore, double[][] modelResult) {
+		this(sampleIdentifier,parameterCombination,objScore);
+		this.modelResult = modelResult.clone();
+	}
 
+	
+	
 	public int getSampleIdentifier() {
 		return sampleIdentifier;
 	}
@@ -42,6 +49,14 @@ public class EvalResult {
 
 	public double getObjScore() {
 		return objScore;
+	}
+
+	public double[][] getModelResult() {
+		return modelResult.clone();
+	}
+
+	public void setModelResult(double[][] modelResult) {
+		this.modelResult = modelResult.clone();
 	}
 
 }

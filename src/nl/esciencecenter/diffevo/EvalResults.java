@@ -25,6 +25,7 @@ import java.util.Random;
 import nl.esciencecenter.diffevo.likelihoodfunctionfactories.LikelihoodFunctionFactory;
 import nl.esciencecenter.diffevo.likelihoodfunctions.LikelihoodFunction;
 import nl.esciencecenter.diffevo.statespacemodelfactories.ModelFactory;
+import nl.esciencecenter.diffevo.statespacemodels.Model;
 
 public class EvalResults {
 
@@ -76,8 +77,8 @@ public class EvalResults {
 		this.parSpace = parSpace;
 		this.stateSpace = stateSpace;
 
-		LikelihoodFunction likelihoodFunction = likelihoodFunctionFactory.create();
-		this.modelName = likelihoodFunction.getName();
+		Model model = modelFactory.create(initState, new double[parSpace.getNumberOfPars()], forcing, times);
+		this.modelName = model.getName();
 		this.modelFactory = modelFactory;
 		this.likelihoodFunctionFactory = likelihoodFunctionFactory;
 		this.generator = generator;
