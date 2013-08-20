@@ -158,23 +158,23 @@ public class EvalResults {
 	}
 
 	public double[] getInitState() {
-		return initState;
+		return initState.clone();
 	}
 
 	public double[] getForcing() {
-		return forcing;
+		return forcing.clone();
 	}
 
 	public double[] getTimes() {
-		return times;
+		return times.clone();
 	}
 
 	public double[] getAssimilate() {
-		return assimilate;
+		return assimilate.clone();
 	}
 
 	public double[][] getObs() {
-		return obs;
+		return obs.clone();
 	}
 
 	public ModelFactory getModelFactory() {
