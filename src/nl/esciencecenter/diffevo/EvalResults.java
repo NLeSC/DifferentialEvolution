@@ -44,6 +44,7 @@ public class EvalResults {
 	private final LikelihoodFunctionFactory likelihoodFunctionFactory;
 	private final Random generator;
 	private final String modelName;
+	private int nResults;
 	
 	// constructor
 	public EvalResults(int nGens, int nPop, ParSpace parSpace, LikelihoodFunctionFactory likelihoodFunctionFactory, Random generator){
@@ -66,6 +67,7 @@ public class EvalResults {
 		this.obs = null;
 		
 		this.listOfEvalResult= new ArrayList<EvalResult>();
+		updateSize();
 		
 	}
 
@@ -91,12 +93,14 @@ public class EvalResults {
 		this.obs = obs.clone();
 		
 		this.listOfEvalResult= new ArrayList<EvalResult>();
+		updateSize();
 
 	}
 	
 	
 	public void add(EvalResult evalResult){
 		listOfEvalResult.add(evalResult);
+		updateSize();
 	}
 
 	
@@ -237,6 +241,16 @@ public class EvalResults {
 		}
 		return bestParameterCombinations;
 	}
+
+	public int size() {
+		return nResults;
+	}
+
+	public void updateSize() {
+		this.nResults = listOfEvalResult.size();
+	}
+	
+	
 	
 	
 }
