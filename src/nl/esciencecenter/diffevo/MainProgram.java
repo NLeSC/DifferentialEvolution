@@ -176,7 +176,7 @@ public class MainProgram {
 //			vis.margHist();
 //			vis.scatterEvalObj();
 //			for (int iPar=0;iPar<parSpace.getNumberOfPars();iPar++){
-//				vis.scatterEvalPar(iPar);
+//				vis.scatterEvalPar(iPar); 
 //			}
 			
 			boolean modelIsDynamic = modelFactory!=null;
