@@ -53,7 +53,7 @@ public class EvalResultsTest {
 			double[] parameterVectorExpected = new double[]{0.1+iPop,0.2+iPop};
 			double objScoreExpected = -2.0*iPop;
 			
-			EvalResult evalResult = new EvalResult(sampleCounterExpected, parameterVectorExpected, objScoreExpected);
+			EvalResult evalResult = new EvalResult(sampleCounterExpected, sampleCounterExpected, parameterVectorExpected, objScoreExpected);
 
 			evalResults.add(evalResult);
 		}
