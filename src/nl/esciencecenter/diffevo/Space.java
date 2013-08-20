@@ -61,19 +61,19 @@ public class Space {
 	}
 
 	public double[] getLowerBounds() {
-		return lowerBounds;
+		return lowerBounds.clone();
 	}
 
 	public double[] getUpperBounds() {
-		return upperBounds;
+		return upperBounds.clone();
 	}
 
 	public double[] getRange() {
-		return range;
+		return range.clone();
 	}
 
 	public String[] getDimensionNames() {
-		return dimensionNames;
+		return dimensionNames.clone();
 	}
 
 	public int getnDimensions() {
