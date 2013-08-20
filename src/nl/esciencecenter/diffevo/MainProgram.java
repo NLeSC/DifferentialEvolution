@@ -22,6 +22,7 @@ package nl.esciencecenter.diffevo;
 
 import java.awt.Color;
 import java.io.File;
+import java.util.Random;
 
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -37,7 +38,7 @@ public class MainProgram {
 	 */
 	public static void main(String[] args) {
 
-		for (int modelSwitch = 1;modelSwitch<6;modelSwitch++){
+		for (int modelSwitch = 1;modelSwitch<2;modelSwitch++){
 
 			int nGens = 0;
 			int nPop = 0;
@@ -170,13 +171,13 @@ public class MainProgram {
 			
 			// do some visualization of the results:
 			DiffEvoVisualization vis = new DiffEvoVisualization(evalResults);
-			vis.matrixOfScatterParPar();
-			vis.matrixOfHeatmapParPar();
-			vis.margHist();
-			vis.scatterEvalObj();
-			for (int iPar=0;iPar<parSpace.getNumberOfPars();iPar++){
-				vis.scatterEvalPar(iPar);
-			}
+//			vis.matrixOfScatterParPar();
+//			vis.matrixOfHeatmapParPar();
+//			vis.margHist();
+//			vis.scatterEvalObj();
+//			for (int iPar=0;iPar<parSpace.getNumberOfPars();iPar++){
+//				vis.scatterEvalPar(iPar);
+//			}
 			
 			boolean modelIsDynamic = modelFactory!=null;
 			
@@ -184,19 +185,28 @@ public class MainProgram {
 
 				XYSeriesCollection data = new XYSeriesCollection();
 				XYSeries series;
+				{
+					series = vis.createSeries("time v. obs",times, obs[0]);
+					data.addSeries(series);
+				}
+				{
+					int iResult[] = evalResults.sampleIdentifiersOfBest();
+					double[][] modelResult = evalResults.getEvalResult(iResult[0]).getModelResult();
+					series = vis.createSeries("time v. prior["+iResult[0]+"]",times, modelResult[0]);
+					data.addSeries(series);
+				}
+				{
+					Random generator = new Random();
+					int iResult = generator.nextInt(evalResults.size());
+					double[][] modelResult = evalResults.getEvalResult(iResult).getModelResult();
+					series = vis.createSeries("time v. randomly selected prior["+iResult+"]", times, modelResult[0]);
+					data.addSeries(series);
+				}
 				
-				series = vis.createSeries("time v. obs",times, obs[0]);
-				data.addSeries(series);
-				
-				int iResult[] = evalResults.sampleIdentifiersOfBest();
-				double[][] modelResult = evalResults.getEvalResult(iResult[0]).getModelResult();
-				
-				series = vis.createSeries("time v. prior["+iResult[0]+"]",times, modelResult[0]);
-				data.addSeries(series);
-				
-				Color[] colors = new Color[2];
+				Color[] colors = new Color[data.getSeriesCount()];
 				colors[0] = new Color(0,0,255);
 				colors[1] = new Color(0,128,0);
+				colors[2] = new Color(255,128,0);				
 				
 				vis.scatter(data, "states", colors, "time", "state", true, true);
 				
