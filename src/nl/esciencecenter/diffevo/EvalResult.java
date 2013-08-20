@@ -22,18 +22,20 @@ package nl.esciencecenter.diffevo;
 public class EvalResult {
 	
 	private int sampleIdentifier;
+	private int firstOccurence;
     private double[] parameterCombination;
     private double objScore;
     private double[][] modelResult;
     		
-	public EvalResult(int sampleIdentifier, double[] parameterCombination, double objScore) {
+	public EvalResult(int sampleIdentifier, int firstOccurrence, double[] parameterCombination, double objScore) {
 		this.sampleIdentifier = sampleIdentifier;
+		this.firstOccurence = firstOccurrence;
 		this.parameterCombination = parameterCombination.clone();
 		this.objScore = objScore;
 	}
 
-	public EvalResult(int sampleIdentifier, double[] parameterCombination, double objScore, double[][] modelResult) {
-		this(sampleIdentifier,parameterCombination,objScore);
+	public EvalResult(int sampleIdentifier, int firstOccurrence, double[] parameterCombination, double objScore, double[][] modelResult) {
+		this(sampleIdentifier,firstOccurrence,parameterCombination,objScore);
 		this.modelResult = modelResult.clone();
 	}
 
@@ -42,7 +44,11 @@ public class EvalResult {
 	public int getSampleIdentifier() {
 		return sampleIdentifier;
 	}
-	
+
+	public int getFirstOccurrence() {
+		return firstOccurence;
+	}
+
 	public double[] getParameterCombination() {
 		return parameterCombination.clone();
 	}
@@ -58,5 +64,5 @@ public class EvalResult {
 	public void setModelResult(double[][] modelResult) {
 		this.modelResult = modelResult.clone();
 	}
-
+	
 }

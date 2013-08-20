@@ -36,6 +36,7 @@ public class ListOfParameterCombinations{
 	private ModelFactory modelFactory;
 	private double[][][] modelResults;
 	private LikelihoodFunctionFactory likelihoodFunctionFactory;
+	private int[] firstOccurrence;
 
 	// constructor
 	public ListOfParameterCombinations(int nPop, int nPars, LikelihoodFunctionFactory likelihoodFunctionFactory){
@@ -45,6 +46,7 @@ public class ListOfParameterCombinations{
 		this.nPars = nPars;
 		this.likelihoodFunctionFactory = likelihoodFunctionFactory;
 		this.objScores = new double[nPop];
+		this.firstOccurrence = new int[nPop];
 		
 		double[] parameterCombinationNan = new double[nPars];
 		for (int iPar=0;iPar<nPars;iPar++){
@@ -52,7 +54,9 @@ public class ListOfParameterCombinations{
 		}
 		for (int iPop=0;iPop<nPop;iPop++){
 			objScores[iPop] = Double.NaN;
+			firstOccurrence[iPop] = iPop;
 		}
+		
 	}
 	
 	// constructor
@@ -151,8 +155,6 @@ public class ListOfParameterCombinations{
 	
 
 	
-	
-	
 	public int getNumberOfPars(){
 		return nPars;
 	}
@@ -184,6 +186,16 @@ public class ListOfParameterCombinations{
 	public void setModelResults(int iPop, double[][] modelResult) {
 		this.modelResults[iPop] = modelResult;
 	}
+	
+	public int getFirstOccurrence(int iPop){
+		return firstOccurrence[iPop];
+	}
+
+	public int setFirstOccurrence(int iPop, int index){
+		return firstOccurrence[iPop] = index;
+	}
+
+	
 	
 }
 

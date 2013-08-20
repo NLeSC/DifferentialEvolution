@@ -20,7 +20,12 @@
 package nl.esciencecenter.diffevo;
 
 
+import java.awt.Color;
 import java.io.File;
+
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+
 import nl.esciencecenter.diffevo.likelihoodfunctionfactories.*;
 import nl.esciencecenter.diffevo.statespacemodelfactories.*;
 
@@ -32,22 +37,22 @@ public class MainProgram {
 	 */
 	public static void main(String[] args) {
 
-		int nGens = 0;
-		int nPop = 0;
-		double[] initState = null;
-		double[] assimilate = null;
-		double[] times = null;
-		double[] forcing = null;
-		ParSpace parSpace = null;
-		StateSpace stateSpace = null;		
-		double[][] obs = null;
-		ModelFactory modelFactory = null;
-		LikelihoodFunctionFactory likelihoodFunctionFactory = null;
-		DiffEvo diffEvo = null;
-		File file = null;
+		for (int modelSwitch = 1;modelSwitch<6;modelSwitch++){
 
-		for (int modelSwitch = 0;modelSwitch<6;modelSwitch++){
-
+			int nGens = 0;
+			int nPop = 0;
+			double[] initState = null;
+			double[] assimilate = null;
+			double[] times = null;
+			double[] forcing = null;
+			ParSpace parSpace = null;
+			StateSpace stateSpace = null;		
+			double[][] obs = null;
+			ModelFactory modelFactory = null;
+			LikelihoodFunctionFactory likelihoodFunctionFactory = null;
+			DiffEvo diffEvo = null;
+			File file = null;
+			
 			switch (modelSwitch){
 			case 0:{
 				//DoubleNormalModel
@@ -66,7 +71,7 @@ public class MainProgram {
 			}//case 0
 			case 1:{
 				//LinearDynamicStateSpaceModel
-				nGens = 300;
+				nGens = 500;
 				nPop = 50;
 				file  = new File("data"+File.separator+"lineartank.eas");
 				DataReader reader = new DataReader(file);
@@ -78,8 +83,8 @@ public class MainProgram {
 				obs = new double[][]{data[3]};
 				forcing = data[4];
 				{
-					double[] lowerBoundsParSpace = new double[] {110};
-					double[] upperBoundsParSpace = new double[] {180};
+					double[] lowerBoundsParSpace = new double[] {10};
+					double[] upperBoundsParSpace = new double[] {500};
 					String[] parNames = new String[] {"resistance"};
 					parSpace = new ParSpace(lowerBoundsParSpace,upperBoundsParSpace,parNames);
 					parSpace.divideIntoIntervals(100);
@@ -176,22 +181,36 @@ public class MainProgram {
 			boolean modelIsDynamic = modelFactory!=null;
 			
 			if (modelIsDynamic){
+
+				XYSeriesCollection data = new XYSeriesCollection();
+				XYSeries series;
 				
-				// a call to the vis method in DiffEvoVisualization
-				// makes the scatter data set
-				// visualizes the scatter/line plot  
+				series = vis.createSeries("time v. obs",times, obs[0]);
+				data.addSeries(series);
+				
+				int iResult[] = evalResults.sampleIdentifiersOfBest();
+				double[][] modelResult = evalResults.getEvalResult(iResult[0]).getModelResult();
+				
+				series = vis.createSeries("time v. prior["+iResult[0]+"]",times, modelResult[0]);
+				data.addSeries(series);
+				
+				Color[] colors = new Color[2];
+				colors[0] = new Color(0,0,255);
+				colors[1] = new Color(0,128,0);
+				
+				vis.scatter(data, "states", colors, "time", "state", true, true);
 				
 			}
 			
 		
 			// do some printing to file and standard out:
-			DiffEvoOutputWriters writers = new DiffEvoOutputWriters(evalResults);
-			writers.printEvalResults();
-			writers.printEvalResults();
-			file = new File("out"+File.separator+"evalresults.json");
-			writers.writeEvalResultsToJSON(file);
-			file = new File("out"+File.separator+"evalresults.txt");
-			writers.writeEvalResultsToTextFile(file);
+			//DiffEvoOutputWriters writers = new DiffEvoOutputWriters(evalResults);
+			//writers.printEvalResults();
+			//writers.printEvalResults();
+			//file = new File("out"+File.separator+"evalresults.json");
+			//writers.writeEvalResultsToJSON(file);
+			//file = new File("out"+File.separator+"evalresults.txt");
+			//writers.writeEvalResultsToTextFile(file);
 
 
 		} // int modelSwitch

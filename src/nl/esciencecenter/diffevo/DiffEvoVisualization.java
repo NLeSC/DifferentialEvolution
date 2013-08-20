@@ -134,8 +134,19 @@ public class DiffEvoVisualization {
 		
 	}
 	
+	public void scatter(XYDataset data,String figureName, Color markerFillColor, String xAxisLabel, 
+			String yAxisLabel, Boolean showLegend, Boolean showTooltips){
+		
+		int nSeries = data.getSeriesCount();
+		Color[] markerFillColorArray = new Color[nSeries];
+		for (int iSeries=0;iSeries<nSeries;iSeries++){
+			markerFillColorArray[iSeries] = markerFillColor;
+		}
+		scatter(data, figureName, markerFillColorArray, xAxisLabel, yAxisLabel, showLegend, showTooltips); 
+	}
 	
-	private void scatter(XYDataset data,String figureName, Color markerFillColor, String xAxisLabel, 
+	
+	public void scatter(XYDataset data,String figureName, Color[] markerFillColor, String xAxisLabel, 
 			String yAxisLabel, Boolean showLegend, Boolean showTooltips){
 		
 		RectangleInsets padding = new RectangleInsets(50,50,50,50);
@@ -184,10 +195,13 @@ public class DiffEvoVisualization {
         XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
         renderer.setBaseLinesVisible(false);
         renderer.setBaseShapesFilled(true);
-        renderer.setSeriesShapesVisible(0, true);
-        renderer.setSeriesShape(0, marker);
-        renderer.setSeriesPaint(0, markerFillColor);
-                
+        
+        for (int iSeries=0;iSeries<data.getSeriesCount();iSeries++){ 
+        	renderer.setSeriesShapesVisible(iSeries, true);
+        	renderer.setSeriesShape(iSeries, marker);
+        	renderer.setSeriesPaint(iSeries, markerFillColor[iSeries]);
+        }                
+        
         final ChartPanel panel = new ChartPanel(chart);
         
         JFrame frame = new JFrame("diffevo scatter");
@@ -632,6 +646,18 @@ public class DiffEvoVisualization {
 		return DiffEvoVisualization.class.getSimpleName();
 	}
 
+
+	public XYSeries createSeries(String compKeyStr, double[] x, double[] y){
+		
+    	XYSeries series = new XYSeries(compKeyStr);
+
+		int nx = x.length;
+		for (int ix=0;ix<nx;ix++){
+			series.add(x[ix], y[ix]);
+		}
+		return series;
+	}
+	
 	
 	
 }

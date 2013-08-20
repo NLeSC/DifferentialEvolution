@@ -24,9 +24,7 @@ package nl.esciencecenter.diffevo;
 import java.util.Random;
 
 import nl.esciencecenter.diffevo.likelihoodfunctionfactories.LikelihoodFunctionFactory;
-//import nl.esciencecenter.diffevo.likelihoodfunctions.LikelihoodFunction;
 import nl.esciencecenter.diffevo.statespacemodelfactories.ModelFactory;
-//import nl.esciencecenter.diffevo.statespacemodels.Model;
 
 /**
  * This is the Differential Evolution algorithm by Storn and Price
@@ -139,10 +137,10 @@ public class DiffEvo {
 			double objScore = parents.getObjScore(iPop);
 			EvalResult evalResult = null;
 			if (modelIsDynamic){
-				evalResult = new EvalResult(sampleIdentifier, parameterCombination, objScore, parents.getModelResult(iPop));
+				evalResult = new EvalResult(sampleIdentifier, iPop, parameterCombination, objScore, parents.getModelResult(iPop));
 			}
 			else {
-				evalResult = new EvalResult(sampleIdentifier, parameterCombination, objScore);
+				evalResult = new EvalResult(sampleIdentifier, iPop, parameterCombination, objScore);
 			}
 			evalResults.add(evalResult);
 		}
@@ -245,34 +243,40 @@ public class DiffEvo {
 			scoreProposal = proposals.getObjScore(iPop);
 			logOfUnifRandDraw = Math.log(generator.nextDouble());
 			int sampleIdentifier = nModelEvals+iPop;
+			int firstOccurrence = -1;
 			if (scoreProposal-scoreParent >= logOfUnifRandDraw){
 				// accept proposal
 				parameterCombination = proposals.getParameterCombination(iPop);
 				objScore = proposals.getObjScore(iPop);
 				if (modelIsDynamic){
-					sim = proposals.getModelResult(iPop); 
+					sim = proposals.getModelResult(iPop);
 				}
+				firstOccurrence = nModelEvals+iPop;
 			}
 			else{
 				// reject proposal
 				parameterCombination = parents.getParameterCombination(iPop);
 				objScore = parents.getObjScore(iPop);
 				if (modelIsDynamic){
-					sim = parents.getModelResult(iPop); 
+					sim = parents.getModelResult(iPop);
 				}
- 
-			}
+				firstOccurrence = parents.getFirstOccurrence(iPop);
+ 			}
 			
 			parents.setParameterCombination(iPop, parameterCombination);
 			parents.setObjScore(iPop, objScore);
+			parents.setFirstOccurrence(iPop, firstOccurrence);
+			if (modelIsDynamic){
+				parents.setModelResults(iPop, sim);
+			}
 			
 			// add most recent sample to the record array evalResults:
 			EvalResult evalResult;
 			if (modelIsDynamic){
-				evalResult = new EvalResult(sampleIdentifier, parameterCombination.clone(), objScore, sim.clone());
+				evalResult = new EvalResult(sampleIdentifier, firstOccurrence, parameterCombination.clone(), objScore, sim.clone());
 			}
 			else {
-				evalResult = new EvalResult(sampleIdentifier, parameterCombination.clone(), objScore);
+				evalResult = new EvalResult(sampleIdentifier, firstOccurrence, parameterCombination.clone(), objScore);
 			}
 			evalResults.add(evalResult);
 		}

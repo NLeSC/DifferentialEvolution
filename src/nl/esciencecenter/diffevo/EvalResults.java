@@ -20,6 +20,7 @@
 package nl.esciencecenter.diffevo;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import nl.esciencecenter.diffevo.likelihoodfunctionfactories.LikelihoodFunctionFactory;
@@ -183,8 +184,61 @@ public class EvalResults {
 	public Random getGenerator() {
 		return generator;
 	}
+	
+	
+	public int[] sampleIdentifiersOfBest(){
+		
+		List<Integer> list = new ArrayList<Integer>();		
+		
+		int nResults = this.getListOfEvalResult().size();
+		double currentObjScore;
+		double highestObjScore = this.highestObjScore();
+		
+		for (int iResult=0;iResult<nResults;iResult++){
+			currentObjScore = this.getObjScore(iResult);
+			if (currentObjScore==highestObjScore){
+				list.add(iResult);
+			}
+		}
+		int nItems = list.size();
+		int[] bestIndices = new int[nItems];
+		for (int iItem=0;iItem<nItems;iItem++){
+			bestIndices[iItem] = list.get(iItem);
+		}
+		return bestIndices;
+	}
 
+	public double highestObjScore(){
+		
+		double currentObjScore = this.getObjScore(0);
+		double highestObjScore = currentObjScore;
+		
+		int nResults = this.getListOfEvalResult().size();
+		for (int iResult=1;iResult<nResults;iResult++){
+			currentObjScore = this.getObjScore(iResult);
+			if (currentObjScore>highestObjScore){
+				highestObjScore = currentObjScore;
+			}
+		}
+		return highestObjScore;
+	}
+	
 
+	public double[][] parameterCombinationsOfBest(){
+		
+		int[] sampleIdentifiersOfBest = this.sampleIdentifiersOfBest();
+		int nPars = this.getParSpace().getNumberOfPars();
+		int nSamplesBest = sampleIdentifiersOfBest.length;
+		double[][] bestParameterCombinations = new double[nSamplesBest][nPars];
+		for (int iSampleBest=0;iSampleBest<nSamplesBest;iSampleBest++){
+			for (int iPar=0;iPar<nPars;iPar++){
+				bestParameterCombinations[iSampleBest] = this.getEvalResult(iSampleBest).getParameterCombination(); 
+			}
+		}
+		return bestParameterCombinations;
+	}
+	
+	
 }
 
 
