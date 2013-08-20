@@ -2,10 +2,9 @@ package nl.esciencecenter.diffevo;
 
 import static org.junit.Assert.*;
 
-import java.io.File;
-
 import nl.esciencecenter.diffevo.likelihoodfunctionfactories.LikelihoodFunctionFactory;
 import nl.esciencecenter.diffevo.likelihoodfunctionfactories.LikelihoodFunctionRastriginModelFactory;
+import nl.esciencecenter.diffevo.likelihoodfunctions.LikelihoodFunction;
 
 import org.junit.Test;
 
@@ -17,9 +16,6 @@ public class RastriginModelTest {
 	private LikelihoodFunctionFactory likelihoodFunctionFactory;
 	private DiffEvo diffEvo;
 	private EvalResults evalResults;
-	private DiffEvoVisualization vis;
-	private DiffEvoOutputWriters writers;
-	private File file;
 
 	public RastriginModelTest(){
 		nGens = 3000;
@@ -63,6 +59,39 @@ public class RastriginModelTest {
 		int nPopActual = evalResults.getnPop();
 		assertTrue(nPopExpected==nPopActual);
 	}
+	
+	@Test
+	public void testIfResultIsNearOptimum() {
+		double[] optimumExpected = new double[]{0.0,0.0};
+		double[] tolerance = new double[]{0.01,0.01};
+		
+		int nPars = evalResults.getParSpace().getNumberOfPars();
+		int[] bestIndices = evalResults.sampleIdentifiersOfBest();
+		double[] optimumActual = evalResults.getParameterCombination(bestIndices[0]);
+		
+		for (int iPar=0;iPar<nPars;iPar++){
+			double a = optimumExpected[iPar];
+			double b = optimumActual[iPar];
+			assertTrue(Math.abs(a-b)<tolerance[iPar]);
+		}
+		
+	}
+
+	@Test
+	public void testIfObjScoreIsAccurate() {
+		double[] optimumExpected = new double[]{0.0,0.0};
+		double objScoreExpected = 0.0;
+		
+		LikelihoodFunction model = likelihoodFunctionFactory.create();
+		
+		double objScoreActual = model.evaluate(optimumExpected);
+		
+		assertTrue(objScoreExpected==objScoreActual);
+		
+	}
+	
+	
+	
 
 
 }
