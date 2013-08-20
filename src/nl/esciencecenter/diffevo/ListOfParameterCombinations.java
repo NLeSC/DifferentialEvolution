@@ -76,7 +76,7 @@ public class ListOfParameterCombinations{
 			}
 			objScores[iPop] = Double.NaN;
 		}
-		this.initState = initState;
+		this.initState = initState.clone();
 		this.timeChunks = timeChunks;
 		this.forcingChunks = forcingChunks;
 		this.modelFactory = modelFactory;
@@ -184,7 +184,7 @@ public class ListOfParameterCombinations{
 	}
 
 	public void setModelResults(int iPop, double[][] modelResult) {
-		this.modelResults[iPop] = modelResult;
+		this.modelResults[iPop] = modelResult.clone();
 	}
 	
 	public int getFirstOccurrence(int iPop){
