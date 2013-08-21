@@ -38,7 +38,7 @@ public class MainProgram {
 	 */
 	public static void main(String[] args) {
 
-		for (int modelSwitch = 1;modelSwitch<2;modelSwitch++){
+		for (int modelSwitch = 3;modelSwitch<4;modelSwitch++){
 
 			int nGens = 0;
 			int nPop = 0;
@@ -101,36 +101,6 @@ public class MainProgram {
 				diffEvo = new DiffEvo(nGens, nPop, parSpace, stateSpace, initState, forcing, times, assimilate, obs, modelFactory, likelihoodFunctionFactory);
 				break; 
 			} // case 1
-			case 2:{
-				//RastriginModel
-				nGens = 3000;
-				nPop = 50;
-				{
-					double[] lowerBoundsParSpace = new double[]{-5.12,-5.12};
-					double[] upperBoundsParSpace  = new double[]{5.12,5.12};
-					String[] parNames = new String[]{"p1","p2"};
-					parSpace = new ParSpace(lowerBoundsParSpace,upperBoundsParSpace,parNames);
-					parSpace.divideIntoIntervals(200);
-				}
-				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionRastriginModelFactory();
-				diffEvo = new DiffEvo(nGens, nPop, parSpace, likelihoodFunctionFactory);
-				break; 
-			} //case 2
-			case 3:{
-				//RosenbrockModel
-				nGens = 3000;
-				nPop = 50;
-				{
-					double[] lowerBoundsParSpace = new double[]{-50,-40};
-					double[] upperBoundsParSpace = new double[]{50,80};
-					String[] parNames = new String[]{"p1","p2"};
-					parSpace = new ParSpace(lowerBoundsParSpace,upperBoundsParSpace,parNames);
-					parSpace.divideIntoIntervals(500);
-				}
-				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionRosenbrockModelFactory();
-				diffEvo = new DiffEvo(nGens, nPop, parSpace, likelihoodFunctionFactory);
-				break; 
-			} // case 3
 			case 4:{
 				//SingleNormalModel
 				nGens = 3000;
@@ -171,13 +141,13 @@ public class MainProgram {
 			
 			// do some visualization of the results:
 			DiffEvoVisualization vis = new DiffEvoVisualization(evalResults);
-//			vis.matrixOfScatterParPar();
-//			vis.matrixOfHeatmapParPar();
-//			vis.margHist();
-//			vis.scatterEvalObj();
-//			for (int iPar=0;iPar<parSpace.getNumberOfPars();iPar++){
-//				vis.scatterEvalPar(iPar); 
-//			}
+			vis.matrixOfScatterParPar();
+			vis.matrixOfHeatmapParPar();
+			vis.margHist();
+			vis.scatterEvalObj();
+			for (int iPar=0;iPar<parSpace.getNumberOfPars();iPar++){
+				vis.scatterEvalPar(iPar); 
+			}
 			
 			boolean modelIsDynamic = modelFactory!=null;
 			
@@ -214,13 +184,13 @@ public class MainProgram {
 			
 		
 			// do some printing to file and standard out:
-			//DiffEvoOutputWriters writers = new DiffEvoOutputWriters(evalResults);
-			//writers.printEvalResults();
-			//writers.printEvalResults();
-			//file = new File("out"+File.separator+"evalresults.json");
-			//writers.writeEvalResultsToJSON(file);
-			//file = new File("out"+File.separator+"evalresults.txt");
-			//writers.writeEvalResultsToTextFile(file);
+			DiffEvoOutputWriters writers = new DiffEvoOutputWriters(evalResults);
+			writers.printEvalResults();
+			writers.printEvalResults();
+			file = new File("out"+File.separator+"evalresults.json");
+			writers.writeEvalResultsToJSON(file);
+			file = new File("out"+File.separator+"evalresults.txt");
+			writers.writeEvalResultsToTextFile(file);
 
 
 		} // int modelSwitch
