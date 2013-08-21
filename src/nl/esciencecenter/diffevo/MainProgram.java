@@ -101,21 +101,6 @@ public class MainProgram {
 				diffEvo = new DiffEvo(nGens, nPop, parSpace, stateSpace, initState, forcing, times, assimilate, obs, modelFactory, likelihoodFunctionFactory);
 				break; 
 			} // case 1
-			case 5:{
-				//CubicModel
-				nGens = 300;
-				nPop = 50;
-				{
-					double[] lowerBoundsParSpace = new double[]{-20,-40,-80,-120};
-					double[] upperBoundsParSpace = new double[]{ 20, 40, 80, 120};
-					String[] parNames = new String[]{"a","b","c","d"};
-					parSpace = new ParSpace(lowerBoundsParSpace,upperBoundsParSpace,parNames);
-					parSpace.divideIntoIntervals(new int[]{50,50,50,50});
-				}
-				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionCubicModelFactory();
-				diffEvo = new DiffEvo(nGens, nPop, parSpace, likelihoodFunctionFactory);
-				break; 
-			} // case 5
 			default: {
 				System.out.println("You asked for a case that isn\'t there.");
 			}
