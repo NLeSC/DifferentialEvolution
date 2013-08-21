@@ -184,6 +184,39 @@ public class ParSpaceTest {
 			assertTrue(nIntervals==nBinsActual);
 		}
 	}
+	
+
+	@Test
+	public void testGetnDimensions() {
+		int nDimensionsExpected = 2;
+		int nDimensionsActual = parSpace.getnDimensions();
+        assertTrue(nDimensionsExpected==nDimensionsActual);
+	}
+	
+	
+	@Test
+	public void testGetDimensionNames() {
+		String[] parNamesActual = parSpace.getDimensionNames();
+		int nPars = parSpace.getNumberOfPars();
+		for (int iPar=-0;iPar<nPars;iPar++){
+	        assertTrue(parNamesActual[iPar]==parNamesExpected[iPar]);
+		}
+	}
+	
+	
+	@Test
+	public void testGetUpperBounds() {
+		double[] upperBoundsActual = parSpace.getUpperBounds();
+		int nPars = parSpace.getNumberOfPars();
+		for (int iPar=-0;iPar<nPars;iPar++){
+	        assertTrue(upperBoundsActual[iPar]==upperBoundsExpected[iPar]);
+		}
+	}
+	
+	
+	
+	
+	
 }
 
 
