@@ -25,7 +25,6 @@ public class LikelihoodFunctionCubicModel implements LikelihoodFunction {
 
 	private int nObs;	
 	private double[] xObs;	
-	private Random generator = new Random();
 	private double[] yObs;
 	
 	
@@ -35,6 +34,9 @@ public class LikelihoodFunctionCubicModel implements LikelihoodFunction {
 		double b = 7.0;
 		double c = -5.0;
 		double d = 9.0;
+	
+		Random generator = new Random();
+		generator.setSeed(0);
 		
 		double xObsStart = -1.0;
 		double xObsEnd = 6.8;
