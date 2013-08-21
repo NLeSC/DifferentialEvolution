@@ -28,11 +28,11 @@ public class LikelihoodFunctionRosenbrockModel implements LikelihoodFunction {
 	
 	private double calcProbabilityDensity(double[] x){
 		
-		
+		// from "http://en.wikipedia.org/wiki/Rosenbrock_function" (21 Aug 2013)
 		double sum = 0.0;
 		int nPars = x.length;
 		for (int iPar = 0;iPar<nPars-1;iPar++){
-			sum = sum + (1-Math.pow(x[iPar],2) + 100*Math.pow(x[iPar+1]-Math.pow(x[iPar],2), 2));
+			sum = sum + Math.pow(1-x[iPar],2) + 100*Math.pow(x[iPar+1]-Math.pow(x[iPar],2),2);
 		}
 		// it's not really a probability density since this is just a benchmark function
 		probabilityDensity = sum; 
@@ -53,7 +53,7 @@ public class LikelihoodFunctionRosenbrockModel implements LikelihoodFunction {
 	public double evaluate(double[] parameterVector) {
 		double objScore;
 		probabilityDensity = calcProbabilityDensity(parameterVector);
-		objScore = -Math.log(probabilityDensity);
+		objScore = -probabilityDensity;
 		return objScore;
 	}
 	
