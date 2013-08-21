@@ -31,7 +31,7 @@ public class LinearDynamicStateSpaceModelTest {
 	public LinearDynamicStateSpaceModelTest(){
 		nGens = 500;
 		nPop = 50;
-		file  = new File("data"+File.separator+"lineartank.eas");
+		file  = new File("test"+File.separator+"data"+File.separator+"lineartank.eas");
 		DataReader reader = new DataReader(file);
 		double[][] data = reader.getData();
 		initState = new double[] {30};
