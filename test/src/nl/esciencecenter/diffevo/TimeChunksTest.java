@@ -24,5 +24,18 @@ public class TimeChunksTest {
 		int[][] chunkIndices = timeChunks.getChunkIndices();
 		assertArrayEquals(chunksIndicesExpected,chunkIndices);
 		
+		
+		double[] timesActual = timeChunks.getTimes();
+		int nTimes = timesActual.length; 
+		for (int iTime = 0;iTime<nTimes;iTime++){
+			assertTrue(timesActual[iTime]==times[iTime]);
+		}
+		
 	}
+	
+	
+	
+	
+	
+	
 }
