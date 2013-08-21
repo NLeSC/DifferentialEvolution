@@ -48,14 +48,14 @@ public class DiffEvo {
 	private double[][] obs;
 //	private ModelFactory modelFactory;
 //	private LikelihoodFunctionFactory likelihoodFunctionFactory;
-	private final static long defaultRandomSeed = 0;
+	private final static long DEFAULT_RANDOM_SEED = 0;
 	private boolean modelIsDynamic;
 	
 	
 	// constructor:
 	DiffEvo(int nGens, int nPop, ParSpace parSpace, LikelihoodFunctionFactory likelihoodFunctionFactory) {
 		// use seed of zero by default:
-		this(nGens, nPop, parSpace, likelihoodFunctionFactory, defaultRandomSeed);
+		this(nGens, nPop, parSpace, likelihoodFunctionFactory, DEFAULT_RANDOM_SEED);
 	}
 
 	// constructor:
@@ -63,7 +63,7 @@ public class DiffEvo {
 			double[] assimilate, double[][] obs, ModelFactory modelFactory, LikelihoodFunctionFactory likelihoodFunctionFactory) {
 		// use seed of zero by default:
 		this(nGens, nPop, parSpace, stateSpace, initState, forcing, times, assimilate, obs, 
-				modelFactory, likelihoodFunctionFactory, defaultRandomSeed);
+				modelFactory, likelihoodFunctionFactory, DEFAULT_RANDOM_SEED);
 	}
 	
 	// constructor:
