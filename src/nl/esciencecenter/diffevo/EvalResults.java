@@ -194,7 +194,6 @@ public class EvalResults {
 		
 		List<Integer> list = new ArrayList<Integer>();		
 		
-		int nResults = this.getListOfEvalResult().size();
 		double currentObjScore;
 		double highestObjScore = this.highestObjScore();
 		
@@ -217,7 +216,6 @@ public class EvalResults {
 		double currentObjScore = this.getObjScore(0);
 		double highestObjScore = currentObjScore;
 		
-		int nResults = this.getListOfEvalResult().size();
 		for (int iResult=1;iResult<nResults;iResult++){
 			currentObjScore = this.getObjScore(iResult);
 			if (currentObjScore>highestObjScore){
