@@ -44,4 +44,20 @@ public class DataReaderTest {
 		}
 	}
 
+	
+	@Test
+	public void testGetColumn() {
+		File file = new File("test"+File.separator+"datareader-unit-testing.eas");
+		DataReader reader = new DataReader(file);
+		int iCol = 0;
+		double[] dataActual = reader.getColumn(iCol);
+		double[] dataExpected = new double[]{1.2,1.7};
+		
+		int nRows = 2;
+		for (int iRow=0;iRow<nRows;iRow++){
+			assertTrue(dataActual[iRow]==dataExpected[iRow]);
+		}
+	}
+	
+	
 }
