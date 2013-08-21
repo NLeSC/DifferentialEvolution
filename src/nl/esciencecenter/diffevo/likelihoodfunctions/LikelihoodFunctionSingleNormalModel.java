@@ -31,9 +31,11 @@ public class LikelihoodFunctionSingleNormalModel implements LikelihoodFunction {
 	}
 	
 	private double calcProbabilityDensity(double[] x){
-		double dens1;
-
-		dens1 = (1.0/(Math.sqrt(2.0 * Math.PI * Math.pow(parSigma1,2)))) * Math.exp(-(1.0/2.0) * Math.pow((x[0]-parMu1)/parSigma1,2));
+		
+		double term1 = (1.0/(parSigma1*Math.sqrt(2*Math.PI)));
+		double term2 = (x[0]-parMu1)/parSigma1;
+		double term3 = Math.exp((-1.0/2)*Math.pow(term2, 2));
+		double dens1 = term1 * term3;
 		
 		probabilityDensity = dens1; 
 		return probabilityDensity; 
