@@ -191,8 +191,8 @@ public class ListOfParameterCombinations{
 		return firstOccurrence[iPop];
 	}
 
-	public int setFirstOccurrence(int iPop, int index){
-		return firstOccurrence[iPop] = index;
+	public void setFirstOccurrence(int iPop, int index){
+		this.firstOccurrence[iPop] = index;
 	}
 
 	
