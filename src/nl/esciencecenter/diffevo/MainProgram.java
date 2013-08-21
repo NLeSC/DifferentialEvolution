@@ -101,21 +101,6 @@ public class MainProgram {
 				diffEvo = new DiffEvo(nGens, nPop, parSpace, stateSpace, initState, forcing, times, assimilate, obs, modelFactory, likelihoodFunctionFactory);
 				break; 
 			} // case 1
-			case 4:{
-				//SingleNormalModel
-				nGens = 3000;
-				nPop = 50;
-				{
-					double[] lowerBoundsParSpace = new double[]{-50};
-					double[] upperBoundsParSpace = new double[]{40};
-					String[] parNames = new String[]{"theta"};
-					parSpace = new ParSpace(lowerBoundsParSpace,upperBoundsParSpace,parNames);
-					parSpace.divideIntoIntervals(50);
-				}
-				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionSingleNormalModelFactory();
-				diffEvo = new DiffEvo(nGens, nPop, parSpace, likelihoodFunctionFactory);
-				break; 
-			} // case 4
 			case 5:{
 				//CubicModel
 				nGens = 300;
