@@ -55,21 +55,6 @@ public class MainProgram {
 			File file = null;
 			
 			switch (modelSwitch){
-			case 0:{
-				//DoubleNormalModel
-				nGens = 300;
-				nPop = 50;
-				{
-					double[] lowerBoundsParSpace = new double[]{-20};
-					double[] upperBoundsParSpace = new double[]{18};
-					String[] parNames = new String[]{"theta"};
-					parSpace = new ParSpace(lowerBoundsParSpace,upperBoundsParSpace,parNames);
-					parSpace.divideIntoIntervals(50);
-				}
-				likelihoodFunctionFactory = (LikelihoodFunctionFactory) new LikelihoodFunctionDoubleNormalModelFactory();
-				diffEvo = new DiffEvo(nGens, nPop, parSpace, likelihoodFunctionFactory);
-				break;
-			}//case 0
 			case 1:{
 				//LinearDynamicStateSpaceModel
 				nGens = 500;
