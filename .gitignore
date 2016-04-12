@@ -8,3 +8,7 @@ test/reports
 dist
 doc/javadoc
 data/*.eas
+.classpath
+.settings
+.project
+
